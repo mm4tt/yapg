@@ -22,6 +22,7 @@ namespace Bomberman
 
         public Game1()
         {
+            //BLABLABLA
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
