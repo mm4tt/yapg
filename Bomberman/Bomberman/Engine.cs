@@ -7,5 +7,25 @@ namespace Bomberman
 {
     class Engine
     {
+        private Maze maze = new Maze();
+        public Maze @Maze
+        {
+            get { return maze; }
+        }
+
+        public Engine()
+        {
+            Maze.GenerateRandom(4, 50);
+        }
+
+        public void Draw()
+        {
+            maze.Draw();
+        }
+
+        public void Update()
+        {
+
+        }
     }
 }

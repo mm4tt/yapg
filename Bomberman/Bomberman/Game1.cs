@@ -20,9 +20,11 @@ namespace Bomberman
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Engine engine = new Engine();
+
         public Game1()
         {
-            //BLABLABLA
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
@@ -79,7 +81,7 @@ namespace Bomberman
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            engine.Update();
             base.Update(gameTime);
         }
 
@@ -92,7 +94,7 @@ namespace Bomberman
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            engine.Draw();
             base.Draw(gameTime);
         }
     }
