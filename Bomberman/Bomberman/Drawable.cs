@@ -7,6 +7,7 @@ namespace Bomberman
 {
     interface Drawable
     {
-        void Draw();
+        
+        void Draw(uint x, uint y);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Bomberman
 {
@@ -142,7 +143,7 @@ namespace Bomberman
             for (uint y = 0; y < Height; ++y)
             {
                 for (uint x = 0; x < Width; ++x)
-                    blocks[x, y].Draw();
+                    blocks[x, y].Draw(x,y);
                 Console.WriteLine();
             }
         }
@@ -179,7 +180,15 @@ namespace Bomberman
         private ArrayWrapper<Modifier>  wModifier;
 
         private MazeBlock[,] blocks = new MazeBlock[Width, Height];
-        private Modifier[,] modifiers = new Modifier[Width, Height]; 
+        private Modifier[,] modifiers = new Modifier[Width, Height];
+
+        public void SetSpriteBatch(SpriteBatch spriteBatch)
+        {
+            foreach (MazeBlock block in blocks)
+            {
+                block.SpriteBatch = spriteBatch;
+            }
+        }
     }
 
     public class ArrayWrapper<T>
@@ -198,4 +207,6 @@ namespace Bomberman
             }
         }
     }
+
+    
 }

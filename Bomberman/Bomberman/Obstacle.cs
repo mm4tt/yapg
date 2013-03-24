@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Bomberman
 {
@@ -19,9 +21,18 @@ namespace Bomberman
         }
         #endregion
 
-        public override void Draw()
+      
+
+        public override void Draw(uint x,uint y)
         {
+            base.Draw(x, y);
             Console.Write(".");
+            
+        }
+
+        protected override void LoadGraphic()
+        {
+            SetOneColorTexture(Color.Blue);
         }
     }
 }

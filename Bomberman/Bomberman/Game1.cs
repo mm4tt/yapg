@@ -22,6 +22,9 @@ namespace Bomberman
 
         Engine engine = new Engine();
 
+        public static Texture2D obstacle;
+        Texture2D wall;
+
         public Game1()
         {
             
@@ -56,9 +59,15 @@ namespace Bomberman
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            engine.SetSpriteBatch(spriteBatch);
         }
+
+        
+
+
+
+        
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -93,8 +102,10 @@ namespace Bomberman
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // TODO: Add your dawing code here
+            spriteBatch.Begin();
             engine.Draw();
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

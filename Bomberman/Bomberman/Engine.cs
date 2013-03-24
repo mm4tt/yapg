@@ -27,5 +27,10 @@ namespace Bomberman
         {
 
         }
+
+        internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        {
+            maze.SetSpriteBatch(spriteBatch);
+        }
     }
 }
