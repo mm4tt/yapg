@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Bomberman
 {
@@ -27,10 +28,10 @@ namespace Bomberman
 
         public Game1()
         {
-            
+            Debug.WriteLine("Game starting...");   
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
+            
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
 
@@ -105,6 +106,7 @@ namespace Bomberman
             // TODO: Add your dawing code here
             spriteBatch.Begin();
             engine.Draw();
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }

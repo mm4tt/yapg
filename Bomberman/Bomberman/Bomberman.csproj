@@ -65,6 +65,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameObject.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="Engine.cs" />
