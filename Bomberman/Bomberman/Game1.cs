@@ -91,7 +91,7 @@ namespace Bomberman
                 this.Exit();
 
             // TODO: Add your update logic here
-            engine.Update();
+            engine.Update(gameTime);
             base.Update(gameTime);
         }
 

@@ -22,19 +22,26 @@ namespace Bomberman
         protected uint width;
         protected uint height;
         private Maze maze;
+        float speed = 0;
+        int interval = 0;
+        public float Speed{
+            get { return speed; }
+            set {
+                if (value <= 0)
+                {
+                    speed = 1;
+                }
+                else {
+                    speed = value;
+                }
+            }
+        }
         public Player( Maze maze ) {
             this.maze = maze;
             width = 20;
             height = 20;
-            for (uint i = 0; i < Maze.Width; i++) {
-                for (uint j = 0; j < Maze.Height; j++) {
-                    if (maze.Block[i, j] is Empty ) {
-                        SetPosition( i, j );
-                        goto Found;
-                    }                
-                }
-            }
-            Found:{}
+            FindBeginPosition();
+            Speed = 1;
         }
         
         public void LoadGraphic(){
@@ -82,6 +89,8 @@ namespace Bomberman
         }
         
         public void goTo( int x, int y ){
+            if (x == Position.X && y == Position.Y)
+                return;
             int absHorizontal = Position.X > x  ? (int)(Position.X - x) : (int)(x - Position.X);
             int absVertical = Position.Y > y ? (int)(Position.Y - y) : (int)(y - Position.Y);
             int dirH = Position.X < x ? 1 : -1;
@@ -95,38 +104,105 @@ namespace Bomberman
                     UpdatePosition(Position.X, Position.Y + dirV);
                 }
                 else
-                    if (maze.Block[(uint)(Position.X + dirH), (uint)Position.X] is Empty)
+                    if (maze.Block[(uint)(Position.X + dirH), (uint)Position.Y] is Empty &&  Position.Y != y)
                     {
                         UpdatePosition(Position.X + dirH, Position.Y);
                     }
             }
             else {
                 //Debug.WriteLine("Horizontal");
-                if (maze.Block[(uint)(Position.X + dirH), (uint)Position.X] is Empty)
+                if (maze.Block[(uint)(Position.X + dirH), (uint)Position.Y] is Empty)
                 {
                     UpdatePosition(Position.X + dirH, Position.Y);
                 }
                 else
-                    if (maze.Block[(uint)Position.X, (uint)(Position.Y + dirV)] is Empty)
+                    if (maze.Block[(uint)Position.X, (uint)(Position.Y + dirV)] is Empty && Position.X != x )
                     {
                         UpdatePosition(Position.X, Position.Y + dirV);
                     }
             }
         }
 
-        public void Update() {
-            TouchCollection tc = TouchPanel.GetState();
-            
-            if (tc.Count() > 0) {
 
-                TouchLocation touched = tc[0];
-                //Debug.WriteLine("---------------");
-                //Debug.WriteLine(touched.Position.ToString());
-                goTo( (int)(touched.Position.X/MazeBlock.width),(int)(touched.Position.Y/MazeBlock.height));
-               // tc.Clear();
-                DrawAlone( Position.X, Position.Y );
-            } 
+        private void countEmptyNeighborhood( int x, int y,  ref List<Point> visited )
+        {
             
+            if (maze.Block[(uint)x, (uint)y] is Empty)
+            {
+              
+                visited.Add(new Point(x,y) );
+                Point p = new Point( x + 1, y );
+                if (!visited.Contains(p)) {
+                    countEmptyNeighborhood(x + 1, y,  ref visited);
+                }
+                p.X = x - 1;
+                p.Y = y;
+                if (!visited.Contains(p))
+                {
+                    countEmptyNeighborhood(x - 1, y,  ref visited);
+                }
+                p.X = x;
+                p.Y = y + 1;
+                if (!visited.Contains(p))
+                {
+                    countEmptyNeighborhood(x, y + 1 ,  ref visited);
+                }
+                p.X = x;
+                p.Y = y - 1;
+                if (!visited.Contains(p))
+                {
+                    countEmptyNeighborhood(x, y - 1,  ref visited);
+                }
+                
+                
+            }
+           
+
+        }
+
+       
+        public void FindBeginPosition() {
+            //int empties = 0;
+            for (uint i = 0; i < Maze.Width; i++)
+            {
+                for (uint j = 0; j < Maze.Height; j++)
+                {
+                    if (maze.Block[i, j] is Empty)
+                    {
+                        List<Point> visited = new List<Point>();
+                        countEmptyNeighborhood((int)i, (int)j, ref visited);
+                       // Debug.WriteLine( visited.Count().ToString());
+                        if ( visited.Count() > 2 ) {
+                            SetPosition(i, j);
+
+                           
+                            goto Found;
+                        }
+                        visited.Clear();
+                    }
+                }
+            }
+            Found: { }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            interval += gameTime.ElapsedGameTime.Milliseconds;
+            if (interval > 500.0 / Speed) {
+                interval = 0;
+                TouchCollection tc = TouchPanel.GetState();
+                
+                if (tc.Count() > 0)
+                {
+
+                    TouchLocation touched = tc[0];
+                    //Debug.WriteLine("---------------");
+                    //Debug.WriteLine(touched.Position.ToString());
+                    goTo((int)(touched.Position.X / MazeBlock.width), (int)(touched.Position.Y / MazeBlock.height));
+                    // tc.Clear();
+                    // DrawAlone( Position.X, Position.Y );
+                } 
+            }
         }
         void DrawAlone( int x, int y ) {
             spriteBatch.Begin();

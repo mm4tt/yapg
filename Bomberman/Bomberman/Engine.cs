@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,9 @@ namespace Bomberman
             player.Draw();
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-            player.Update();
+            player.Update( gameTime);
         }
 
         internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
