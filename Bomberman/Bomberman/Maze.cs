@@ -143,7 +143,11 @@ namespace Bomberman
             for (uint y = 0; y < Height; ++y)
             {
                 for (uint x = 0; x < Width; ++x)
-                    blocks[x, y].Draw(x,y);
+                {
+                    blocks[x, y].Draw(x, y);
+                    if (modifiers[x, y] != null)
+                        Chest.Instance.Draw(x, y);
+                }
                 Console.WriteLine();
             }
         }
@@ -153,9 +157,18 @@ namespace Bomberman
             modifiers[x, y] = null;
             if (blocks[x, y] is Obstacle)
             {
-                //TODO draw if create and what modifier 
+                blocks[x, y] = Empty.Instance;
+                Random random = new Random(DateTime.Now.Millisecond);
+                int i = random.Next(100);
+                if (i < 10)
+                {
+                    modifiers[x, y] = Speed.Instance;
+                }
+                else if (i < 80)
+                {
+                    modifiers[x, y] = ExtraBomb.Instance;
+                }
             }
-            blocks[x, y] = Empty.Instance;
         }
 
 
@@ -188,6 +201,7 @@ namespace Bomberman
             {
                 block.SpriteBatch = spriteBatch;
             }
+            Chest.Instance.SpriteBatch = spriteBatch;
         }
     }
 
