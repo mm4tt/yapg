@@ -89,7 +89,7 @@ namespace Bomberman
             
             if (absHorizontal < absVertical)
             {
-               // Debug.WriteLine("Vertical");
+                //Debug.WriteLine("Vertical");
                 if (maze.Block[(uint)Position.X, (uint)(Position.Y + dirV)] is Empty)
                 {
                     UpdatePosition(Position.X, Position.Y + dirV);
@@ -101,7 +101,7 @@ namespace Bomberman
                     }
             }
             else {
-               // Debug.WriteLine("Horizontal");
+                //Debug.WriteLine("Horizontal");
                 if (maze.Block[(uint)(Position.X + dirH), (uint)Position.X] is Empty)
                 {
                     UpdatePosition(Position.X + dirH, Position.Y);
@@ -118,6 +118,7 @@ namespace Bomberman
             TouchCollection tc = TouchPanel.GetState();
             
             if (tc.Count() > 0) {
+
                 TouchLocation touched = tc[0];
                 //Debug.WriteLine("---------------");
                 //Debug.WriteLine(touched.Position.ToString());
