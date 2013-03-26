@@ -81,10 +81,10 @@ namespace Bomberman
                 LoadGraphic();
             }
         }
-        public void Draw() {
+        public override void Draw() {
             Draw( Position.X, Position.Y );
         }
-        public override void Draw(uint x, uint y) {
+        public  void Draw(uint x, uint y) {
             Draw( (int)x, (int)y );
         }
         
@@ -185,7 +185,7 @@ namespace Bomberman
             Found: { }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
             if (interval > 500.0 / Speed) {

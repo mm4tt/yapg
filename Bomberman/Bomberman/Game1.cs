@@ -48,6 +48,7 @@ namespace Bomberman
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            engine.Initialize();
 
             base.Initialize();
         }
@@ -61,6 +62,7 @@ namespace Bomberman
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
+            Bomb.Load(this.Content);
             engine.SetSpriteBatch(spriteBatch);
         }
 

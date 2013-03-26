@@ -7,6 +7,18 @@ namespace Bomberman
 {
     class ExtraBomb : Modifier
     {
+        #region Singleton
+        private static ExtraBomb instance = new ExtraBomb();
+        private ExtraBomb() { }
+        public static ExtraBomb Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+        #endregion
+
         public void apply(Player P)
         {
             throw new NotImplementedException();
