@@ -21,6 +21,7 @@ namespace Bomberman
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
         protected uint width;
         protected uint height;
+        private IList<Bomb> bombs;
         private Maze maze;
         float speed = 0;
         int interval = 0;
@@ -36,11 +37,13 @@ namespace Bomberman
                 }
             }
         }
-        public Player( Maze maze ) {
+        public Player(Maze maze, IList<Bomb> bombs )
+        {
             this.maze = maze;
             width = 20;
             height = 20;
             FindBeginPosition();
+            this.bombs = bombs;
             Speed = 1;
         }
         
@@ -50,6 +53,9 @@ namespace Bomberman
             for (int i = 0; i < colors.Length; ++i)
                 colors[i] = Color.Azure;
             texture.SetData(colors);
+        }
+        public void LeaveBomb() {
+            bombs.Add(new Bomb(Position.X*(int)width,Position.Y*(int)height ));
         }
         public Point Position {
             set { 
@@ -188,6 +194,13 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
+            if (TouchPanel.IsGestureAvailable) {
+                if (TouchPanel.ReadGesture().GestureType == GestureType.DoubleTap) {
+                    LeaveBomb();
+                }
+               
+            }
+           
             if (interval > 500.0 / Speed) {
                 interval = 0;
                 TouchCollection tc = TouchPanel.GetState();

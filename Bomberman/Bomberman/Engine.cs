@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 
+using Microsoft.Xna.Framework.Input.Touch;
 namespace Bomberman
 {
     class Engine
@@ -21,14 +21,18 @@ namespace Bomberman
 
         private IList<Bomb> bombs = new List<Bomb>();
 
+
         public Engine()
         {
             Maze.GenerateRandom(4, 50);
-
-            player = new Player( maze );
-            bombs.Add(new Bomb(100, 100));
-            bombs.Add(new Bomb(120, 200));
-            bombs.Add(new Bomb(180, 140));
+            TouchPanel.EnabledGestures = GestureType.None;
+            TouchPanel.EnabledGestures = GestureType.Hold;
+            TouchPanel.EnabledGestures = GestureType.Tap;
+            TouchPanel.EnabledGestures = GestureType.DoubleTap;
+            player = new Player( maze, bombs );
+            //bombs.Add(new Bomb(100, 100));
+            //bombs.Add(new Bomb(120, 200));
+            //bombs.Add(new Bomb(180, 140));
         }
 
         public void Initialize()
