@@ -63,6 +63,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Engine.cs" />
     <Compile Include="ExtraBomb.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="GameSaver.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="MazeBlock.cs" />
     <Compile Include="Modifier.cs" />

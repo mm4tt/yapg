@@ -23,8 +23,6 @@ namespace Bomberman
 
         Engine engine = new Engine();
 
-        public static Texture2D obstacle;
-        Texture2D wall;
 
         public Game1()
         {
@@ -37,6 +35,8 @@ namespace Bomberman
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+           
         }
 
         /// <summary>
