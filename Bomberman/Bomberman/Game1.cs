@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
+using Bomberman.StateManager;
+using Bomberman.Screens;
 
 namespace Bomberman
 {
@@ -19,12 +21,8 @@ namespace Bomberman
     public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        Engine engine = new Engine();
-
-        public static Texture2D obstacle;
-        Texture2D wall;
+        ScreenManager screenManager;
+        ScreenFactory screenFactory;
 
         public Game1()
         {
@@ -34,68 +32,66 @@ namespace Bomberman
             
             // Frame rate is 30 fps by default for Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
+            graphics.IsFullScreen = true;
+            //InitializePortraitGraphics();
 
-            // Extend battery life under lock.
-            InactiveSleepTime = TimeSpan.FromSeconds(1);
+            // Create the screen factory and add it to the Services
+            screenFactory = new ScreenFactory();
+            Services.AddService(typeof(IScreenFactory), screenFactory);
+
+            // Create the screen manager component.
+            screenManager = new ScreenManager(this);
+            Components.Add(screenManager);
+
+            // Hook events on the PhoneApplicationService so we're notified of the application's life cycle
+            Microsoft.Phone.Shell.PhoneApplicationService.Current.Launching +=
+                new EventHandler<Microsoft.Phone.Shell.LaunchingEventArgs>(GameLaunching);
+            Microsoft.Phone.Shell.PhoneApplicationService.Current.Activated +=
+                new EventHandler<Microsoft.Phone.Shell.ActivatedEventArgs>(GameActivated);
+            Microsoft.Phone.Shell.PhoneApplicationService.Current.Deactivated +=
+                new EventHandler<Microsoft.Phone.Shell.DeactivatedEventArgs>(GameDeactivated);
+
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
+        void GameLaunching(object sender, Microsoft.Phone.Shell.LaunchingEventArgs e)
         {
-            // TODO: Add your initialization logic here
-            engine.Initialize();
-
-            base.Initialize();
+            AddInitialScreens();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
+        void GameActivated(object sender, Microsoft.Phone.Shell.ActivatedEventArgs e)
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            // TODO: use this.Content to load your game content here
-            Bomb.Load(this.Content);
-            engine.SetSpriteBatch(spriteBatch);
+            // Try to deserialize the screen manager
+            if (!screenManager.Activate(e.IsApplicationInstancePreserved))
+            {
+                // If the screen manager fails to deserialize, add the initial screens
+                AddInitialScreens();
+            }
         }
 
-        
-
-
-
-        
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
-        protected override void UnloadContent()
+        void GameDeactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)
         {
-            // TODO: Unload any non ContentManager content here
+            // Serialize the screen manager when the game deactivated
+            screenManager.Deactivate();
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        private void AddInitialScreens()
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            // Activate the first screens.
+            screenManager.AddScreen(new BackgroundScreen(), null);
 
-            // TODO: Add your update logic here
-            engine.Update(gameTime);
-            base.Update(gameTime);
+            // We have different menus for Windows Phone to take advantage of the touch interface
+
+            screenManager.AddScreen(new MainMenuScreen(), null);
         }
+
+
+        private void InitializePortraitGraphics()
+        {
+            graphics.PreferredBackBufferWidth = 480;
+            graphics.PreferredBackBufferHeight = 800;
+        }
+   
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -104,12 +100,6 @@ namespace Bomberman
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your dawing code here
-            spriteBatch.Begin();
-            engine.Draw();
-            
-            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

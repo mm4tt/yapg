@@ -97,6 +97,7 @@ namespace Bomberman
         public void goTo( int x, int y ){
             if (x == Position.X && y == Position.Y)
                 return;
+
             int absHorizontal = Position.X > x  ? (int)(Position.X - x) : (int)(x - Position.X);
             int absVertical = Position.Y > y ? (int)(Position.Y - y) : (int)(y - Position.Y);
             int dirH = Position.X < x ? 1 : -1;
@@ -194,6 +195,8 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
+
+
             if (TouchPanel.IsGestureAvailable) {
                 if (TouchPanel.ReadGesture().GestureType == GestureType.DoubleTap) {
                     LeaveBomb();
