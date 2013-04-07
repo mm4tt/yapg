@@ -5,8 +5,11 @@ using System.Text;
 
 namespace Bomberman
 {
+   
     public interface Modifier
     {
         void apply(Player P);
+        string getTypeString();
+        
     }
 }

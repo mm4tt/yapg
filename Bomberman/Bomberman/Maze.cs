@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Serialization;
+using System.Diagnostics;
 
 namespace Bomberman
 {
@@ -171,16 +173,17 @@ namespace Bomberman
             }
         }
 
-
+        [XmlIgnore]
         public ArrayWrapper<MazeBlock> Block
         {
             get
             {
                 return wBlock;
             }
+           
         }
 
-
+       [XmlIgnore]
         public ArrayWrapper<Modifier> Modifier
         {
             get
@@ -193,7 +196,83 @@ namespace Bomberman
         private ArrayWrapper<Modifier>  wModifier;
 
         private MazeBlock[,] blocks = new MazeBlock[Width, Height];
+
+        [XmlIgnore]
+        public MazeBlock[,] Blocks
+        {
+            get { return blocks; }
+            set { blocks = value; }
+        }
+
+      
+        [XmlArray("Blocks")]
+        [XmlArrayItem("Block")]
+        public string[] LinearMazeBlock
+        {
+            get {   string[] tmp = new string[Width * Height];
+                    for (int x = 0; x < Width; ++x)
+                    {
+                        for (int y = 0; y < Height; ++y)
+                        {
+                            tmp[x * Height + y] = blocks[x,y].getTypeString();
+                        }
+                    }
+                    return tmp;
+                }
+            set {
+                Debug.WriteLine("In set LinearMazeBlock");
+                string[] tmp = value;
+                blocks = new MazeBlock[Width, Height];
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Debug.WriteLine(tmp[x * Height + y]);
+                        blocks[x,y] = MazeBlock.getMazeBlock(tmp[x*Height + y]);
+                    }
+                }
+                wBlock = new ArrayWrapper<MazeBlock>(blocks);
+            }
+        }
+      
         private Modifier[,] modifiers = new Modifier[Width, Height];
+
+        [XmlArray("Modifiers")]
+        [XmlArrayItem("Modifier")]
+        public string[] LinearModifiers
+        {
+            get
+            {
+                string[] tmp = new string[Width * Height];
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        //tmp[x * Height + y] = modifiers[x, y].getTypeString();
+                        tmp[x*Height + y] = ModifierCreator.getTypeString(modifiers[x,y]);
+                        //tmp[x * Height + y] = "ZadenMadafakaNiePodskoczyDoPolaka";
+                    }
+                }
+                return tmp;
+            }
+
+            set
+            {
+                Debug.WriteLine("Gonna setup linearModifiers");
+                string[] tmp = value;
+                modifiers = new Modifier[Width, Height];
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Debug.WriteLine(tmp[x*Height + y]);
+                        modifiers[x, y] = ModifierCreator.getModifier(tmp[x * Height + y]);
+                    }
+                }
+                wModifier = new ArrayWrapper<Modifier>(modifiers);
+            }
+        }
+      
 
         public void SetSpriteBatch(SpriteBatch spriteBatch)
         {
@@ -204,7 +283,7 @@ namespace Bomberman
             Chest.Instance.SpriteBatch = spriteBatch;
         }
     }
-
+   
     public class ArrayWrapper<T>
     {
         T[,] A;

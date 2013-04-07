@@ -33,6 +33,8 @@ namespace Bomberman
         {
             SetOneColorTexture(Color.Brown);
         }
+
+        
     }
 
 

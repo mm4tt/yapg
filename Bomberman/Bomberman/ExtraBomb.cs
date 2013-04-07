@@ -23,5 +23,10 @@ namespace Bomberman
         {
             throw new NotImplementedException();
         }
+
+        public string getTypeString()
+        {
+            return this.ToString();
+        }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Xml.Serialization;
 namespace Bomberman
 {
    
@@ -19,8 +20,8 @@ namespace Bomberman
        
         private Texture2D texture;
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
-        protected uint width;
-        protected uint height;
+        protected uint width = 20;
+        protected uint height = 20;
         private IList<Bomb> bombs;
         private Maze maze;
         float speed = 0;
@@ -40,8 +41,6 @@ namespace Bomberman
         public Player(Maze maze, IList<Bomb> bombs )
         {
             this.maze = maze;
-            width = 20;
-            height = 20;
             FindBeginPosition();
             this.bombs = bombs;
             Speed = 1;
@@ -57,6 +56,8 @@ namespace Bomberman
         public void LeaveBomb() {
             bombs.Add(new Bomb(Position.X*(int)width,Position.Y*(int)height ));
         }
+
+        [XmlElement("Position")]
         public Point Position {
             set { 
                 position = value;
@@ -78,6 +79,8 @@ namespace Bomberman
         {
             return new Rectangle((int)x * (int)width, (int)y * (int)height, (int)width, (int)height);
         }
+
+        [XmlIgnore]
         public Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }
@@ -97,6 +100,7 @@ namespace Bomberman
         public void goTo( int x, int y ){
             if (x == Position.X && y == Position.Y)
                 return;
+
             int absHorizontal = Position.X > x  ? (int)(Position.X - x) : (int)(x - Position.X);
             int absVertical = Position.Y > y ? (int)(Position.Y - y) : (int)(y - Position.Y);
             int dirH = Position.X < x ? 1 : -1;
@@ -194,6 +198,8 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
+
+
             if (TouchPanel.IsGestureAvailable) {
                 if (TouchPanel.ReadGesture().GestureType == GestureType.DoubleTap) {
                     LeaveBomb();
@@ -225,6 +231,8 @@ namespace Bomberman
         void Draw( int x,  int y) {
             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
             spriteBatch.Draw(texture, ComputePosition(x, y), Color.Black);
-        }   
+        }
+
+        public Player() { }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System.Xml.Serialization;
 
 namespace Bomberman
 {
@@ -18,7 +19,8 @@ namespace Bomberman
             tex = content.Load<Texture2D>("explosion");
         }
 
-        int x, y;
+        protected int x;
+        protected int y;
         /*
         private void Destroy(int x, int y, Maze m)
         {
@@ -60,13 +62,29 @@ namespace Bomberman
             spriteBatch.Draw(tex, new Vector2(x + 32, y), Color.White);
             spriteBatch.Draw(tex, new Vector2(x, y + 32), Color.White);
         }
+
+        public Explosion()
+        {
+        }
+
+        internal int X
+        {
+            get { return x; }
+            set { x = value; }
+        }
+
+        internal int Y
+        {
+            get { return y; }
+            set { y = value; }
+        }
     }
 
     public class Bomb : GameObject
     {
         static Texture2D[] tex;
         static Maze maze;
-        enum State {Active, Exploding, Dead}
+        enum State {Active = 0, Exploding = 1, Dead= 2}
 
         public static void setMaze(Maze m)
         {
@@ -93,6 +111,38 @@ namespace Bomberman
         BombTicker timer;
         State state;
         Explosion explosion;
+
+        [XmlElement("X")]
+        public int X{
+            get { return x; }
+            set { x = value; }
+        }
+
+        [XmlElement("Y")]
+        public int Y{
+            get { return y; }
+            set { y = value; }
+        }
+        [XmlElement("I")]
+        public int I
+        {
+            get { return i; }
+            set { i = value; }
+        }
+
+        [XmlElement("State")]
+        public int mstate
+        {
+            get { return (int)state;}
+            set { state = (State)value;}
+        }
+
+        [XmlElement("Explosion")]
+        internal Explosion mexplosion
+        {
+            get { return explosion; }
+            set { explosion = value; }
+        }
 
         public Bomb()
         {

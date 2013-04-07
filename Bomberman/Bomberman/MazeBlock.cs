@@ -4,15 +4,23 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Serialization;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Bomberman
-{
+{  
+    [XmlInclude(typeof(Wall))]
+    [XmlInclude(typeof(Empty))]
+    [XmlInclude(typeof(Chest))]
+    [XmlInclude(typeof(Obstacle))]
     public abstract class MazeBlock : Drawable
     {
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
 
         public static int height = 20;
         public static int width = 20;
+        [XmlIgnore]
         public Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }
@@ -43,6 +51,24 @@ namespace Bomberman
         protected Rectangle ComputePosition(uint x, uint y)
         {
             return new Rectangle((int)x * width, (int) y * height, width, height);
+        }
+
+        public virtual string getTypeString()
+        {
+            return this.ToString();
+        }
+
+        public static MazeBlock getMazeBlock(string gtype)
+        {
+            Type mType = Type.GetType(gtype);
+        /*    Debug.WriteLine("Type : is null ? " + mType == null);
+            Debug.WriteLine("Type : " + mType.FullName);
+            foreach (MethodInfo method in mType.GetMethods())
+            {
+                Debug.WriteLine(method.IsStatic);
+                Debug.WriteLine(method.Name);
+            }*/
+            return (MazeBlock)mType.GetMethod("get_Instance").Invoke(null, null);
         }
     }
 }
