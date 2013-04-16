@@ -23,5 +23,11 @@ namespace Bomberman
         {
             throw new NotImplementedException();
         }
+        public void onUpdate() { }
+        public void onBegin() { }
+        public void onEnd() { }
+        public int getRespirationTime() {
+            return 0;
+        }
     }
 }

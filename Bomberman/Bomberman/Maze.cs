@@ -162,7 +162,7 @@ namespace Bomberman
                 int i = random.Next(100);
                 if (i < 10)
                 {
-                    modifiers[x, y] = Speed.Instance;
+                    modifiers[x, y] = DoubleSpeed.Instance;
                 }
                 else if (i < 80)
                 {

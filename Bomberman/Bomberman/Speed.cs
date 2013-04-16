@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Bomberman
 {
-    class Speed : Modifier
+    class DoubleSpeed : Modifier
     {
         #region Singleton
-        private static Speed instance = new Speed();
-        private Speed() { }
-        public static Speed Instance
+        private static DoubleSpeed instance = new DoubleSpeed();
+        private DoubleSpeed() { }
+        public static DoubleSpeed Instance
         {
             get
             {
@@ -19,10 +19,19 @@ namespace Bomberman
         }
         #endregion
 
-
-        public void apply(Player P)
+        Player player;
+        public void apply(Player player)
         {
-            throw new NotImplementedException();
+            player.addModifier(this);
+            this.player = player;
+        }
+        public void onUpdate() { }
+        public void onBegin() {
+            player.Speed = 2 * player.Speed;
+        }
+        public void onEnd() { }
+        public int getRespirationTime() {
+            return 0;
         }
     }
 }

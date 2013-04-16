@@ -12,12 +12,50 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework.Input.Touch;
 namespace Bomberman
 {
-   
+    class Effect {
+        const int TIME_STEP = 1000;
+        Modifier mod;
+        int time;
+        public bool Active {
+            get { return ( time > 0 );}
+        }
+        public Effect(Modifier m) {
+            mod = m;
+            time = m.getRespirationTime();
+        }
+        public void onUpdate() {
+            time -= TIME_STEP;
+            if (time > 0) {
+                mod.onUpdate();
+            }
+        }
+        public void onBegin() {
+            mod.onBegin();
+        }
+        public void onEnd() {
+            mod.onEnd();
+        }
+    }
     public class Player : GameObject
     {
-        private Point position;
-       
+        #region CONSTS
+
+        const int NONE_DIRECTION = 0;
+        const int INTERVAL_ACTION = 500;
+        const int INITIAL_BOMBS_AVAILABLE = 1;
+        const int INITIAL_EXPLOSION_RANGE = 1;
+        const int UP = 1;
+        const int RIGHT = 2;
+        const int DOWN = 3;
+        const int LEFT = 4;
+        const int MODE_MOVEMENT_DEFAULT = 0;
+        const int MODE_MOVEMENT_THROW = 1;
+
+        #endregion
+        #region FIELDS
+        private List<Effect> effects;
         private Texture2D texture;
+        private Point position;
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
         protected uint width;
         protected uint height;
@@ -25,58 +63,44 @@ namespace Bomberman
         private Maze maze;
         float speed = 0;
         int interval = 0;
-        public float Speed{
+        private int direction;
+        int bombsAvailable = INITIAL_BOMBS_AVAILABLE;
+        int explosionRange = INITIAL_EXPLOSION_RANGE;
+        bool reversedDirection = false;
+        int movementMode = MODE_MOVEMENT_DEFAULT;
+        #endregion
+        #region ATTRIBUTES
+        public int BombsAvailable {
+            get { return bombsAvailable; }
+            set { bombsAvailable = value; }
+        }
+        public int ExplosionRange {
+            get { return explosionRange;  }
+            set { explosionRange = value; }
+        }
+        public int Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
+        public int MovementMode {
+            get { return movementMode;  }
+            set { this.movementMode = value; }
+        }
+        public float Speed
+        {
             get { return speed; }
-            set {
+            set
+            {
                 if (value <= 0)
                 {
                     speed = 1;
                 }
-                else {
+                else
+                {
                     speed = value;
                 }
             }
-        }
-        public Player(Maze maze, IList<Bomb> bombs )
-        {
-            this.maze = maze;
-            width = 20;
-            height = 20;
-            FindBeginPosition();
-            this.bombs = bombs;
-            Speed = 1;
-        }
-        
-        public void LoadGraphic(){
-            texture = new Texture2D( spriteBatch.GraphicsDevice , (int)width, (int)height);
-            Color[] colors = new Color[width * height];
-            for (int i = 0; i < colors.Length; ++i)
-                colors[i] = Color.Azure;
-            texture.SetData(colors);
-        }
-        public void LeaveBomb() {
-            bombs.Add(new Bomb(Position.X*(int)width,Position.Y*(int)height ));
-        }
-        public Point Position {
-            set { 
-                position = value;
-            }
-            get { return position; }
-        }
-        public void UpdatePosition( int x, int y ){
-            position.X = x;
-            position.Y = y;
-        }
-        public void SetPosition( int x, int y ){
-            Position = new Point( x, y );
-        }
-        public void SetPosition( uint x, uint y)
-        {
-            Position = new Point( (int)x, (int)y);
-        }
-        protected Rectangle ComputePosition(int x, int y)
-        {
-            return new Rectangle((int)x * (int)width, (int)y * (int)height, (int)width, (int)height);
         }
         public Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch
         {
@@ -87,88 +111,93 @@ namespace Bomberman
                 LoadGraphic();
             }
         }
-        public override void Draw() {
-            Draw( Position.X, Position.Y );
-        }
-        public  void Draw(uint x, uint y) {
-            Draw( (int)x, (int)y );
-        }
-        
-        public void goTo( int x, int y ){
-            if (x == Position.X && y == Position.Y)
-                return;
-
-            int absHorizontal = Position.X > x  ? (int)(Position.X - x) : (int)(x - Position.X);
-            int absVertical = Position.Y > y ? (int)(Position.Y - y) : (int)(y - Position.Y);
-            int dirH = Position.X < x ? 1 : -1;
-            int dirV = Position.Y < y ? 1 : -1;
-            
-            if (absHorizontal < absVertical)
-            {
-                //Debug.WriteLine("Vertical");
-                if (maze.Block[(uint)Position.X, (uint)(Position.Y + dirV)] is Empty)
-                {
-                    UpdatePosition(Position.X, Position.Y + dirV);
-                }
-                else
-                    if (maze.Block[(uint)(Position.X + dirH), (uint)Position.Y] is Empty &&  Position.Y != y)
-                    {
-                        UpdatePosition(Position.X + dirH, Position.Y);
-                    }
-            }
-            else {
-                //Debug.WriteLine("Horizontal");
-                if (maze.Block[(uint)(Position.X + dirH), (uint)Position.Y] is Empty)
-                {
-                    UpdatePosition(Position.X + dirH, Position.Y);
-                }
-                else
-                    if (maze.Block[(uint)Position.X, (uint)(Position.Y + dirV)] is Empty && Position.X != x )
-                    {
-                        UpdatePosition(Position.X, Position.Y + dirV);
-                    }
-            }
-        }
-
-
-        private void countEmptyNeighborhood( int x, int y,  ref List<Point> visited )
+        public Point Position
         {
-            
+            set
+            {
+                position = value;
+            }
+            get { return position; }
+        }
+        #endregion
+        #region INITIALIZATION
+        public Player(Maze maze, IList<Bomb> bombs)
+        {
+            effects = new List<Effect>();
+            this.maze = maze;
+            width = 20;
+            height = 20;
+            FindBeginPosition();
+            this.bombs = bombs;
+            Speed = 1;
+            direction = NONE_DIRECTION;
+        }
+
+        public void LoadGraphic()
+        {
+            texture = new Texture2D(spriteBatch.GraphicsDevice, (int)width, (int)height);
+            Color[] colors = new Color[width * height];
+            for (int i = 0; i < colors.Length; ++i)
+                colors[i] = Color.Azure;
+            texture.SetData(colors);
+        }
+
+
+        #endregion
+        #region DRAW
+        public override void Draw()
+        {
+            Draw(Position.X, Position.Y);
+        }
+        public void Draw(uint x, uint y)
+        {
+            Draw((int)x, (int)y);
+        }
+        void Draw(int x, int y)
+        {
+            //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
+            spriteBatch.Draw(texture, ComputePosition(x, y), Color.Black);
+        }
+        #endregion
+        #region HELPERS
+        private void countEmptyNeighborhood(int x, int y, ref List<Point> visited)
+        {
+
             if (maze.Block[(uint)x, (uint)y] is Empty)
             {
-              
-                visited.Add(new Point(x,y) );
-                Point p = new Point( x + 1, y );
-                if (!visited.Contains(p)) {
-                    countEmptyNeighborhood(x + 1, y,  ref visited);
+
+                visited.Add(new Point(x, y));
+                Point p = new Point(x + 1, y);
+                if (!visited.Contains(p))
+                {
+                    countEmptyNeighborhood(x + 1, y, ref visited);
                 }
                 p.X = x - 1;
                 p.Y = y;
                 if (!visited.Contains(p))
                 {
-                    countEmptyNeighborhood(x - 1, y,  ref visited);
+                    countEmptyNeighborhood(x - 1, y, ref visited);
                 }
                 p.X = x;
                 p.Y = y + 1;
                 if (!visited.Contains(p))
                 {
-                    countEmptyNeighborhood(x, y + 1 ,  ref visited);
+                    countEmptyNeighborhood(x, y + 1, ref visited);
                 }
                 p.X = x;
                 p.Y = y - 1;
                 if (!visited.Contains(p))
                 {
-                    countEmptyNeighborhood(x, y - 1,  ref visited);
+                    countEmptyNeighborhood(x, y - 1, ref visited);
                 }
-                
-                
+
+
             }
-           
+
 
         }
-
-       
-        public void FindBeginPosition() {
+        private void FindBeginPosition()
+        {
             //int empties = 0;
             for (uint i = 0; i < Maze.Width; i++)
             {
@@ -178,56 +207,152 @@ namespace Bomberman
                     {
                         List<Point> visited = new List<Point>();
                         countEmptyNeighborhood((int)i, (int)j, ref visited);
-                       // Debug.WriteLine( visited.Count().ToString());
-                        if ( visited.Count() > 2 ) {
+                        // Debug.WriteLine( visited.Count().ToString());
+                        if (visited.Count() > 2)
+                        {
                             SetPosition(i, j);
 
-                           
+
                             goto Found;
                         }
                         visited.Clear();
                     }
                 }
             }
-            Found: { }
+        Found: { }
+        }
+
+        public void UpdatePosition(int x, int y)
+        {
+            position.X = x;
+            position.Y = y;
+        }
+        public void SetPosition(int x, int y)
+        {
+            Position = new Point(x, y);
+        }
+        public void SetPosition(uint x, uint y)
+        {
+            Position = new Point((int)x, (int)y);
+        }
+        protected Rectangle ComputePosition(int x, int y)
+        {
+            return new Rectangle((int)x * (int)width, (int)y * (int)height, (int)width, (int)height);
+        }
+
+        #endregion
+        #region LOGIC
+        public void addModifier(Modifier m) {
+            Effect effect = new Effect( m );
+            this.effects.Add( effect );
+            effect.onBegin();
+        }
+        public void setBomb() {
+            Debug.WriteLine("setBomb");
+            
+            bombs.Add(new Bomb(Position.X*(int)width,Position.Y*(int)height ));
+        }
+
+
+        public void goInDirection(int dir)
+        {
+            switch (dir)
+            {
+                case UP:
+                    {
+                        if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
+                        {
+                            UpdatePosition(Position.X, Position.Y + 1);
+                        }
+
+                        break;
+                    }
+                case RIGHT:
+                    {
+                        if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
+                        {
+                            UpdatePosition(Position.X + 1, Position.Y);
+                        }
+                        break;
+                    }
+                case DOWN:
+                    {
+                        if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
+                        {
+                            UpdatePosition(Position.X, Position.Y - 1);
+                        }
+                        break;
+                    }
+                case LEFT:
+                    {
+                        if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
+                        {
+                            UpdatePosition(Position.X - 1, Position.Y);
+                        }
+                        break;
+                    }
+            }
+
+        }
+        public void move(Vector2 delta)
+        {
+            Debug.WriteLine("Move ");
+            Debug.WriteLine(delta);
+            float absX = delta.X < 0 ? -delta.X : delta.X;
+            float absY = delta.Y < 0 ? -delta.Y : delta.Y;
+            if (absX > absY)
+            {
+                if (delta.X < 0)
+                {
+                    if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
+                        direction = LEFT;
+                }
+                if (delta.X > 0)
+                {
+                    if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
+                        direction = RIGHT;
+                }
+            }
+            else
+            {
+                if (delta.Y > 0)
+                {
+                    if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
+                        direction = UP;
+                }
+                if (delta.Y < 0)
+                {
+                    if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
+                        direction = DOWN;
+                }
+            }
+            //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
 
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
-
-
-            if (TouchPanel.IsGestureAvailable) {
-                if (TouchPanel.ReadGesture().GestureType == GestureType.DoubleTap) {
-                    LeaveBomb();
+            if (interval > INTERVAL_ACTION / Speed)
+            {
+                interval = 0;
+                foreach (var effect in effects)
+                {
+                    if (effect.Active)
+                    {
+                        effect.onUpdate();
+                    }
+                    else {
+                        effect.onEnd();
+                        effects.Remove(effect);
+                    }
                 }
+                goInDirection(direction);
                
             }
-           
-            if (interval > 500.0 / Speed) {
-                interval = 0;
-                TouchCollection tc = TouchPanel.GetState();
-                
-                if (tc.Count() > 0)
-                {
 
-                    TouchLocation touched = tc[0];
-                    //Debug.WriteLine("---------------");
-                    //Debug.WriteLine(touched.Position.ToString());
-                    goTo((int)(touched.Position.X / MazeBlock.width), (int)(touched.Position.Y / MazeBlock.height));
-                    // tc.Clear();
-                    // DrawAlone( Position.X, Position.Y );
-                } 
-            }
+
         }
-        void DrawAlone( int x, int y ) {
-            spriteBatch.Begin();
-            spriteBatch.Draw(texture, ComputePosition(x, y), Color.Black);
-            spriteBatch.End();
-        }
-        void Draw( int x,  int y) {
-            //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
-            spriteBatch.Draw(texture, ComputePosition(x, y), Color.Black);
-        }   
+        #endregion
+
     }
 }

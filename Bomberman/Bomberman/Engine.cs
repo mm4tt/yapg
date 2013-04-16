@@ -25,10 +25,8 @@ namespace Bomberman
         public Engine()
         {
             Maze.GenerateRandom(4, 50);
-            TouchPanel.EnabledGestures = GestureType.None;
-            TouchPanel.EnabledGestures = GestureType.Hold;
-            TouchPanel.EnabledGestures = GestureType.Tap;
-            TouchPanel.EnabledGestures = GestureType.DoubleTap;
+           
+            //TouchPanel.EnabledGestures = GestureType.Tap;
             player = new Player( maze, bombs );
             //bombs.Add(new Bomb(100, 100));
             //bombs.Add(new Bomb(120, 200));
