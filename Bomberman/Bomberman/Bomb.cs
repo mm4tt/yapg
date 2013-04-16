@@ -93,7 +93,35 @@ namespace Bomberman
         BombTicker timer;
         State state;
         Explosion explosion;
-
+        Point position = new Point(0,0);
+        public Point Position {
+            get {
+                position.X = x;
+                position.Y = y;
+                return position;
+            }
+        }
+        public bool isActive(){
+            if (state == State.Active)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool isDead()
+        {
+            if (state == State.Dead)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public Bomb()
         {
             this.x = 0;

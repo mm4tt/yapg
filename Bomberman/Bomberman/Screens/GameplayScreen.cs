@@ -47,7 +47,7 @@ namespace Bomberman.Screens
                 new Keys[] { Keys.Escape },
                 true);
 
-            EnabledGestures = GestureType.DoubleTap | GestureType.Flick;
+            EnabledGestures = GestureType.DoubleTap | GestureType.Flick | GestureType.Tap;
 
         }
 
@@ -172,13 +172,18 @@ namespace Bomberman.Screens
                 foreach (var gesture in input.Gestures)
                     if (gesture.GestureType == GestureType.Flick)
                     {
-                        //TODO
+                        
                         engine.Player.move(gesture.Delta);
                     }
                     else if (gesture.GestureType == GestureType.DoubleTap)
                     {
-                        //TODO
+                     
                         engine.Player.setBomb();
+                    }else
+                    if (gesture.GestureType == GestureType.Tap)
+                    {
+                        
+                        engine.Player.stop();
                     }
                         
             }

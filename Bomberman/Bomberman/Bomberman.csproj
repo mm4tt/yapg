@@ -69,14 +69,17 @@
   <ItemGroup>
     <Compile Include="Bomb.cs" />
     <Compile Include="Chest.cs" />
+    <Compile Include="Modifiers\ReverseMovement.cs" />
+    <Compile Include="Modifiers\MovementThrowable.cs" />
+    <Compile Include="Modifiers\EmptyModifier.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Empty.cs" />
     <Compile Include="Engine.cs" />
-    <Compile Include="ExtraBomb.cs" />
+    <Compile Include="Modifiers\ExtraBomb.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="MazeBlock.cs" />
-    <Compile Include="Modifier.cs" />
+    <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,7 +89,7 @@
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
-    <Compile Include="Speed.cs" />
+    <Compile Include="Modifiers\Speed.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />
     <Compile Include="StateManager\InputAction.cs" />

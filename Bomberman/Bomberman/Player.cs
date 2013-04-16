@@ -40,22 +40,24 @@ namespace Bomberman
     {
         #region CONSTS
 
-        const int NONE_DIRECTION = 0;
-        const int INTERVAL_ACTION = 500;
-        const int INITIAL_BOMBS_AVAILABLE = 1;
-        const int INITIAL_EXPLOSION_RANGE = 1;
-        const int UP = 1;
-        const int RIGHT = 2;
-        const int DOWN = 3;
-        const int LEFT = 4;
-        const int MODE_MOVEMENT_DEFAULT = 0;
-        const int MODE_MOVEMENT_THROW = 1;
+         const int NONE_DIRECTION = 0;
+          const int INTERVAL_ACTION = 500;
+          const int INITIAL_BOMBS_AVAILABLE = 1;
+          const int INITIAL_EXPLOSION_RANGE = 1;
+          const int UP = 1;
+          const int RIGHT = 2;
+          const int DOWN = 3;
+          const int LEFT = 4;
+        public  const int MODE_MOVEMENT_DEFAULT = 0;
+        public  const int MODE_MOVEMENT_THROW = 1;
 
         #endregion
         #region FIELDS
         private List<Effect> effects;
         private Texture2D texture;
         private Point position;
+        private Point lastPosition ;
+        private int movProgress = 0;
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
         protected uint width;
         protected uint height;
@@ -66,17 +68,37 @@ namespace Bomberman
         private int direction;
         int bombsAvailable = INITIAL_BOMBS_AVAILABLE;
         int explosionRange = INITIAL_EXPLOSION_RANGE;
-        bool reversedDirection = false;
+        private bool alive = true;
         int movementMode = MODE_MOVEMENT_DEFAULT;
+        bool touched = false;
+        
         #endregion
         #region ATTRIBUTES
         public int BombsAvailable {
             get { return bombsAvailable; }
             set { bombsAvailable = value; }
         }
+        public bool Touched
+        {
+            get { return touched; }
+            set { touched = value; }
+        }
+        public bool Alive
+        {
+            get { return alive; }
+            set {
+                if (!value) {
+                    stop();
+                }
+                alive = value;
+            }
+        }
         public int ExplosionRange {
             get { return explosionRange;  }
-            set { explosionRange = value; }
+            set {
+                //TODO Bomb.setRange()?
+                explosionRange = value; 
+            }
         }
         public int Direction
         {
@@ -92,7 +114,7 @@ namespace Bomberman
             get { return speed; }
             set
             {
-                if (value <= 0)
+                if (value <= 0.001 )
                 {
                     speed = 1;
                 }
@@ -115,6 +137,7 @@ namespace Bomberman
         {
             set
             {
+
                 position = value;
             }
             get { return position; }
@@ -243,26 +266,53 @@ namespace Bomberman
         #endregion
         #region LOGIC
         public void addModifier(Modifier m) {
+            m.apply(this);
             Effect effect = new Effect( m );
             this.effects.Add( effect );
             effect.onBegin();
         }
+        
         public void setBomb() {
-            Debug.WriteLine("setBomb");
-            
-            bombs.Add(new Bomb(Position.X*(int)width,Position.Y*(int)height ));
+            int count = 0;
+            for (int i = 0; i < bombs.Count(); i++) {
+                if (bombs[i].isDead())
+                {
+                    bombs.RemoveAt(i);
+                }
+                else if(bombs[i].isActive()){
+                    count++;
+                }
+
+            }
+            if (count < BombsAvailable)
+            {
+                Debug.WriteLine("setBomb");
+                bombs.Add(new Bomb(Position.X * (int)width, Position.Y * (int)height));
+            }
+
+           
         }
 
 
         public void goInDirection(int dir)
         {
+
             switch (dir)
             {
                 case UP:
                     {
                         if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                         {
-                            UpdatePosition(Position.X, Position.Y + 1);
+                            bool blocked = false;
+                            foreach( var bomb in bombs ){
+                                if (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y + 1)
+                                {
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if(!blocked)
+                                UpdatePosition(Position.X, Position.Y + 1);
                         }
 
                         break;
@@ -271,7 +321,17 @@ namespace Bomberman
                     {
                         if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
                         {
-                            UpdatePosition(Position.X + 1, Position.Y);
+                            bool blocked = false;
+                            foreach (var bomb in bombs)
+                            {
+                                if (bomb.Position.X == Position.X + 1 && bomb.Position.Y == Position.Y)
+                                {
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!blocked)
+                                UpdatePosition(Position.X + 1, Position.Y);
                         }
                         break;
                     }
@@ -279,7 +339,17 @@ namespace Bomberman
                     {
                         if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
                         {
-                            UpdatePosition(Position.X, Position.Y - 1);
+                            bool blocked = false;
+                            foreach (var bomb in bombs)
+                            {
+                                if (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y - 1)
+                                {
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!blocked)
+                                UpdatePosition(Position.X, Position.Y - 1);
                         }
                         break;
                     }
@@ -287,7 +357,17 @@ namespace Bomberman
                     {
                         if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
                         {
-                            UpdatePosition(Position.X - 1, Position.Y);
+                            bool blocked = false;
+                            foreach (var bomb in bombs)
+                            {
+                                if (bomb.Position.X == Position.X-1 && bomb.Position.Y == Position.Y)
+                                {
+                                    blocked = true;
+                                    break;
+                                }
+                            }
+                            if (!blocked)
+                                UpdatePosition(Position.X - 1, Position.Y);
                         }
                         break;
                     }
@@ -300,17 +380,25 @@ namespace Bomberman
             Debug.WriteLine(delta);
             float absX = delta.X < 0 ? -delta.X : delta.X;
             float absY = delta.Y < 0 ? -delta.Y : delta.Y;
+            float range = 1;
+            Touched = true;
             if (absX > absY)
             {
                 if (delta.X < 0)
                 {
-                    if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
+                    if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty) {
                         direction = LEFT;
+                        range = absX/width;
+                    }
+                        
                 }
                 if (delta.X > 0)
                 {
                     if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
+                    {
                         direction = RIGHT;
+                        range = absX/width;
+                    }
                 }
             }
             else
@@ -318,36 +406,56 @@ namespace Bomberman
                 if (delta.Y > 0)
                 {
                     if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
+                    {
+                        range = absY/height;
                         direction = UP;
+                    }
                 }
                 if (delta.Y < 0)
                 {
                     if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
+                    {
                         direction = DOWN;
+                        range = absY/height;
+                    }
                 }
+            }
+            if (MovementMode == MODE_MOVEMENT_THROW) {
+                Speed = range;
             }
             //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
-
+        public void stop() {
+            Direction = NONE_DIRECTION;
+        }
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
-            if (interval > INTERVAL_ACTION / Speed)
+            if (interval > INTERVAL_ACTION / Speed && Alive)
             {
                 interval = 0;
-                foreach (var effect in effects)
+                for (int i = 0; i < effects.Count(); i++ )
                 {
-                    if (effect.Active)
+                    if (effects[i].Active)
                     {
-                        effect.onUpdate();
+                        effects[i].onUpdate();
                     }
-                    else {
-                        effect.onEnd();
-                        effects.Remove(effect);
+                    else
+                    {
+                        effects[i].onEnd();
+                        effects.RemoveAt(i);
                     }
                 }
-                goInDirection(direction);
-               
+                if (MovementMode == MODE_MOVEMENT_THROW) {
+                    Speed /= 2;
+                }
+                goInDirection(Direction);
+                if (maze.Modifier[(uint)Position.X, (uint)Position.Y] != null) { 
+                    Modifier m = maze.Modifier[(uint)Position.X, (uint)Position.Y];
+                    maze.destroyModifier((uint)Position.X, (uint)Position.Y);
+                    addModifier( m );
+                }
+                Touched = false;
             }
 
 

@@ -21,6 +21,7 @@ namespace Bomberman
 
             wBlock = new ArrayWrapper<MazeBlock>(blocks);
             wModifier = new ArrayWrapper<Modifier>(modifiers);
+           
             
         }
 
@@ -168,6 +169,7 @@ namespace Bomberman
                 {
                     modifiers[x, y] = ExtraBomb.Instance;
                 }
+
             }
         }
 
@@ -188,7 +190,9 @@ namespace Bomberman
                 return wModifier;
             }
         }
-
+        public void destroyModifier( uint x, uint y) {
+            modifiers[ x,y ] = null;
+        }
         private ArrayWrapper<MazeBlock> wBlock;
         private ArrayWrapper<Modifier>  wModifier;
 
