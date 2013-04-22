@@ -10,27 +10,27 @@ namespace Bomberman
 
         protected Player player;
         
-        public void apply(Player player)
+        public virtual void apply(Player player)
         {
             this.player = player;
         }
 
-        public void onUpdate()
+        public virtual void onUpdate()
         {
             //throw new NotImplementedException();
         }
 
-        public void onBegin()
+        public virtual void onBegin()
         {
             //throw new NotImplementedException();
         }
 
-        public void onEnd()
+        public virtual void onEnd()
         {
             //throw new NotImplementedException();
         }
 
-        public int getRespirationTime()
+        public virtual int getRespirationTime()
         {
             return 0;
         }

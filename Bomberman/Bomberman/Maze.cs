@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.Xna.Framework.Graphics;
-
+using Bomberman.Modifiers;
+using System.Diagnostics;
 namespace Bomberman
 {
     public class Maze
@@ -163,11 +164,22 @@ namespace Bomberman
                 int i = random.Next(100);
                 if (i < 10)
                 {
+                    Debug.WriteLine( "DoubleSpeed" );
                     modifiers[x, y] = DoubleSpeed.Instance;
                 }
-                else if (i < 80)
+                else if (i < 50)
                 {
+                    Debug.WriteLine("ExtraBomb");
                     modifiers[x, y] = ExtraBomb.Instance;
+                }else if( i < 70 )
+                {
+                    Debug.WriteLine("Movement");
+                    modifiers[x, y] = MovementThrowable.Instance;
+                }
+                else if (i < 90)
+                {
+                    Debug.WriteLine("Reverse");
+                    modifiers[x, y] = ReverseMovement.Instance;
                 }
 
             }

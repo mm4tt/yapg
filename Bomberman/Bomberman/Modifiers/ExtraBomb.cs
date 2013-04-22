@@ -20,11 +20,12 @@ namespace Bomberman
         #endregion
 
    
-        public void onBegin() {
+        public override void onBegin() {
             this.player.BombsAvailable += 1;
         }
-    
-        public int getRespirationTime() {
+
+        public override int getRespirationTime()
+        {
             return 0;
         }
     }

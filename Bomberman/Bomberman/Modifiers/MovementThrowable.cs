@@ -7,11 +7,31 @@ namespace Bomberman.Modifiers
 {
     class MovementThrowable : EmptyModifier
     {
-        public void onBegin() {
+         #region Singleton
+        private static MovementThrowable instance = new MovementThrowable();
+        private MovementThrowable() { }
+        float speed;
+        public static MovementThrowable Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+        #endregion
+        public override void onBegin()
+        {
+            speed = player.Speed;
             player.MovementMode = Player.MODE_MOVEMENT_THROW;
         }
-        public void onEnd() {
+        public override void onEnd()
+        {
             player.MovementMode = Player.MODE_MOVEMENT_DEFAULT;
+            player.Speed = speed;
+        }
+        public override int getRespirationTime()
+        {
+            return 10000;
         }
     }
 }

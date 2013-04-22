@@ -30,6 +30,7 @@ namespace Bomberman
             }
         }
         public void onBegin() {
+            Debug.WriteLine("begin effect");
             mod.onBegin();
         }
         public void onEnd() {
@@ -266,6 +267,7 @@ namespace Bomberman
         #endregion
         #region LOGIC
         public void addModifier(Modifier m) {
+            Debug.WriteLine("add modifier");
             m.apply(this);
             Effect effect = new Effect( m );
             this.effects.Add( effect );
@@ -275,11 +277,8 @@ namespace Bomberman
         public void setBomb() {
             int count = 0;
             for (int i = 0; i < bombs.Count(); i++) {
-                if (bombs[i].isDead())
-                {
-                    bombs.RemoveAt(i);
-                }
-                else if(bombs[i].isActive()){
+               
+                if(bombs[i].isActive()){
                     count++;
                 }
 
@@ -305,7 +304,8 @@ namespace Bomberman
                         {
                             bool blocked = false;
                             foreach( var bomb in bombs ){
-                                if (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y + 1)
+                               
+                                if ( (int)(bomb.Position.X /MazeBlock.width) == Position.X && (int)( bomb.Position.Y / MazeBlock.height ) == Position.Y + 1)
                                 {
                                     blocked = true;
                                     break;
@@ -324,7 +324,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in bombs)
                             {
-                                if (bomb.Position.X == Position.X + 1 && bomb.Position.Y == Position.Y)
+                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X + 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
                                 {
                                     blocked = true;
                                     break;
@@ -342,7 +342,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in bombs)
                             {
-                                if (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y - 1)
+                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y - 1)
                                 {
                                     blocked = true;
                                     break;
@@ -360,7 +360,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in bombs)
                             {
-                                if (bomb.Position.X == Position.X-1 && bomb.Position.Y == Position.Y)
+                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X - 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
                                 {
                                     blocked = true;
                                     break;
@@ -376,8 +376,6 @@ namespace Bomberman
         }
         public void move(Vector2 delta)
         {
-            Debug.WriteLine("Move ");
-            Debug.WriteLine(delta);
             float absX = delta.X < 0 ? -delta.X : delta.X;
             float absY = delta.Y < 0 ? -delta.Y : delta.Y;
             float range = 1;
@@ -431,6 +429,15 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
+            for (int i = 0; i < bombs.Count(); i++)
+            {
+                if (bombs[i].isDead())
+                {
+                    bombs.RemoveAt(i);
+                }
+
+
+            }
             if (interval > INTERVAL_ACTION / Speed && Alive)
             {
                 interval = 0;
@@ -447,7 +454,7 @@ namespace Bomberman
                     }
                 }
                 if (MovementMode == MODE_MOVEMENT_THROW) {
-                    Speed /= 2;
+                    Speed /= 4;
                 }
                 goInDirection(Direction);
                 if (maze.Modifier[(uint)Position.X, (uint)Position.Y] != null) { 
