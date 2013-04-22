@@ -89,7 +89,6 @@
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
-    <Compile Include="SerializableEngine.cs" />
     <Compile Include="Speed.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />

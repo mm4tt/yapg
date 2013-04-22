@@ -14,7 +14,6 @@ namespace Bomberman
         public void SaveGame(Engine engine,string saveName)
         {
             Debug.WriteLine("Engine is null : " + (engine == null));
-            //SerializableEngine sengine = new SerializableEngine(engine);
         
             Debug.WriteLine("Entered saving stuff");
             using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
