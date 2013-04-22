@@ -20,12 +20,13 @@ namespace Bomberman
         }
 
         private IList<Bomb> bombs = new List<Bomb>();
-
+        
 
         public Engine()
         {
             Maze.GenerateRandom(4, 50);
             Bomb.setMaze( Maze );
+            
             //TouchPanel.EnabledGestures = GestureType.Tap;
             player = new Player( Maze, bombs );
             //bombs.Add(new Bomb(100, 100));

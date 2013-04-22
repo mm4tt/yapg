@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Bomberman.Modifiers;
 using System.Diagnostics;
@@ -10,10 +11,16 @@ namespace Bomberman
 {
     public class Maze
     {
+        
         public const uint Height=24;
         public const uint Width=40;
-
-
+        private List<Point> explosions = new List<Point>();
+        public void clearExplosions() {
+            explosions.Clear();
+        }
+        public List<Point> Explosions {
+            get { return explosions; }
+        }
         public Maze()
         {
             for (uint x = 0; x < Width; ++x)
@@ -181,8 +188,10 @@ namespace Bomberman
                     Debug.WriteLine("Reverse");
                     modifiers[x, y] = ReverseMovement.Instance;
                 }
+                
 
             }
+            explosions.Add(new Point((int)x, (int)y));
         }
 
 

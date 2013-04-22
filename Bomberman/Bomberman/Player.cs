@@ -456,7 +456,21 @@ namespace Bomberman
                 if (MovementMode == MODE_MOVEMENT_THROW) {
                     Speed /= 4;
                 }
-                goInDirection(Direction);
+                foreach( var explosion in maze.Explosions ){
+                    if (explosion.X == Position.X && explosion.Y == Position.Y) {
+                        Alive = false;
+                    }
+                }
+                if(Alive)
+                    goInDirection(Direction);
+                foreach (var explosion in maze.Explosions)
+                {
+                    if (explosion.X == Position.X && explosion.Y == Position.Y)
+                    {
+                        Alive = false;
+                    }
+                }
+                maze.clearExplosions();
                 if (maze.Modifier[(uint)Position.X, (uint)Position.Y] != null) { 
                     Modifier m = maze.Modifier[(uint)Position.X, (uint)Position.Y];
                     maze.destroyModifier((uint)Position.X, (uint)Position.Y);
