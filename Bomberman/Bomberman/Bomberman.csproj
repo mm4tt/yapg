@@ -74,6 +74,7 @@
     <Compile Include="Modifiers\EmptyModifier.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Empty.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Modifiers\ExtraBomb.cs" />
     <Compile Include="GameObject.cs" />

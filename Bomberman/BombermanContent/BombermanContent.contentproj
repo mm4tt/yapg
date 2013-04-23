@@ -49,22 +49,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="blank.png">
-      <Name>blank</Name>
+    <Compile Include="ghost.png">
+      <Name>ghost</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="menufont.spritefont">
-      <Name>menufont</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="background.png">
-      <Name>background</Name>
+    <Compile Include="ghost1.png">
+      <Name>ghost1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

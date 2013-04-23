@@ -70,8 +70,16 @@ namespace Bomberman
 
         void GameDeactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)
         {
+
             // Serialize the screen manager when the game deactivated
             screenManager.Deactivate();
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            //spriteBatch = new SpriteBatch(GraphicsDevice);
+            // TODO: use this.Content to load your game content here
+            Bomb.Load(this.Content);
+            Enemy.Load(this.Content);
+            //engine.SetSpriteBatch(spriteBatch);
         }
 
         private void AddInitialScreens()

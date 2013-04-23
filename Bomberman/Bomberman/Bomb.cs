@@ -12,13 +12,19 @@ namespace Bomberman
     class Explosion : GameObject
     {
         static Texture2D tex;
-        
+        static IList<Enemy> e;
+
+        public static void Initialize(IList<Enemy> en)
+        {
+            e = en;
+        }
+
         public static void Load(ContentManager content)
         {
             tex = content.Load<Texture2D>("explosion");
         }
 
-        int x, y;
+        Maze m;
         /*
         private void Destroy(int x, int y, Maze m)
         {
@@ -34,31 +40,52 @@ namespace Bomberman
             }
         }
          */
+        private void Destroy(int x, int y)
+        {
+            foreach (Enemy en in e)
+            {
+                if (collide(en.Position.X * MazeBlock.width, en.Position.Y * MazeBlock.height, x, y))
+                    e.Remove(en);
+            }
+        }
 
         public Explosion(int x, int y, Maze m)
         {
             this.x = x;
             this.y = y;
+            this.m = m;
             int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height/2;
 
             m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height));
-            m.Destroy((uint)(cx / MazeBlock.width)+1, (uint)(cy / MazeBlock.height));
-            m.Destroy((uint)(cx / MazeBlock.width)-1, (uint)(cy / MazeBlock.height));
-            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)+1);
-            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)-1);
+            Destroy(x, y);
+            m.Destroy((uint)(cx / MazeBlock.width) + 1, (uint)(cy / MazeBlock.height));
+            Destroy(x + 1, y);
+            m.Destroy((uint)(cx / MazeBlock.width) - 1, (uint)(cy / MazeBlock.height));
+            Destroy(x - 1, y);
+            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) + 1);
+            Destroy(x, y + 1);
+            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) - 1);
+            Destroy(x, y - 1);
         }
 
         public override void Update(GameTime gt)
         {
         }
 
+        private void DrawAt(int x, int y)
+        {
+            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
+            if (m.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
+                spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
+        }
+
         public override void Draw()
         {
-            spriteBatch.Draw(tex, new Vector2(x, y-32), Color.White);
-            spriteBatch.Draw(tex, new Vector2(x - 32, y), Color.White);
-            spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
-            spriteBatch.Draw(tex, new Vector2(x + 32, y), Color.White);
-            spriteBatch.Draw(tex, new Vector2(x, y + 32), Color.White);
+            DrawAt(x, y - 32);
+            DrawAt(x - 32, y);
+            DrawAt(x, y);
+            DrawAt(x + 32, y);
+            DrawAt(x, y + 32);
         }
     }
 
@@ -68,9 +95,10 @@ namespace Bomberman
         static Maze maze;
         enum State {Active, Exploding, Dead}
 
-        public static void setMaze(Maze m)
+        public static void Initialize(Maze m, IList<Enemy> engine)
         {
             maze = m;
+            Explosion.Initialize(engine);
         }
 
         public static void Load(ContentManager content)
@@ -86,6 +114,10 @@ namespace Bomberman
         {
             public BombTicker(float p) : base(p) {}
 
+            public int GetRemaining()
+            {
+                return remaining;
+            }
         }
 
         int x, y;
@@ -134,6 +166,26 @@ namespace Bomberman
             this.y = y;
             timer = new BombTicker(1.1f);
             state = State.Active;
+        }
+
+        public Bomb(int x, int y, float elapsed)
+        {
+            this.x = x;
+            this.y = y;
+            i = (int)(elapsed / 1.2f)*2;
+            if (elapsed % 1.2f > 1.1f)
+            {
+                ++i;
+                timer = new BombTicker((elapsed % 1.2f)-1.1f);
+            }else
+                timer = new BombTicker(elapsed % 1.2f);
+
+            state = State.Active;
+        }
+
+        public float ElapsedTime()
+        {
+            return (i / 2) * 1.2f + (i%2)*1.1f + (float)timer.GetRemaining()/1000;
         }
 
         public override void Update(GameTime gt)

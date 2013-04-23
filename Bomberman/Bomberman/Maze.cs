@@ -194,6 +194,16 @@ namespace Bomberman
             explosions.Add(new Point((int)x, (int)y));
         }
 
+        public bool isPassable(uint x, uint y)
+        {
+            return (blocks[x, y] is Empty);
+        }
+
+        public bool isSolid(uint x, uint y)
+        {
+            return (blocks[x, y] is Empty) || (blocks[x, y] is Obstacle);
+        }
+
 
         public ArrayWrapper<MazeBlock> Block
         {
