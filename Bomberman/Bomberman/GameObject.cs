@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace Bomberman
 {
@@ -22,12 +23,12 @@ namespace Bomberman
             //int ax1 = objectA.x, ay1 = objectA.y, bx1 = objectB.x, by1 = objectB.y;
             //int ax2 = ax1 + MazeBlock.width, ay2 = ay1 + MazeBlock.height, bx2 = bx1 + MazeBlock.width, by2 = by1 + MazeBlock.height;
             //return ax1 < bx2 && ax2 > bx1 && ay1 < by2 && ay2 > by1;
-            return Math.Abs((objectA.x - objectB.x) + (objectA.y - objectB.y)) < MazeBlock.width;
+            return Math.Abs(objectA.x - objectB.x) + Math.Abs(objectA.y - objectB.y) < MazeBlock.width;
         }
 
         public static bool collide(int ax, int ay, int bx, int by)
         {
-            return Math.Abs((ax - bx) + (ay - by)) < MazeBlock.width;
+            return Math.Abs(ax - bx) + Math.Abs(ay - by) < MazeBlock.width;
         }
 
         public static Point add(Point p1, Point p2)

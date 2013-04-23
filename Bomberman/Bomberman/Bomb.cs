@@ -82,11 +82,11 @@ namespace Bomberman
 
         public override void Draw()
         {
-            DrawAt(x, y - 32);
-            DrawAt(x - 32, y);
+            DrawAt(x, y - MazeBlock.height);
+            DrawAt(x - MazeBlock.width, y);
             DrawAt(x, y);
-            DrawAt(x + 32, y);
-            DrawAt(x, y + 32);
+            DrawAt(x + MazeBlock.width, y);
+            DrawAt(x, y + MazeBlock.height);
         }
     }
 

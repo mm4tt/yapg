@@ -481,8 +481,8 @@ namespace Bomberman
 
 
 
-            //x = position.X * (int)width;
-            //y = position.Y * (int)height;
+            x = position.X * (int)width;
+            y = position.Y * (int)height;
 
         }
         #endregion

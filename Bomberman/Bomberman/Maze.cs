@@ -161,13 +161,14 @@ namespace Bomberman
             }
         }
 
+        static Random random = new Random(DateTime.Now.Millisecond);
+
         public void Destroy(uint x, uint y)
         {
             modifiers[x, y] = null;
             if (blocks[x, y] is Obstacle)
             {
                 blocks[x, y] = Empty.Instance;
-                Random random = new Random(DateTime.Now.Millisecond);
                 int i = random.Next(100);
                 if (i < 10)
                 {

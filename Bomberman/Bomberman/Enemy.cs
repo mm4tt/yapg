@@ -104,6 +104,8 @@ namespace Bomberman
             }
             return new Point(0,0);
         found:
+            if (t.parent == null)
+                return new Point(0, 0);
             while (t.parent.parent != null)
                 t = t.parent;
             return new Point(t.p.X - t.parent.p.X, t.p.Y - t.parent.p.Y);
@@ -143,7 +145,7 @@ namespace Bomberman
                 //TODO: Game Over
                 player.Alive = false;
             }
-            else
+            else if(player.Alive)
             {
                 if (offset > 0.0f)
                 {

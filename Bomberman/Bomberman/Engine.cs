@@ -50,7 +50,7 @@ namespace Bomberman
             //bombs.Add(new Bomb(100, 100, 0.0f));
             //bombs.Add(new Bomb(120, 200, 2.0f));
             //bombs.Add(new Bomb(180, 140, 4.0f));
-            //enemies.Add(new Enemy(100, 100));
+            //enemies.Add(new Enemy(player.Position.X * MazeBlock.width, player.Position.Y * MazeBlock.height+40));
             enemies.Add(new Enemy());
             enemies.Add(new Enemy());
             enemies.Add(new Enemy());
