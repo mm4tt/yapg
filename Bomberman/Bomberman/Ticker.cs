@@ -8,7 +8,7 @@ namespace Bomberman
 {
     abstract public class Ticker
     {
-        int remaining = 0;
+        protected int remaining = 0;
 
         public Ticker(float length)
         {

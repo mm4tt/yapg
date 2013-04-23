@@ -69,6 +69,7 @@
     <Compile Include="Chest.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Empty.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ExtraBomb.cs" />
     <Compile Include="GameObject.cs" />

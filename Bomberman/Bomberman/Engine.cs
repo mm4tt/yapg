@@ -20,7 +20,11 @@ namespace Bomberman
         }
 
         private IList<Bomb> bombs = new List<Bomb>();
-
+        private IList<Enemy> enemies = new List<Enemy>();
+        public IList<Enemy> @Enemies
+        {
+            get { return enemies; }
+        }
 
         public Engine()
         {
@@ -29,15 +33,22 @@ namespace Bomberman
             TouchPanel.EnabledGestures = GestureType.Hold;
             TouchPanel.EnabledGestures = GestureType.Tap;
             TouchPanel.EnabledGestures = GestureType.DoubleTap;
-            player = new Player( maze, bombs );
-            //bombs.Add(new Bomb(100, 100));
-            //bombs.Add(new Bomb(120, 200));
-            //bombs.Add(new Bomb(180, 140));
+            player = new Player(maze, bombs);
+            Enemy.Initialize(maze, player);
+            Bomb.Initialize(maze, Enemies);
+            //bombs.Add(new Bomb(100, 100, 0.0f));
+            //bombs.Add(new Bomb(120, 200, 2.0f));
+            //bombs.Add(new Bomb(180, 140, 4.0f));
+            //enemies.Add(new Enemy(100, 100));
+            //enemies.Add(new Enemy());
+            //enemies.Add(new Enemy());
+            //enemies.Add(new Enemy());
+            //enemies.Add(new Enemy());
+            //enemies.Add(new Enemy());
         }
 
         public void Initialize()
         {
-            Bomb.setMaze(maze);
         }
 
         public void Draw()
@@ -46,6 +57,8 @@ namespace Bomberman
             player.Draw();
             foreach (Bomb b in bombs)
                 b.Draw();
+            foreach (Enemy e in enemies)
+                e.Draw();
         }
 
         public void Update(GameTime gameTime)
@@ -53,6 +66,8 @@ namespace Bomberman
             player.Update( gameTime);
             foreach (Bomb b in bombs)
                 b.Update(gameTime);
+            foreach (Enemy e in enemies)
+                e.Update(gameTime);
         }
 
         internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)

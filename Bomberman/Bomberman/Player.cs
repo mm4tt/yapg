@@ -216,6 +216,8 @@ namespace Bomberman
                     // DrawAlone( Position.X, Position.Y );
                 } 
             }
+            x = position.X * (int)width;
+            y = position.Y * (int)height;
         }
         void DrawAlone( int x, int y ) {
             spriteBatch.Begin();
