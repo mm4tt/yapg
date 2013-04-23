@@ -24,7 +24,6 @@ namespace Bomberman.Screens
         Random random = new Random();
         float pauseAlpha;
         InputAction pauseAction;
-        Engine engine = new Engine();
 
 
         #endregion
@@ -47,16 +46,29 @@ namespace Bomberman.Screens
                 new Keys[] { Keys.Escape },
                 true);
 
-            EnabledGestures = GestureType.DoubleTap | GestureType.Flick | GestureType.Tap;
-
+            EnabledGestures = GestureType.DoubleTap | GestureType.Flick | GestureType.Tap | GestureType.Hold;
+ 
+            
         }
 
+        //prowizorka, zeby gra sie nie inicjalizowala za kazdym razem, DO POPRAWIENIA
+        static bool initialized = false;
         void InitializeGame()
         {
-            Bomb.Load(this.content);
-            Enemy.Load(this.content);
-            engine.SetSpriteBatch(ScreenManager.SpriteBatch);
-            
+            if (initialized == false)
+            {
+
+
+                Engine.Instance.AddPlayer(new Player());
+
+
+                Engine.Instance.AddObject(new Enemy());
+                Engine.Instance.AddObject(new Enemy());
+                Engine.Instance.AddObject(new Enemy());
+                Engine.Instance.AddObject(new Enemy());
+                Engine.Instance.AddObject(new Enemy());
+                initialized = true;
+            }
         }
         /// <summary>
         /// Load graphics content for the game.
@@ -71,6 +83,11 @@ namespace Bomberman.Screens
 
                 InitializeGame();
 
+                //TO DO WYJEBANIA, SPRITEBATCH POWINIEN BYC PRZEKAZYWANY W DRAW
+                //TEKSTURY POWINNY ZAWSZE LADOWAC SIE Z CONTENT MANAGERA, INACZEJ MOGA BYC JUZ USUNIETE
+                Engine.Instance.SetSpriteBatch(ScreenManager.SpriteBatch);
+                Bomb.Load(this.content);
+                Enemy.Load(this.content);
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -86,7 +103,8 @@ namespace Bomberman.Screens
 
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("PlayerPosition"))
             {
-                engine = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
+                //TODO
+                //Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
             }
 
         }
@@ -94,7 +112,7 @@ namespace Bomberman.Screens
 
         public override void Deactivate()
         {
-            Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"] = engine;
+            Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"] = Engine.Instance;
             base.Deactivate();
         }
 
@@ -132,7 +150,7 @@ namespace Bomberman.Screens
 
             if (IsActive)
             {
-                engine.Update(gameTime);
+                Engine.Instance.Update(gameTime);
             }
         }
 
@@ -173,18 +191,18 @@ namespace Bomberman.Screens
                 foreach (var gesture in input.Gestures)
                     if (gesture.GestureType == GestureType.Flick)
                     {
-                        
-                        engine.Player.move(gesture.Delta);
+
+                        Engine.Instance.Player.move(gesture.Delta);
                     }
                     else if (gesture.GestureType == GestureType.DoubleTap)
                     {
-                     
-                        engine.Player.setBomb();
+
+                        Engine.Instance.Player.setBomb();
                     }else
                     if (gesture.GestureType == GestureType.Tap)
                     {
-                        
-                        engine.Player.stop();
+
+                        Engine.Instance.Player.stop();
                     }
                         
             }
@@ -202,7 +220,7 @@ namespace Bomberman.Screens
 
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            //engine.SetSpriteBatch( spriteBatch );
+
             spriteBatch.Begin();
 
             //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
@@ -211,7 +229,7 @@ namespace Bomberman.Screens
             //  enemyPosition, Color.DarkRed);
 
 
-            engine.Draw();
+            Engine.Instance.Draw();
             spriteBatch.End();
 
 

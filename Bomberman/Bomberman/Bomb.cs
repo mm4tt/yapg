@@ -12,19 +12,12 @@ namespace Bomberman
     class Explosion : GameObject
     {
         static Texture2D tex;
-        static IList<Enemy> e;
-
-        public static void Initialize(IList<Enemy> en)
-        {
-            e = en;
-        }
 
         public static void Load(ContentManager content)
         {
             tex = content.Load<Texture2D>("explosion");
         }
 
-        Maze m;
         /*
         private void Destroy(int x, int y, Maze m)
         {
@@ -42,30 +35,28 @@ namespace Bomberman
          */
         private void Destroy(int x, int y)
         {
-            for (int i = 0; i < e.Count(); i++ )
+            foreach( var en in Engine.Instance.Enemies )
             {
-                Enemy en = e[i];
                 if (collide(en.Position.X * MazeBlock.width, en.Position.Y * MazeBlock.height, x, y))
-                    e.RemoveAt(i);
+                    en.IsDead = true;
             }
         }
 
-        public Explosion(int x, int y, Maze m)
+        public Explosion(int x, int y)
         {
             this.x = x;
             this.y = y;
-            this.m = m;
             int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height/2;
 
-            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height));
             Destroy(x, y);
-            m.Destroy((uint)(cx / MazeBlock.width) + 1, (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) + 1, (uint)(cy / MazeBlock.height));
             Destroy(x + 1, y);
-            m.Destroy((uint)(cx / MazeBlock.width) - 1, (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) - 1, (uint)(cy / MazeBlock.height));
             Destroy(x - 1, y);
-            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) + 1);
+            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) + 1);
             Destroy(x, y + 1);
-            m.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) - 1);
+            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) - 1);
             Destroy(x, y - 1);
         }
 
@@ -76,7 +67,7 @@ namespace Bomberman
         private void DrawAt(int x, int y)
         {
             int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
-            if (m.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
+            if (Engine.Instance.Maze.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
                 spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
         }
 
@@ -93,14 +84,8 @@ namespace Bomberman
     public class Bomb : GameObject
     {
         static Texture2D[] tex;
-        static Maze maze;
         enum State {Active, Exploding, Dead}
 
-        public static void Initialize(Maze m, IList<Enemy> engine)
-        {
-            maze = m;
-            Explosion.Initialize(engine);
-        }
 
         public static void Load(ContentManager content)
         {
@@ -199,13 +184,14 @@ namespace Bomberman
                     {
                         timer = new BombTicker(1);
                         state = State.Exploding;
-                        explosion = new Explosion(x, y, maze);
+                        explosion = new Explosion(x, y);
                     }
                     else timer = new BombTicker(0.1f + (i + 1) % 2);
                 }
                 else
                 {
                     state = State.Dead;
+                    this.IsDead = true;
                 }
             }
         }

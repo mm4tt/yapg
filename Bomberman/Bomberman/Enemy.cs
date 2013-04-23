@@ -12,8 +12,6 @@ namespace Bomberman
     public class Enemy : GameObject
     {
         static Texture2D[] tex;
-        static Maze maze;
-        static Player player;
         static Random random = new Random(DateTime.Now.Millisecond);
         const float speed = 0.003f ; // prêdkoœæ w polach/ms
         enum State { Active, Dead };
@@ -33,18 +31,13 @@ namespace Bomberman
             get { return position; }
         }
 
-        public static void Initialize(Maze m, Player p)
-        {
-            maze = m;
-            player = p;
-        }
 
         public Enemy()
         {
             Point p;
             do
                 p = new Point(random.Next((int)Maze.Width-1), random.Next((int)Maze.Height-1));
-            while (Math.Max(Math.Abs(p.X - player.Position.X), Math.Abs(p.Y - player.Position.Y)) < 4 || !maze.isPassable((uint)p.X, (uint)p.Y));
+            while (Math.Max(Math.Abs(p.X - Engine.Instance.Player.Position.X), Math.Abs(p.Y - Engine.Instance.Player.Position.Y)) < 4 || !Engine.Instance.Maze.isPassable((uint)p.X, (uint)p.Y));
             position = p;
             x = p.X * MazeBlock.width;
             y = p.Y * MazeBlock.height;
@@ -93,9 +86,9 @@ namespace Bomberman
                 for (int i = 0; i < 4; i++)
                 {
                     r = add(p, dirs[i]);
-                    if (r.X == player.Position.X && r.Y == player.Position.Y)
+                    if (r.X == Engine.Instance.Player.Position.X && r.Y == Engine.Instance.Player.Position.Y)
                         goto found;
-                    if (maze.isPassable((uint)r.X, (uint)r.Y) && Math.Abs(r.X - position.X) < 6 && Math.Abs(r.Y - position.Y) < 6 && !color[r.X,r.Y])
+                    if (Engine.Instance.Maze.isPassable((uint)r.X, (uint)r.Y) && Math.Abs(r.X - position.X) < 6 && Math.Abs(r.Y - position.Y) < 6 && !color[r.X, r.Y])
                     {
                         q.Enqueue(new QNode(r, t));
                         color[r.X, r.Y] = true;
@@ -114,14 +107,14 @@ namespace Bomberman
         protected void step()
         {
             Point p = add(position, dirs[(int)faced]);
-            if ((!maze.isPassable((uint)p.X, (uint)p.Y)) || random.Next(8) == 0)
+            if ((!Engine.Instance.Maze.isPassable((uint)p.X, (uint)p.Y)) || random.Next(8) == 0)
             {
                 for (int it = (int)faced + (((int)faced + 1) % 2) + 1; it < (int)faced + (((int)faced + 1) % 2) + 5; it++)
                 {
                     //if (!maze.isPassable((uint)p.X, (uint)p.Y) || it != (int)faced / 2 || it == (int)faced)
                     //{
                         p = add(position, dirs[it % 4]);
-                        if (maze.isPassable((uint)p.X, (uint)p.Y))
+                        if (Engine.Instance.Maze.isPassable((uint)p.X, (uint)p.Y))
                         {
                             faced = (Faced)(it % 4);
                             offset = 1.0f;
@@ -140,12 +133,12 @@ namespace Bomberman
 
         public override void Update(GameTime gt)
         {
-            if (collide(this, player))
+            if (collide(this, Engine.Instance.Player))
             {
                 //TODO: Game Over
-                player.Alive = false;
+                Engine.Instance.Player.Alive = false;
             }
-            else if(player.Alive)
+            else if (Engine.Instance.Player.Alive)
             {
                 if (offset > 0.0f)
                 {
@@ -172,7 +165,7 @@ namespace Bomberman
                 }
                 else
                 {
-                    if (Math.Max(Math.Abs(this.position.X - player.Position.X), Math.Abs(this.position.Y - player.Position.Y)) < 9)
+                    if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
                     {
                         Point p = findPath();
                         if (p.Y > 0)

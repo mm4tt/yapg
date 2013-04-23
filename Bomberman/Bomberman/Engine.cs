@@ -9,6 +9,22 @@ namespace Bomberman
 {
     class Engine
     {
+        #region Singleton
+        private static Engine instance = new Engine();
+        private Engine()
+        {
+            Maze.GenerateRandom(4, 50);
+        }
+        public static Engine Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+        #endregion
+
+
         private Maze maze = new Maze();
         public Maze @Maze
         {
@@ -19,66 +35,57 @@ namespace Bomberman
             get { return player; }
         }
 
-        private IList<Bomb> bombs = new List<Bomb>();
-
-        private IList<Enemy> enemies = new List<Enemy>();
-        public IList<Enemy> @Enemies
+        public void AddPlayer(Player p)
         {
-            get { return enemies; }
+            AddObject(player = p);
         }
 
 
-        public Engine()
+        private List<GameObject> gameObjects = new List<GameObject>();
+        //TAK DODAJEMY COKOLWIEK!!! Np bombe
+        public void AddObject( GameObject go )
         {
-            Maze.GenerateRandom(4, 50);
-
-      
-            
-            //TouchPanel.EnabledGestures = GestureType.Tap;
-            player = new Player( Maze, bombs );
-            //bombs.Add(new Bomb(100, 100));
-            //bombs.Add(new Bomb(120, 200));
-            //bombs.Add(new Bomb(180, 140));
-
-            TouchPanel.EnabledGestures = GestureType.None;
-            TouchPanel.EnabledGestures = GestureType.Hold;
-            TouchPanel.EnabledGestures = GestureType.Tap;
-            TouchPanel.EnabledGestures = GestureType.DoubleTap;
-            player = new Player(maze, bombs);
-            Enemy.Initialize(maze, player);
-            Bomb.Initialize(maze, Enemies);
-            //bombs.Add(new Bomb(100, 100, 0.0f));
-            //bombs.Add(new Bomb(120, 200, 2.0f));
-            //bombs.Add(new Bomb(180, 140, 4.0f));
-            //enemies.Add(new Enemy(player.Position.X * MazeBlock.width, player.Position.Y * MazeBlock.height+40));
-            enemies.Add(new Enemy());
-            enemies.Add(new Enemy());
-            enemies.Add(new Enemy());
-            enemies.Add(new Enemy());
-            enemies.Add(new Enemy());
+            gameObjects.Add(go);
         }
 
-        public void Initialize()
+
+
+        public IEnumerable<Enemy> @Enemies
         {
+            get 
+            {
+                foreach (var o in gameObjects)
+                    if (o is Enemy)
+                        yield return (Enemy)o;
+            }
+        }
+        public IEnumerable<Bomb> @Bombs
+        {
+            get
+            {
+                foreach (var o in gameObjects)
+                    if (o is Bomb)
+                        yield return (Bomb)o;
+            }
         }
 
         public void Draw()
         {
-            maze.Draw();
-            player.Draw();
-            foreach (Bomb b in bombs)
-                b.Draw();
-            foreach (Enemy e in enemies)
-                e.Draw();
+            Maze.Draw();
+            foreach (var o in gameObjects)
+                o.Draw();
         }
 
         public void Update(GameTime gameTime)
         {
-            player.Update( gameTime);
-            foreach (Bomb b in bombs)
-                b.Update(gameTime);
-            foreach (Enemy e in enemies)
-                e.Update(gameTime);
+            int k=0;
+            for (int i = 0; i < gameObjects.Count; ++i)
+            {
+                gameObjects[i].Update(gameTime);
+                if (!gameObjects[i].IsDead)
+                    gameObjects[k++] = gameObjects[i];
+            }
+            gameObjects.RemoveRange(k, gameObjects.Count - k);
         }
 
         internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)

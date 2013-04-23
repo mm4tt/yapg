@@ -62,8 +62,6 @@ namespace Bomberman
         protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
         protected uint width;
         protected uint height;
-        private IList<Bomb> bombs;
-        private Maze maze;
         float speed = 0;
         int interval = 0;
         private int direction;
@@ -145,14 +143,12 @@ namespace Bomberman
         }
         #endregion
         #region INITIALIZATION
-        public Player(Maze maze, IList<Bomb> bombs)
+        public Player()
         {
             effects = new List<Effect>();
-            this.maze = maze;
             width = 20;
             height = 20;
             FindBeginPosition();
-            this.bombs = bombs;
             Speed = 1;
             direction = NONE_DIRECTION;
         }
@@ -187,7 +183,7 @@ namespace Bomberman
         private void countEmptyNeighborhood(int x, int y, ref List<Point> visited)
         {
 
-            if (maze.Block[(uint)x, (uint)y] is Empty)
+            if (Engine.Instance.Maze.Block[(uint)x, (uint)y] is Empty)
             {
 
                 visited.Add(new Point(x, y));
@@ -227,7 +223,7 @@ namespace Bomberman
             {
                 for (uint j = 0; j < Maze.Height; j++)
                 {
-                    if (maze.Block[i, j] is Empty)
+                    if (Engine.Instance.Maze.Block[i, j] is Empty)
                     {
                         List<Point> visited = new List<Point>();
                         countEmptyNeighborhood((int)i, (int)j, ref visited);
@@ -276,17 +272,12 @@ namespace Bomberman
         
         public void setBomb() {
             int count = 0;
-            for (int i = 0; i < bombs.Count(); i++) {
-               
-                if(bombs[i].isActive()){
-                    count++;
-                }
-
-            }
+            count = Engine.Instance.Bombs.Count(b => b.isActive());
+            
             if (count < BombsAvailable)
             {
                 Debug.WriteLine("setBomb");
-                bombs.Add(new Bomb(Position.X * (int)width, Position.Y * (int)height));
+                Engine.Instance.AddObject(new Bomb(Position.X * (int)width, Position.Y * (int)height));
             }
 
            
@@ -300,10 +291,11 @@ namespace Bomberman
             {
                 case UP:
                     {
-                        if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
+                        if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                         {
                             bool blocked = false;
-                            foreach( var bomb in bombs ){
+                            foreach (var bomb in Engine.Instance.Bombs )
+                            {
                                
                                 if ( (int)(bomb.Position.X /MazeBlock.width) == Position.X && (int)( bomb.Position.Y / MazeBlock.height ) == Position.Y + 1)
                                 {
@@ -319,10 +311,10 @@ namespace Bomberman
                     }
                 case RIGHT:
                     {
-                        if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
+                        if (Engine.Instance.Maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
                         {
                             bool blocked = false;
-                            foreach (var bomb in bombs)
+                            foreach (var bomb in Engine.Instance.Bombs)
                             {
                                 if ((int)(bomb.Position.X / MazeBlock.width) == Position.X + 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
                                 {
@@ -337,10 +329,10 @@ namespace Bomberman
                     }
                 case DOWN:
                     {
-                        if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
+                        if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
                         {
                             bool blocked = false;
-                            foreach (var bomb in bombs)
+                            foreach (var bomb in Engine.Instance.Bombs)
                             {
                                 if ((int)(bomb.Position.X / MazeBlock.width) == Position.X && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y - 1)
                                 {
@@ -355,10 +347,10 @@ namespace Bomberman
                     }
                 case LEFT:
                     {
-                        if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
+                        if (Engine.Instance.Maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
                         {
                             bool blocked = false;
-                            foreach (var bomb in bombs)
+                            foreach (var bomb in Engine.Instance.Bombs)
                             {
                                 if ((int)(bomb.Position.X / MazeBlock.width) == Position.X - 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
                                 {
@@ -384,7 +376,8 @@ namespace Bomberman
             {
                 if (delta.X < 0)
                 {
-                    if (maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty) {
+                    if (Engine.Instance.Maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
+                    {
                         direction = LEFT;
                         range = absX/width;
                     }
@@ -392,7 +385,7 @@ namespace Bomberman
                 }
                 if (delta.X > 0)
                 {
-                    if (maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
+                    if (Engine.Instance.Maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
                     {
                         direction = RIGHT;
                         range = absX/width;
@@ -403,7 +396,7 @@ namespace Bomberman
             {
                 if (delta.Y > 0)
                 {
-                    if (maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
+                    if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                     {
                         range = absY/height;
                         direction = UP;
@@ -411,7 +404,7 @@ namespace Bomberman
                 }
                 if (delta.Y < 0)
                 {
-                    if (maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
+                    if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
                     {
                         direction = DOWN;
                         range = absY/height;
@@ -429,15 +422,7 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
-            for (int i = 0; i < bombs.Count(); i++)
-            {
-                if (bombs[i].isDead())
-                {
-                    bombs.RemoveAt(i);
-                }
 
-
-            }
             if (interval > INTERVAL_ACTION / Speed && Alive)
             {
                 interval = 0;
@@ -456,24 +441,26 @@ namespace Bomberman
                 if (MovementMode == MODE_MOVEMENT_THROW) {
                     Speed /= 4;
                 }
-                foreach( var explosion in maze.Explosions ){
+                foreach (var explosion in Engine.Instance.Maze.Explosions)
+                {
                     if (explosion.X == Position.X && explosion.Y == Position.Y) {
                         Alive = false;
                     }
                 }
                 if(Alive)
                     goInDirection(Direction);
-                foreach (var explosion in maze.Explosions)
+                foreach (var explosion in Engine.Instance.Maze.Explosions)
                 {
                     if (explosion.X == Position.X && explosion.Y == Position.Y)
                     {
                         Alive = false;
                     }
                 }
-                maze.clearExplosions();
-                if (maze.Modifier[(uint)Position.X, (uint)Position.Y] != null) { 
-                    Modifier m = maze.Modifier[(uint)Position.X, (uint)Position.Y];
-                    maze.destroyModifier((uint)Position.X, (uint)Position.Y);
+                Engine.Instance.Maze.clearExplosions();
+                if (Engine.Instance.Maze.Modifier[(uint)Position.X, (uint)Position.Y] != null)
+                {
+                    Modifier m = Engine.Instance.Maze.Modifier[(uint)Position.X, (uint)Position.Y];
+                    Engine.Instance.Maze.destroyModifier((uint)Position.X, (uint)Position.Y);
                     addModifier( m );
                 }
                 Touched = false;

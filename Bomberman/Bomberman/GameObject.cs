@@ -36,11 +36,20 @@ namespace Bomberman
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
 
+
+        public bool IsDead { get; set; }
+
+
         protected int x, y;
 
         abstract public void Update(GameTime gt);
 
         abstract public void Draw();
+
+        protected GameObject()
+        {
+            IsDead = false;
+        }
 
     }
 }
