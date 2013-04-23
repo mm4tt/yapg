@@ -51,11 +51,11 @@ namespace Bomberman
             //bombs.Add(new Bomb(120, 200, 2.0f));
             //bombs.Add(new Bomb(180, 140, 4.0f));
             //enemies.Add(new Enemy(100, 100));
-            //enemies.Add(new Enemy());
-            //enemies.Add(new Enemy());
-            //enemies.Add(new Enemy());
-            //enemies.Add(new Enemy());
-            //enemies.Add(new Enemy());
+            enemies.Add(new Enemy());
+            enemies.Add(new Enemy());
+            enemies.Add(new Enemy());
+            enemies.Add(new Enemy());
+            enemies.Add(new Enemy());
         }
 
         public void Initialize()

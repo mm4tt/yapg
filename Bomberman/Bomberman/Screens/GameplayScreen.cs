@@ -54,6 +54,7 @@ namespace Bomberman.Screens
         void InitializeGame()
         {
             Bomb.Load(this.content);
+            Enemy.Load(this.content);
             engine.SetSpriteBatch(ScreenManager.SpriteBatch);
             
         }
@@ -201,7 +202,7 @@ namespace Bomberman.Screens
 
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-
+            //engine.SetSpriteBatch( spriteBatch );
             spriteBatch.Begin();
 
             //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);

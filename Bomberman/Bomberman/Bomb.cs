@@ -42,10 +42,11 @@ namespace Bomberman
          */
         private void Destroy(int x, int y)
         {
-            foreach (Enemy en in e)
+            for (int i = 0; i < e.Count(); i++ )
             {
+                Enemy en = e[i];
                 if (collide(en.Position.X * MazeBlock.width, en.Position.Y * MazeBlock.height, x, y))
-                    e.Remove(en);
+                    e.RemoveAt(i);
             }
         }
 

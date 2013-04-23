@@ -141,6 +141,7 @@ namespace Bomberman
             if (collide(this, player))
             {
                 //TODO: Game Over
+                player.Alive = false;
             }
             else
             {
