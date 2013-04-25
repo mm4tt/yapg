@@ -21,18 +21,9 @@ namespace Bomberman
         }
         #endregion
 
-      
-
-        public override void Draw(uint x,uint y)
+        protected override void LoadGraphic(GraphicsDevice graphicsDevice)
         {
-            base.Draw(x, y);
-            Console.Write(".");
-            
-        }
-
-        protected override void LoadGraphic()
-        {
-            SetOneColorTexture(Color.Blue);
+            SetOneColorTexture(Color.Blue, graphicsDevice);
         }
     }
 }

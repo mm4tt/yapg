@@ -59,7 +59,6 @@ namespace Bomberman
         private Point position;
         private Point lastPosition ;
         private int movProgress = 0;
-        protected Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch;
         protected uint width;
         protected uint height;
         float speed = 0;
@@ -113,7 +112,7 @@ namespace Bomberman
             get { return speed; }
             set
             {
-                if (value <= 0.001 )
+                if (value <= 0.001)
                 {
                     speed = 1;
                 }
@@ -121,15 +120,6 @@ namespace Bomberman
                 {
                     speed = value;
                 }
-            }
-        }
-        public Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch
-        {
-            get { return spriteBatch; }
-            set
-            {
-                spriteBatch = value;
-                LoadGraphic();
             }
         }
         public Point Position
@@ -153,7 +143,7 @@ namespace Bomberman
             direction = NONE_DIRECTION;
         }
 
-        public void LoadGraphic()
+        public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
             texture = new Texture2D(spriteBatch.GraphicsDevice, (int)width, (int)height);
             Color[] colors = new Color[width * height];
@@ -165,18 +155,19 @@ namespace Bomberman
 
         #endregion
         #region DRAW
-        public override void Draw()
+        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            Draw(Position.X, Position.Y);
+            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+                LoadGraphic(spriteBatch, contentManager);
+            Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
         }
-        public void Draw(uint x, uint y)
-        {
-            Draw((int)x, (int)y);
-        }
-        void Draw(int x, int y)
+      
+        void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
-            spriteBatch.Draw(texture, ComputePosition(x, y), Color.Black);
+            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+                 LoadGraphic(spriteBatch, contentManager);
+            spriteBatch.Draw(texture, ComputePosition((int)x, (int)y), Color.Black);
         }
         #endregion
         #region HELPERS

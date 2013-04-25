@@ -7,14 +7,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Bomberman.Modifiers;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Content;
 namespace Bomberman
 {
-    public class Maze
+    public class Maze 
+
     {
         
         public const uint Height=24;
-        public const uint Width=40;
-        private List<Point> explosions = new List<Point>();
+        public const uint Width=40; 
+        private List<Point> explosions = new List<Point>(); // ? tutaj czy nie lepie w konstrukotrze ?
         public void clearExplosions() {
             explosions.Clear();
         }
@@ -145,17 +147,15 @@ namespace Bomberman
             }
             return holes;
         }
-
-
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             for (uint y = 0; y < Height; ++y)
             {
                 for (uint x = 0; x < Width; ++x)
                 {
-                    blocks[x, y].Draw(x, y);
+                    blocks[x, y].Draw(x, y,spriteBatch,contentManager);
                     if (modifiers[x, y] != null)
-                        Chest.Instance.Draw(x, y);
+                        Chest.Instance.Draw(x, y,spriteBatch,contentManager);
                 }
                 Console.WriteLine();
             }
@@ -231,14 +231,6 @@ namespace Bomberman
         private MazeBlock[,] blocks = new MazeBlock[Width, Height];
         private Modifier[,] modifiers = new Modifier[Width, Height];
 
-        public void SetSpriteBatch(SpriteBatch spriteBatch)
-        {
-            foreach (MazeBlock block in blocks)
-            {
-                block.SpriteBatch = spriteBatch;
-            }
-            Chest.Instance.SpriteBatch = spriteBatch;
-        }
     }
 
     public class ArrayWrapper<T>

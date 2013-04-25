@@ -11,28 +11,14 @@ namespace Bomberman
 {
     class Explosion : GameObject
     {
-        static Texture2D tex;
+        //static Texture2D tex;
+        private Texture2D tex;
 
-        public static void Load(ContentManager content)
+        // dla explozji statyczne pola nie byly by takie zle
+        public void Load(ContentManager content)
         {
             tex = content.Load<Texture2D>("explosion");
         }
-
-        /*
-        private void Destroy(int x, int y, Maze m)
-        {
-            if (m.getBlock(x, y) == MazeBlock.Obstacle)
-            {
-                m.setBlock(x, y, MazeBlock.Empty);
-                Random random = new Random(DateTime.Now.Millisecond);
-                int i;
-                if ((i=random.Next(100)) < 30)
-                {
-                    Modifier mod = new Modifier(x-16, y-16, (ModyfierType)(i%2));
-                }
-            }
-        }
-         */
         private void Destroy(int x, int y)
         {
             foreach( var en in Engine.Instance.Enemies )
@@ -64,35 +50,37 @@ namespace Bomberman
         {
         }
 
-        private void DrawAt(int x, int y)
+        private void DrawAt(int x, int y, SpriteBatch spriteBatch)
         {
             int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
             if (Engine.Instance.Maze.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
                 spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
         }
 
-        public override void Draw()
+        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            DrawAt(x, y - MazeBlock.height);
-            DrawAt(x - MazeBlock.width, y);
-            DrawAt(x, y);
-            DrawAt(x + MazeBlock.width, y);
-            DrawAt(x, y + MazeBlock.height);
+            if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
+                Load(contentManager);
+            DrawAt(x, y - MazeBlock.height, spriteBatch);
+            DrawAt(x - MazeBlock.width, y,spriteBatch);
+            DrawAt(x, y,spriteBatch);
+            DrawAt(x + MazeBlock.width, y,spriteBatch);
+            DrawAt(x, y + MazeBlock.height,spriteBatch);
         }
     }
 
     public class Bomb : GameObject
     {
-        static Texture2D[] tex;
+        private  Texture2D[] tex;
         enum State {Active, Exploding, Dead}
 
 
-        public static void Load(ContentManager content)
+        public void Load(ContentManager content)
         {
             tex = new Texture2D[2];
             tex[0] = content.Load<Texture2D>("bomb");
             tex[1] = content.Load<Texture2D>("bomb1");
-            Explosion.Load(content);
+           // Explosion.Load(content);
         }
 
 
@@ -105,13 +93,12 @@ namespace Bomberman
                 return remaining;
             }
         }
-
-        int x, y;
         int i;
         BombTicker timer;
         State state;
         Explosion explosion;
         Point position = new Point(0,0);
+
         public Point Position {
             get {
                 position.X = x;
@@ -196,12 +183,14 @@ namespace Bomberman
             }
         }
 
-        public override void Draw()
+        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             if (state == State.Exploding)
-                explosion.Draw();
+                explosion.Draw(spriteBatch,contentManager);
             else if (state == State.Active)
             {
+                if (tex == null)
+                    Load(contentManager);
                 spriteBatch.Draw(tex[i % 2], new Vector2(x, y), Color.White);
             }
         }

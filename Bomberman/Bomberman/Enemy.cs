@@ -11,7 +11,7 @@ namespace Bomberman
 {
     public class Enemy : GameObject
     {
-        static Texture2D[] tex;
+        Texture2D[] tex;
         static Random random = new Random(DateTime.Now.Millisecond);
         const float speed = 0.003f ; // prêdkoœæ w polach/ms
         enum State { Active, Dead };
@@ -53,11 +53,11 @@ namespace Bomberman
             state = State.Active;
         }
 
-        public static void Load(ContentManager content)
+        public void Load(ContentManager content)
         {
             tex = new Texture2D[1];
             tex[0] = content.Load<Texture2D>("ghost");
-            Explosion.Load(content);
+            //Explosion.Load(content);
         }
 
         class QNode
@@ -189,10 +189,12 @@ namespace Bomberman
             }
         }
 
-        public override void Draw()
+        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             if (state == State.Active)
             {
+                if (tex == null)
+                    Load(contentManager);
                 spriteBatch.Draw(tex[0], new Vector2(x, y), Color.White);
             }
         }

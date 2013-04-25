@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework.Input.Touch;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 namespace Bomberman
 {
     class Engine
@@ -69,11 +71,11 @@ namespace Bomberman
             }
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            Maze.Draw();
+            Maze.Draw(spriteBatch,contentManager);
             foreach (var o in gameObjects)
-                o.Draw();
+                o.Draw(spriteBatch, contentManager);
         }
 
         public void Update(GameTime gameTime)
@@ -86,13 +88,6 @@ namespace Bomberman
                     gameObjects[k++] = gameObjects[i];
             }
             gameObjects.RemoveRange(k, gameObjects.Count - k);
-        }
-
-        internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
-        {
-            maze.SetSpriteBatch(spriteBatch);
-            player.SpriteBatch = spriteBatch;
-            GameObject.setSpriteBatch(spriteBatch);
         }
     }
 }

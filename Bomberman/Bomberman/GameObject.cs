@@ -6,18 +6,13 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Bomberman
 {
     public abstract class GameObject
     {
-        protected static SpriteBatch spriteBatch;
-
-        public static void setSpriteBatch(SpriteBatch sb)
-        {
-            spriteBatch = sb;
-        }
-
+       
         public static bool collide(GameObject objectA, GameObject objectB)
         {
             //int ax1 = objectA.x, ay1 = objectA.y, bx1 = objectB.x, by1 = objectB.y;
@@ -44,7 +39,7 @@ namespace Bomberman
 
         abstract public void Update(GameTime gt);
 
-        abstract public void Draw();
+        abstract public void Draw(SpriteBatch spriteBatch, ContentManager contentManager);
 
         protected GameObject()
         {

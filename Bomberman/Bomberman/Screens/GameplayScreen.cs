@@ -85,9 +85,7 @@ namespace Bomberman.Screens
 
                 //TO DO WYJEBANIA, SPRITEBATCH POWINIEN BYC PRZEKAZYWANY W DRAW
                 //TEKSTURY POWINNY ZAWSZE LADOWAC SIE Z CONTENT MANAGERA, INACZEJ MOGA BYC JUZ USUNIETE
-                Engine.Instance.SetSpriteBatch(ScreenManager.SpriteBatch);
-                Bomb.Load(this.content);
-                Enemy.Load(this.content);
+             
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -229,8 +227,12 @@ namespace Bomberman.Screens
             //  enemyPosition, Color.DarkRed);
 
 
-            Engine.Instance.Draw();
-            spriteBatch.End();
+            Engine.Instance.Draw(spriteBatch,content);
+           
+            
+                spriteBatch.End();
+            
+         
 
 
 
