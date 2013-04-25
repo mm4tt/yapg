@@ -193,7 +193,7 @@ namespace Bomberman
         {
             if (state == State.Active)
             {
-                if (tex == null)
+             //   if (tex == null)
                     Load(contentManager);
                 spriteBatch.Draw(tex[0], new Vector2(x, y), Color.White);
             }

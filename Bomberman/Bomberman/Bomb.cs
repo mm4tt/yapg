@@ -59,7 +59,7 @@ namespace Bomberman
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
+            //if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
                 Load(contentManager);
             DrawAt(x, y - MazeBlock.height, spriteBatch);
             DrawAt(x - MazeBlock.width, y,spriteBatch);
@@ -186,10 +186,13 @@ namespace Bomberman
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             if (state == State.Exploding)
-                explosion.Draw(spriteBatch,contentManager);
+            {
+                explosion.Load(contentManager);
+                explosion.Draw(spriteBatch, contentManager);
+            }
             else if (state == State.Active)
             {
-                if (tex == null)
+                //if (tex == null)
                     Load(contentManager);
                 spriteBatch.Draw(tex[i % 2], new Vector2(x, y), Color.White);
             }

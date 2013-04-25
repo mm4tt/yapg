@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Bomberman
@@ -21,7 +22,7 @@ namespace Bomberman
         }
         #endregion
 
-        protected override void LoadGraphic(GraphicsDevice graphicDevice)
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
             SetOneColorTexture(Color.Green, graphicDevice);
         }

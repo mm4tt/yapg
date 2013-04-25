@@ -65,10 +65,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
     <Compile Include="Chest.cs" />
+    <Compile Include="GameSaving\IGameSaver.cs" />
+    <Compile Include="GameSaving\XmlGameSaver.cs" />
     <Compile Include="Modifiers\ReverseMovement.cs" />
     <Compile Include="Modifiers\MovementThrowable.cs" />
     <Compile Include="Modifiers\EmptyModifier.cs" />

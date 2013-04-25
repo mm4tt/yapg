@@ -14,11 +14,11 @@ namespace Bomberman
 
         public virtual void Draw(uint x, uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
-                LoadGraphic(spriteBatch.GraphicsDevice);
+            //if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+                LoadGraphic(spriteBatch.GraphicsDevice,contentManager);
             spriteBatch.Draw(texture, ComputePosition(x, y), Color.White);
         }
-        protected abstract void LoadGraphic(GraphicsDevice graphicsDevice);
+        protected abstract void LoadGraphic(GraphicsDevice graphicsDevice, ContentManager contentManager);
 
         protected void SetOneColorTexture(Color chosenColor, GraphicsDevice graphicsDevice)
         {

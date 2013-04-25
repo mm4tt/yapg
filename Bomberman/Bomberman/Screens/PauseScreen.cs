@@ -23,6 +23,14 @@ namespace Bomberman.Screens
             Button exitButton = new Button("Exit");
             exitButton.Tapped += exitButton_Tapped;
             MenuButtons.Add(exitButton);
+
+            Button saveButton = new Button("Save");
+            saveButton.Tapped += saveButton_Tapped;
+        }
+
+        void saveButton_Tapped(object sender, EventArgs e)
+        {
+            
         }
 
         /// <summary>

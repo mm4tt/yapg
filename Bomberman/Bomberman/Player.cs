@@ -157,7 +157,7 @@ namespace Bomberman
         #region DRAW
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+           // if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
             Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
         }
