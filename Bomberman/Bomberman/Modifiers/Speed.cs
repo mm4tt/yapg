@@ -19,7 +19,7 @@ namespace Bomberman
         }
         #endregion
 
-        public override void onBegin()
+        public override void onBegin(Player player)
         {
             player.Speed = 2 * player.Speed;
         }

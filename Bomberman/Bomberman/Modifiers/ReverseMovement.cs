@@ -20,7 +20,7 @@ namespace Bomberman.Modifiers
             }
         }
      #endregion
-        public override void onUpdate()
+        public override void onUpdate(Player player)
         {
             if (player.Touched) {
                 if (player.Direction == 1) {

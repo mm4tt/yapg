@@ -7,11 +7,17 @@ using Microsoft.Xna.Framework;
 
 namespace Bomberman
 {
+    [DataContract()]
     abstract public class Ticker
     {
         protected int remaining = 0;
-        
-    
+
+        [DataMember()]
+        public int Remaning
+        {
+            get { return remaining; }
+            set { remaining = value; }
+        }
 
         public Ticker(float length)
         {

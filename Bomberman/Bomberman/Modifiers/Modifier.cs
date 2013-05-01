@@ -8,9 +8,9 @@ namespace Bomberman
     public interface Modifier
     {
         void apply(Player P);
-        void onUpdate();
-        void onBegin();
-        void onEnd();
+        void onUpdate(Player p);
+        void onBegin(Player p);
+        void onEnd(Player p);
         int getRespirationTime();
     }
 }

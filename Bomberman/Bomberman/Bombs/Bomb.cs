@@ -17,7 +17,7 @@ namespace Bomberman
     public class Bomb : GameObject
     {
         private  Texture2D[] tex;
-        enum State {Active, Exploding, Dead}
+        public enum State {Active, Exploding, Dead}
 
 
         public void Load(ContentManager content)
@@ -28,24 +28,33 @@ namespace Bomberman
            // Explosion.Load(content);
         }
 
-       
-        [DataMember()]
-        int i;
-        [DataMember()]
-        BombTicker timer
-        {
-            get;
-            set;
-        }
-        [DataMember()]
-        State state
-        {
-            get;
-            set;
-        }
-        Explosion explosion;
-        Point position = new Point(0,0);
 
+        [DataMember()]
+        public int i
+        {
+            get;
+            set;
+        }
+        [DataMember()]
+        public  BombTicker timer
+        {
+            get;
+            set;
+        }
+        [DataMember()]
+        public State state
+        {
+            get;
+            set;
+        }
+        [DataMember()]
+        public Explosion explosion
+        {
+            get;
+            set;
+        }
+        Point position = new Point(0,0);
+        [DataMember()]
         public Point Position {
             get {
                 position.X = x;
@@ -139,6 +148,7 @@ namespace Bomberman
         {
             if (state == State.Exploding)
             {
+                
                 explosion.Load(contentManager);
                 explosion.Draw(spriteBatch, contentManager);
             }

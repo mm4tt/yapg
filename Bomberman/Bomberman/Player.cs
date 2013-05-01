@@ -26,18 +26,18 @@ namespace Bomberman
             mod = m;
             time = m.getRespirationTime();
         }
-        public void onUpdate() {
+        public void onUpdate(Player p) {
             time -= TIME_STEP;
             if (time > 0) {
-                mod.onUpdate();
+                mod.onUpdate(p);
             }
         }
-        public void onBegin() {
+        public void onBegin(Player p) {
             Debug.WriteLine("begin effect");
-            mod.onBegin();
+            mod.onBegin(p);
         }
-        public void onEnd() {
-            mod.onEnd();
+        public void onEnd(Player p) {
+            mod.onEnd(p);
         }
 
         public Effect(Modifier m, int _time)
@@ -322,7 +322,7 @@ namespace Bomberman
             m.apply(this);
             Effect effect = new Effect( m );
             this.effects.Add( effect );
-            effect.onBegin();
+            effect.onBegin(this);
         }
         
         public void setBomb() {
@@ -487,11 +487,11 @@ namespace Bomberman
                 {
                     if (effects[i].Active)
                     {
-                        effects[i].onUpdate();
+                        effects[i].onUpdate(this);
                     }
                     else
                     {
-                        effects[i].onEnd();
+                        effects[i].onEnd(this);
                         effects.RemoveAt(i);
                     }
                 }

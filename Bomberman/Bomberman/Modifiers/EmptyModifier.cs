@@ -8,24 +8,24 @@ namespace Bomberman
     class EmptyModifier :Modifier
     {   
 
-        protected Player player;
+       // protected Player player;
         
         public virtual void apply(Player player)
         {
-            this.player = player;
+         //   this.player = player;
         }
 
-        public virtual void onUpdate()
+        public virtual void onUpdate(Player player)
         {
             //throw new NotImplementedException();
         }
 
-        public virtual void onBegin()
+        public virtual void onBegin(Player player)
         {
             //throw new NotImplementedException();
         }
 
-        public virtual void onEnd()
+        public virtual void onEnd(Player player)
         {
             //throw new NotImplementedException();
         }

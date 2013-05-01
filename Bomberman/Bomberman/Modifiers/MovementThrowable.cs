@@ -20,12 +20,12 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
-        public override void onBegin()
+        public override void onBegin(Player player)
         {
             speed = player.Speed;
             player.MovementMode = Player.MODE_MOVEMENT_THROW;
         }
-        public override void onEnd()
+        public override void onEnd(Player player)
         {
             Debug.Assert(player != null, "Player not null");
             player.MovementMode = Player.MODE_MOVEMENT_DEFAULT;
