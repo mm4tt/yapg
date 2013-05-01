@@ -10,9 +10,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Input.Touch;
+using System.Runtime.Serialization;
+using Bomberman.GameSaving;
 namespace Bomberman
 {
-    class Effect {
+   
+    public class Effect {
         const int TIME_STEP = 1000;
         Modifier mod;
         int time;
@@ -36,31 +39,45 @@ namespace Bomberman
         public void onEnd() {
             mod.onEnd();
         }
+
+        public Effect(Modifier m, int _time)
+        {
+            mod = m;
+            time = _time;
+        }
+
+        public EffectDO convertToEffectDO(IModiferSerializer serilaizer)
+        {
+            return new EffectDO(serilaizer.Serialize(mod), time);
+        }
+
     }
+    [DataContract()]
     public class Player : GameObject
     {
         #region CONSTS
 
          const int NONE_DIRECTION = 0;
-          const int INTERVAL_ACTION = 500;
-          const int INITIAL_BOMBS_AVAILABLE = 1;
-          const int INITIAL_EXPLOSION_RANGE = 1;
-          const int UP = 1;
-          const int RIGHT = 2;
-          const int DOWN = 3;
-          const int LEFT = 4;
+         const int INTERVAL_ACTION = 500;
+         const int INITIAL_BOMBS_AVAILABLE = 1;
+         const int INITIAL_EXPLOSION_RANGE = 1;
+         const int UP = 1;
+         const int RIGHT = 2;
+         const int DOWN = 3;
+        const int LEFT = 4;
         public  const int MODE_MOVEMENT_DEFAULT = 0;
         public  const int MODE_MOVEMENT_THROW = 1;
+        static int width = 20;
+        static int height = 20;
 
         #endregion
         #region FIELDS
-        private List<Effect> effects;
+        private List<Effect> effects= new List<Effect> ();
         private Texture2D texture;
         private Point position;
         private Point lastPosition ;
         private int movProgress = 0;
-        protected uint width;
-        protected uint height;
+       
         float speed = 0;
         int interval = 0;
         private int direction;
@@ -72,15 +89,18 @@ namespace Bomberman
         
         #endregion
         #region ATTRIBUTES
+        [DataMember()]
         public int BombsAvailable {
             get { return bombsAvailable; }
             set { bombsAvailable = value; }
         }
+        [DataMember()]
         public bool Touched
         {
             get { return touched; }
             set { touched = value; }
         }
+        [DataMember()]
         public bool Alive
         {
             get { return alive; }
@@ -91,6 +111,7 @@ namespace Bomberman
                 alive = value;
             }
         }
+       [DataMember()]
         public int ExplosionRange {
             get { return explosionRange;  }
             set {
@@ -98,15 +119,18 @@ namespace Bomberman
                 explosionRange = value; 
             }
         }
+        [DataMember()]
         public int Direction
         {
             get { return direction; }
             set { direction = value; }
         }
+        [DataMember()]
         public int MovementMode {
             get { return movementMode;  }
             set { this.movementMode = value; }
         }
+        [DataMember()]
         public float Speed
         {
             get { return speed; }
@@ -122,6 +146,7 @@ namespace Bomberman
                 }
             }
         }
+        [DataMember()]
         public Point Position
         {
             set
@@ -132,12 +157,46 @@ namespace Bomberman
             get { return position; }
         }
         #endregion
+        #region SERIALIZATION
+        [DataMember()]
+        public List<EffectDO> effectsDo
+        {
+            get
+            {
+                IModiferSerializer modSerializer = new ReflectionModifierSerializer();
+                List<EffectDO> tmpList = new List<EffectDO>();
+                foreach (Effect effect in effects)
+                {
+                    tmpList.Add(effect.convertToEffectDO(modSerializer));
+                }
+                return tmpList;
+            }
+            set{
+                IModiferSerializer modSerializer = new ReflectionModifierSerializer();
+                effects = new List<Effect>();
+                foreach (EffectDO data in value)
+                {
+                    effects.Add(data.createEffect(modSerializer));
+                }
+            }
+        }
+
+        public Boolean isThisOne(GameObject gameObject)
+        {
+            if (gameObject is Player)
+            {
+                Player _player = (Player)gameObject;
+                return position.Equals(_player.position);
+            }
+            return false;
+        }
+
+        #endregion
         #region INITIALIZATION
         public Player()
         {
             effects = new List<Effect>();
-            width = 20;
-            height = 20;
+          
             FindBeginPosition();
             Speed = 1;
             direction = NONE_DIRECTION;
@@ -145,6 +204,9 @@ namespace Bomberman
 
         public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
+           /* Debug.WriteLine(this.GetType().ToString() + " : " + width + " " + height);
+            Debug.WriteLine(this.GetType().ToString() + " : " + (int)width + " " + (int)height);*/
+        
             texture = new Texture2D(spriteBatch.GraphicsDevice, (int)width, (int)height);
             Color[] colors = new Color[width * height];
             for (int i = 0; i < colors.Length; ++i)
@@ -157,7 +219,7 @@ namespace Bomberman
         #region DRAW
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-           // if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
             Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
         }
@@ -169,6 +231,8 @@ namespace Bomberman
                  LoadGraphic(spriteBatch, contentManager);
             spriteBatch.Draw(texture, ComputePosition((int)x, (int)y), Color.Black);
         }
+
+
         #endregion
         #region HELPERS
         private void countEmptyNeighborhood(int x, int y, ref List<Point> visited)
@@ -359,6 +423,7 @@ namespace Bomberman
         }
         public void move(Vector2 delta)
         {
+            Debug.WriteLine("In da move");
             float absX = delta.X < 0 ? -delta.X : delta.X;
             float absY = delta.Y < 0 ? -delta.Y : delta.Y;
             float range = 1;
@@ -405,6 +470,7 @@ namespace Bomberman
             if (MovementMode == MODE_MOVEMENT_THROW) {
                 Speed = range;
             }
+            Debug.WriteLine(direction.ToString() + " " + range.ToString());
             //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
         public void stop() {

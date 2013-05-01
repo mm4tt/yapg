@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Bomberman.GameSaving;
 using Bomberman.StateManager;
 using Microsoft.Xna.Framework;
 
@@ -23,9 +24,24 @@ namespace Bomberman.Screens
             sfxButton.Tapped += sfxButton_Tapped;
             MenuButtons.Add(sfxButton);
 
-            BooleanButton musicButton = new BooleanButton("Music", true);
+            /*BooleanButton musicButton = new BooleanButton("Music", true);
             musicButton.Tapped += musicButton_Tapped;
-            MenuButtons.Add(musicButton);
+            MenuButtons.Add(musicButton);*/
+
+            Button loadGame = new Button("Load");
+            loadGame.Tapped +=loadGame_Tapped;
+            MenuButtons.Add(loadGame);
+
+          
+        }
+
+        private void loadGame_Tapped(object sender, EventArgs e)
+        {
+            IGameSaver gameSaver = new DataContractSaver();
+            Engine engine = gameSaver.LoadGame();
+            if (engine != null)
+                Engine.Instance = engine;
+            LoadingScreen.Load(ScreenManager, true, PlayerIndex.One, new GameplayScreen());
         }
 
         void playButton_Tapped(object sender, EventArgs e)

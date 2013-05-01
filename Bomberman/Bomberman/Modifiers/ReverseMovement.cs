@@ -5,10 +5,11 @@ using System.Text;
 
 namespace Bomberman.Modifiers
 {
-     #region Singleton
+     
        
     class ReverseMovement : EmptyModifier
     {
+        #region Singleton
         private static ReverseMovement instance = new ReverseMovement();
         private ReverseMovement() { }
         public static ReverseMovement Instance

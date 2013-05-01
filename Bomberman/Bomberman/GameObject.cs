@@ -7,9 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
-
+using System.Runtime.Serialization;
+using Bomberman.Bombs;
 namespace Bomberman
 {
+    [KnownType(typeof(Explosion))]
+    [KnownType(typeof(Bomb))]
+    [KnownType(typeof(Player))]
+    [KnownType(typeof(Enemy))]
+    [DataContract()]
     public abstract class GameObject
     {
        
@@ -31,12 +37,27 @@ namespace Bomberman
             return new Point(p1.X + p2.X, p1.Y + p2.Y);
         }
 
-
+        [DataMember()]
         public bool IsDead { get; set; }
 
 
-        protected int x, y;
-
+      
+        protected int x;
+        protected int y;
+        [DataMember()]
+        public int X
+        {
+            get { return x; }
+            set { x = value; }
+        }
+        [DataMember()]
+        public int Y
+        {
+            get { return y; }
+            set { y = value; }
+        }
+       
+     
         abstract public void Update(GameTime gt);
 
         abstract public void Draw(SpriteBatch spriteBatch, ContentManager contentManager);

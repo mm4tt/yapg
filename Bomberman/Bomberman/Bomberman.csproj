@@ -60,6 +60,7 @@
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -68,9 +69,17 @@
     <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bomb.cs" />
+    <Compile Include="Bombs\Bomb.cs" />
+    <Compile Include="Bombs\BombTicker.cs" />
+    <Compile Include="Bombs\Explosion.cs" />
     <Compile Include="Chest.cs" />
+    <Compile Include="GameSaving\DataContractSaver.cs" />
+    <Compile Include="GameSaving\EffectDO.cs" />
     <Compile Include="GameSaving\IGameSaver.cs" />
+    <Compile Include="GameSaving\IMazeBlockSerializer.cs" />
+    <Compile Include="GameSaving\IModiferSerializer.cs" />
+    <Compile Include="GameSaving\ReflectionMazeBlockSerializer.cs" />
+    <Compile Include="GameSaving\ReflectionModifierSerializer.cs" />
     <Compile Include="GameSaving\XmlGameSaver.cs" />
     <Compile Include="Modifiers\ReverseMovement.cs" />
     <Compile Include="Modifiers\MovementThrowable.cs" />
@@ -94,6 +103,7 @@
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
+    <Compile Include="Screens\SaveGameScreen.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />
     <Compile Include="StateManager\InputAction.cs" />
@@ -101,7 +111,7 @@
     <Compile Include="StateManager\IScreenFactory.cs" />
     <Compile Include="StateManager\ScreenFactory.cs" />
     <Compile Include="StateManager\ScreenManager.cs" />
-    <Compile Include="Ticker.cs" />
+    <Compile Include="Bombs\Ticker.cs" />
     <Compile Include="Wall.cs" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>

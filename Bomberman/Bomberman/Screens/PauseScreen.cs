@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Bomberman.GameSaving;
 using Bomberman.StateManager;
 
 namespace Bomberman.Screens
@@ -26,10 +27,13 @@ namespace Bomberman.Screens
 
             Button saveButton = new Button("Save");
             saveButton.Tapped += saveButton_Tapped;
+            MenuButtons.Add(saveButton);
         }
 
         void saveButton_Tapped(object sender, EventArgs e)
         {
+            IGameSaver gameSaver = new DataContractSaver();
+            gameSaver.SaveGame(Engine.Instance);
             
         }
 

@@ -6,69 +6,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System.Runtime.Serialization;
+using Bomberman.Bombs;
 
 namespace Bomberman
 {
-    class Explosion : GameObject
-    {
-        //static Texture2D tex;
-        private Texture2D tex;
+    
 
-        // dla explozji statyczne pola nie byly by takie zle
-        public void Load(ContentManager content)
-        {
-            tex = content.Load<Texture2D>("explosion");
-        }
-        private void Destroy(int x, int y)
-        {
-            foreach( var en in Engine.Instance.Enemies )
-            {
-                if (collide(en.Position.X * MazeBlock.width, en.Position.Y * MazeBlock.height, x, y))
-                    en.IsDead = true;
-            }
-        }
-
-        public Explosion(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height/2;
-
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height));
-            Destroy(x, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) + 1, (uint)(cy / MazeBlock.height));
-            Destroy(x + 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) - 1, (uint)(cy / MazeBlock.height));
-            Destroy(x - 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) + 1);
-            Destroy(x, y + 1);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) - 1);
-            Destroy(x, y - 1);
-        }
-
-        public override void Update(GameTime gt)
-        {
-        }
-
-        private void DrawAt(int x, int y, SpriteBatch spriteBatch)
-        {
-            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
-            if (Engine.Instance.Maze.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
-                spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
-        {
-            //if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
-                Load(contentManager);
-            DrawAt(x, y - MazeBlock.height, spriteBatch);
-            DrawAt(x - MazeBlock.width, y,spriteBatch);
-            DrawAt(x, y,spriteBatch);
-            DrawAt(x + MazeBlock.width, y,spriteBatch);
-            DrawAt(x, y + MazeBlock.height,spriteBatch);
-        }
-    }
-
+    [DataContract()]
     public class Bomb : GameObject
     {
         private  Texture2D[] tex;
@@ -83,19 +28,21 @@ namespace Bomberman
            // Explosion.Load(content);
         }
 
-
-        class BombTicker : Ticker
-        {
-            public BombTicker(float p) : base(p) {}
-
-            public int GetRemaining()
-            {
-                return remaining;
-            }
-        }
+       
+        [DataMember()]
         int i;
-        BombTicker timer;
-        State state;
+        [DataMember()]
+        BombTicker timer
+        {
+            get;
+            set;
+        }
+        [DataMember()]
+        State state
+        {
+            get;
+            set;
+        }
         Explosion explosion;
         Point position = new Point(0,0);
 
@@ -104,6 +51,11 @@ namespace Bomberman
                 position.X = x;
                 position.Y = y;
                 return position;
+            }
+            set
+            {
+                x = value.X;
+                y = value.Y;
             }
         }
         public bool isActive(){
@@ -116,7 +68,7 @@ namespace Bomberman
                 return false;
             }
         }
-        public bool isDead()
+        public bool isDeadFun()
         {
             if (state == State.Dead)
             {
@@ -158,7 +110,7 @@ namespace Bomberman
 
         public float ElapsedTime()
         {
-            return (i / 2) * 1.2f + (i%2)*1.1f + (float)timer.GetRemaining()/1000;
+            return (i / 2) * 1.2f + (i%2)*1.1f + (float)timer.Remaning/1000;
         }
 
         public override void Update(GameTime gt)
@@ -198,4 +150,6 @@ namespace Bomberman
             }
         }
     }
+
+ 
 }

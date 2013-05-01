@@ -1,9 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.Runtime.Serialization;
 namespace Bomberman
 {
+    
     public abstract class MazeBlock : Drawable
     {
       

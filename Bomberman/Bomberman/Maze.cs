@@ -8,8 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Bomberman.Modifiers;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content;
+using System.Runtime.Serialization;
+using Bomberman.GameSaving;
 namespace Bomberman
 {
+    [DataContractAttribute()]
     public class Maze 
 
     {
@@ -20,8 +23,10 @@ namespace Bomberman
         public void clearExplosions() {
             explosions.Clear();
         }
+        [DataMember()]
         public List<Point> Explosions {
             get { return explosions; }
+            set { explosions = value; }
         }
         public Maze()
         {
@@ -230,6 +235,81 @@ namespace Bomberman
 
         private MazeBlock[,] blocks = new MazeBlock[Width, Height];
         private Modifier[,] modifiers = new Modifier[Width, Height];
+        #region DataContractSerializationStuff
+        
+        
+        [DataMember()]
+        public string[] LinearMazeBlock
+        {
+            get
+            {
+                string[] tmp = new string[Width * Height];
+                IMazeBlockSerializer ser = new ReflectionMazeBlockSerializer();
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        tmp[x * Height + y] = ser.Serilalize(blocks[x, y]);
+                    }
+                }
+                return tmp;
+            }
+            set
+            {
+                Debug.WriteLine("In set LinearMazeBlock");
+                string[] tmp = value;
+                blocks = new MazeBlock[Width, Height];
+                IMazeBlockSerializer ser = new ReflectionMazeBlockSerializer();
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Debug.WriteLine(tmp[x * Height + y]);
+                        blocks[x, y] = ser.Deserialize(tmp[x * Height + y]); //MazeBlock.getMazeBlock(tmp[x * Height + y]);
+                    }
+                }
+                wBlock = new ArrayWrapper<MazeBlock>(blocks);
+            }
+        }
+        [DataMember()]
+        public string[] LinearModifiers
+        {
+            get
+            {
+                string[] tmp = new string[Width * Height];
+                IModiferSerializer ser = new ReflectionModifierSerializer();
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        //tmp[x * Height + y] = modifiers[x, y].getTypeString();
+                        tmp[x * Height + y] = ser.Serialize(modifiers[x, y]);
+                        //tmp[x * Height + y] = "ZadenMadafakaNiePodskoczyDoPolaka";
+                    }
+                }
+                return tmp;
+            }
+
+            set
+            {
+                Debug.WriteLine("Gonna setup linearModifiers");
+                string[] tmp = value;
+                modifiers = new Modifier[Width, Height];
+                IModiferSerializer ser = new ReflectionModifierSerializer();
+                for (int x = 0; x < Width; ++x)
+                {
+                    for (int y = 0; y < Height; ++y)
+                    {
+                        Debug.WriteLine(tmp[x * Height + y]);
+                      
+                        modifiers[x, y] = ser.Deserialize(tmp[x * Height + y]);
+                    }
+                }
+                wModifier = new ArrayWrapper<Modifier>(modifiers);
+            }
+        }
+
+        #endregion
 
     }
 
@@ -248,7 +328,12 @@ namespace Bomberman
                 return A[x, y];
             }
         }
+
+
+
     }
+
+        
 
     
 }

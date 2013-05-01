@@ -7,13 +7,17 @@ using System.Text;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
 namespace Bomberman
 {
-    class Engine
+    [DataContract()]
+    public class Engine
     {
         #region Singleton
         private static Engine instance = new Engine();
-        private Engine()
+        public Engine()
         {
             Maze.GenerateRandom(4, 50);
         }
@@ -23,18 +27,28 @@ namespace Bomberman
             {
                 return instance;
             }
+            set
+            {
+                instance = value;
+            }
         }
+
+     
         #endregion
 
 
         private Maze maze = new Maze();
+        [DataMember()]
         public Maze @Maze
         {
             get { return maze; }
+            set { maze = value; }
         }
         private Player player;
+        [DataMember()]
         public Player @Player {
             get { return player; }
+            set { player = value; }
         }
 
         public void AddPlayer(Player p)
@@ -44,6 +58,7 @@ namespace Bomberman
 
 
         private List<GameObject> gameObjects = new List<GameObject>();
+
         //TAK DODAJEMY COKOLWIEK!!! Np bombe
         public void AddObject( GameObject go )
         {
@@ -51,7 +66,7 @@ namespace Bomberman
         }
 
 
-
+        [IgnoreDataMember()]
         public IEnumerable<Enemy> @Enemies
         {
             get 
@@ -61,6 +76,7 @@ namespace Bomberman
                         yield return (Enemy)o;
             }
         }
+        [IgnoreDataMember()]
         public IEnumerable<Bomb> @Bombs
         {
             get
@@ -89,5 +105,34 @@ namespace Bomberman
             }
             gameObjects.RemoveRange(k, gameObjects.Count - k);
         }
+        #region SerializationStuff
+        [DataMember()]
+        public List<GameObject> GameObjectList
+        {
+            get
+            {
+                return gameObjects;
+            }
+            set
+            {
+                gameObjects = value;
+            }
+        }
+
+        public void fixPlayer()
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (Player.isThisOne(gameObject))
+                    Player = (Player)gameObject;
+            }
+        }
+
+        public void fixDependencies()
+        {
+           
+            fixPlayer();
+        }
+        #endregion
     }
 }

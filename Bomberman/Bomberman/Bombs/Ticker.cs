@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.Xna.Framework;
 
@@ -9,6 +10,8 @@ namespace Bomberman
     abstract public class Ticker
     {
         protected int remaining = 0;
+        
+    
 
         public Ticker(float length)
         {

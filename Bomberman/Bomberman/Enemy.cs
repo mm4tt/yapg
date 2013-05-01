@@ -6,22 +6,30 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace Bomberman
 {
+    [DataContract()]
     public class Enemy : GameObject
     {
         Texture2D[] tex;
         static Random random = new Random(DateTime.Now.Millisecond);
         const float speed = 0.003f ; // prêdkoœæ w polach/ms
-        enum State { Active, Dead };
-        enum Faced { South=0, North, West, East };
+        public enum State { Active, Dead };
+        public enum Faced { South=0, North, West, East };
         static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0)};
 
-        State state;
-        Faced faced = Faced.North;
+        [DataMember()]
+        public State state
+        {
+            get;
+            set;
+        }
+        public Faced faced = Faced.North;
         Point position;
 
+        [DataMember()]
         public Point Position
         {
             set
@@ -30,6 +38,17 @@ namespace Bomberman
             }
             get { return position; }
         }
+
+        [DataMember()]
+        public Faced mFaced
+        {
+            get { return faced; }
+            set { faced = value; }
+        }
+
+
+        
+        
 
 
         public Enemy()

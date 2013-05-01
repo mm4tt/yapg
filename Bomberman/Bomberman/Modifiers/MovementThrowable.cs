@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace Bomberman.Modifiers
 {
@@ -26,6 +27,7 @@ namespace Bomberman.Modifiers
         }
         public override void onEnd()
         {
+            Debug.Assert(player != null, "Player not null");
             player.MovementMode = Player.MODE_MOVEMENT_DEFAULT;
             player.Speed = speed;
         }

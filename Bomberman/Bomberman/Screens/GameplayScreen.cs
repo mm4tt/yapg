@@ -55,6 +55,10 @@ namespace Bomberman.Screens
         static bool initialized = false;
         void InitializeGame()
         {
+            if (Engine.Instance.Player != null)
+            {
+                initialized = true;
+            }
             if (initialized == false)
             {
 
