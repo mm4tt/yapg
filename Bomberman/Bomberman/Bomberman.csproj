@@ -103,7 +103,6 @@
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
-    <Compile Include="Screens\SaveGameScreen.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />
     <Compile Include="StateManager\InputAction.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="StateManager\ScreenManager.cs" />
     <Compile Include="Bombs\Ticker.cs" />
     <Compile Include="Wall.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
