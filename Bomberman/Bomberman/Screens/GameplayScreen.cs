@@ -51,28 +51,19 @@ namespace Bomberman.Screens
             
         }
 
-        //prowizorka, zeby gra sie nie inicjalizowala za kazdym razem, DO POPRAWIENIA
-        static bool initialized = false;
+        /// <summary>
+        /// C   Code for the game initialization. 
+        ///     It's temporary solution. Will be moved to a level manager
+        /// </summary>
         void InitializeGame()
         {
-            if (Engine.Instance.Player != null)
-            {
-                initialized = true;
-            }
-            if (initialized == false)
-            {
-
-
+                Engine.Instance = new Engine();
                 Engine.Instance.AddPlayer(new Player());
-
-
                 Engine.Instance.AddObject(new Enemy());
                 Engine.Instance.AddObject(new Enemy());
                 Engine.Instance.AddObject(new Enemy());
                 Engine.Instance.AddObject(new Enemy());
                 Engine.Instance.AddObject(new Enemy());
-                initialized = true;
-            }
         }
         /// <summary>
         /// Load graphics content for the game.
@@ -87,10 +78,6 @@ namespace Bomberman.Screens
 
                 InitializeGame();
 
-                //TO DO WYJEBANIA, SPRITEBATCH POWINIEN BYC PRZEKAZYWANY W DRAW
-                //TEKSTURY POWINNY ZAWSZE LADOWAC SIE Z CONTENT MANAGERA, INACZEJ MOGA BYC JUZ USUNIETE
-             
-
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
                 // while, giving you a chance to admire the beautiful loading screen.
@@ -103,10 +90,9 @@ namespace Bomberman.Screens
             }
 
 
-            if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("PlayerPosition"))
+            if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("Engine"))
             {
-                //TODO
-                //Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
+                Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
             }
 
         }

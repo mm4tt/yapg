@@ -59,7 +59,10 @@ namespace Bomberman
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
-        //TAK DODAJEMY COKOLWIEK!!! Np bombe
+        /// <summary>
+        ///     Method responsible for adding objects to the engine
+        /// </summary>
+        /// <param name="go">GameObject to add</param>
         public void AddObject( GameObject go )
         {
             gameObjects.Add(go);

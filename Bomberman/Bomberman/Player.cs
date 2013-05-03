@@ -75,8 +75,6 @@ namespace Bomberman
         private List<Effect> effects= new List<Effect> ();
         private Texture2D texture;
         private Point position;
-        private Point lastPosition ;
-        private int movProgress = 0;
        
         float speed = 0;
         int interval = 0;

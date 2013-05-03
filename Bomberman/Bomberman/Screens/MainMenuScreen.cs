@@ -14,9 +14,13 @@ namespace Bomberman.Screens
             : base("Main Menu")
         {
             // Create a button to start the game
-            Button playButton = new Button("Play");
+            Button playButton = new Button("New Game");
             playButton.Tapped += playButton_Tapped;
             MenuButtons.Add(playButton);
+
+            Button loadGame = new Button("Load Game");
+            loadGame.Tapped += loadGame_Tapped;
+            MenuButtons.Add(loadGame);
 
             // Create two buttons to toggle sound effects and music. This sample just shows one way
             // of making and using these buttons; it doesn't actually have sound effects or music
@@ -28,9 +32,7 @@ namespace Bomberman.Screens
             musicButton.Tapped += musicButton_Tapped;
             MenuButtons.Add(musicButton);*/
 
-            Button loadGame = new Button("Load");
-            loadGame.Tapped +=loadGame_Tapped;
-            MenuButtons.Add(loadGame);
+
 
           
         }
