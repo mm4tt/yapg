@@ -88,6 +88,17 @@ namespace Bomberman
             gameObjects.RemoveRange(k, gameObjects.Count - k);
         }
 
+        public void Update(GameTime gameTime, int dx, int dy)
+        {
+            int k = 0;
+            for (int i = 0; i < gameObjects.Count; ++i)
+            {
+                gameObjects[i].Update(gameTime,dx,dy);
+                if (!gameObjects[i].IsDead)
+                    gameObjects[k++] = gameObjects[i];
+            }
+        }
+
         internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             maze.SetSpriteBatch(spriteBatch);

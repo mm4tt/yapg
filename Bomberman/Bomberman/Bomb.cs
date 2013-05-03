@@ -60,6 +60,11 @@ namespace Bomberman
             Destroy(x, y - 1);
         }
 
+        public override void Update(GameTime gt, int dx, int dy)
+        {
+            this.Update(gt);
+        }
+
         public override void Update(GameTime gt)
         {
         }
@@ -173,7 +178,9 @@ namespace Bomberman
         {
             return (i / 2) * 1.2f + (i%2)*1.1f + (float)timer.GetRemaining()/1000;
         }
-
+        public override void Update(GameTime gt, int dx, int dy){
+            Update(gt);
+        }
         public override void Update(GameTime gt)
         {
             if (state!=State.Dead && timer.Update(gt))

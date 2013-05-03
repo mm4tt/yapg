@@ -43,6 +43,7 @@ namespace Bomberman
         protected int x, y;
 
         abstract public void Update(GameTime gt);
+        abstract public void Update(GameTime gt, int dx, int dy);
 
         abstract public void Draw();
 

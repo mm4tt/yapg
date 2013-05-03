@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework;
+using Microsoft.Devices.Sensors;
+using System.Diagnostics;
 
 namespace Bomberman.Screens
 {
@@ -24,7 +26,7 @@ namespace Bomberman.Screens
         Random random = new Random();
         float pauseAlpha;
         InputAction pauseAction;
-
+        
 
         #endregion
 
@@ -150,7 +152,10 @@ namespace Bomberman.Screens
 
             if (IsActive)
             {
-                Engine.Instance.Update(gameTime);
+                if (!accelometerOn)
+                    Engine.Instance.Update(gameTime);
+                else
+                    Engine.Instance.Update(gameTime,dx, dy);
             }
         }
 
@@ -189,6 +194,14 @@ namespace Bomberman.Screens
             else
             {
                 foreach (var gesture in input.Gestures)
+                {
+
+                    Debug.WriteLine(gesture.GestureType.ToString());
+                    if (gesture.GestureType != GestureType.Hold)
+                    {
+                        StopAccelerometer();
+                    }
+
                     if (gesture.GestureType == GestureType.Flick)
                     {
 
@@ -198,13 +211,22 @@ namespace Bomberman.Screens
                     {
 
                         Engine.Instance.Player.setBomb();
-                    }else
-                    if (gesture.GestureType == GestureType.Tap)
+                    }
+                    else if (gesture.GestureType == GestureType.Tap)
                     {
 
                         Engine.Instance.Player.stop();
                     }
-                        
+                    else if (gesture.GestureType == GestureType.Hold)
+                    {
+                        Debug.WriteLine("Byl hold bijacz");
+                        StartAccelerometer();
+                    }
+                    else if (gesture.GestureType == GestureType.None)
+                    {
+                        Debug.WriteLine("No gesture");
+                    }
+                }
             }
         }
 
@@ -244,6 +266,58 @@ namespace Bomberman.Screens
         }
 
 
+        #endregion
+
+        #region AccelometerRegion
+        Accelerometer accelerometer;
+        Boolean accelometerOn = false;
+        static int threshold = 30;
+        int dx;
+        int dy;
+
+        void StartAccelerometer()
+        {
+            if (accelerometer == null)
+            {
+                accelerometer = new Accelerometer { TimeBetweenUpdates = TimeSpan.FromMilliseconds(20) };
+                accelerometer.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<AccelerometerReading>>(AccelerometerCurrentValueChanged);
+                accelerometer.Start();
+            }
+
+            accelometerOn = true;
+        }
+
+        void StopAccelerometer()
+        {
+            accelometerOn = false;
+            if (accelerometer != null)
+            {
+                accelerometer.Stop();
+                accelerometer = null;
+            }
+        }
+        // zamieniam x z y bo gramy w ustawieniu poziomym
+        void AccelerometerCurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
+        {
+            if (accelerometer.IsDataValid)
+            {
+                float Vx = e.SensorReading.Acceleration.X * 200;
+                float Vy = e.SensorReading.Acceleration.Y * 200;
+                if (Math.Abs(Vx) > Math.Abs(Vy))
+                {
+                    dy = Math.Sign(Vx);
+                    dx = 0;
+                }
+                else
+                {
+                    dx = Math.Sign(Vy);
+                    dy = 0;
+                }
+                
+                Debug.WriteLine("Accel : " + Vx);
+                Debug.WriteLine("Accel : " + Vy);
+            }
+        }
         #endregion
 
     }

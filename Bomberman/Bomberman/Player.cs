@@ -419,6 +419,12 @@ namespace Bomberman
         public void stop() {
             Direction = NONE_DIRECTION;
         }
+
+        public override void Update(GameTime gt, int dx, int dy)
+        {
+            // Jego nic to nie rusza
+            Update(gt);
+        }
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
