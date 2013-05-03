@@ -25,7 +25,7 @@ namespace Bomberman.Bombs
         {
             foreach (var en in Engine.Instance.Enemies)
             {
-                if (collide(en.Position.X * MazeBlock.width, en.Position.Y * MazeBlock.height, x, y))
+                if (collide(en.Position.X * Maze.BlockWidth, en.Position.Y * Maze.BlockHeight, x, y))
                     en.IsDead = true;
             }
         }
@@ -34,17 +34,17 @@ namespace Bomberman.Bombs
         {
             this.x = x;
             this.y = y;
-            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
+            int cx = x + Maze.BlockWidth / 2, cy = y + Maze.BlockHeight / 2;
 
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight));
             Destroy(x, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) + 1, (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth) + 1, (uint)(cy / Maze.BlockHeight));
             Destroy(x + 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width) - 1, (uint)(cy / MazeBlock.height));
+            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth) - 1, (uint)(cy / Maze.BlockHeight));
             Destroy(x - 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) + 1);
+            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight) + 1);
             Destroy(x, y + 1);
-            Engine.Instance.Maze.Destroy((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height) - 1);
+            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight) - 1);
             Destroy(x, y - 1);
         }
 
@@ -54,20 +54,20 @@ namespace Bomberman.Bombs
 
         private void DrawAt(int x, int y, SpriteBatch spriteBatch)
         {
-            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height / 2;
-            if (Engine.Instance.Maze.isPassable((uint)(cx / MazeBlock.width), (uint)(cy / MazeBlock.height)))
-                spriteBatch.Draw(tex, new Vector2(x, y), Color.White);
+            int cx = x + Maze.BlockWidth / 2, cy = y + Maze.BlockHeight / 2;
+            if (Engine.Instance.Maze.isPassable((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight)))
+                spriteBatch.Draw(tex, new Rectangle(x, y, Maze.BlockWidth, Maze.BlockHeight), Color.White);
         }
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             //if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
             Load(contentManager);
-            DrawAt(x, y - MazeBlock.height, spriteBatch);
-            DrawAt(x - MazeBlock.width, y, spriteBatch);
+            DrawAt(x, y - Maze.BlockHeight, spriteBatch);
+            DrawAt(x - Maze.BlockWidth, y, spriteBatch);
             DrawAt(x, y, spriteBatch);
-            DrawAt(x + MazeBlock.width, y, spriteBatch);
-            DrawAt(x, y + MazeBlock.height, spriteBatch);
+            DrawAt(x + Maze.BlockWidth, y, spriteBatch);
+            DrawAt(x, y + Maze.BlockHeight, spriteBatch);
         }
     }
 }

@@ -156,7 +156,7 @@ namespace Bomberman
             {
                 //if (tex == null)
                     Load(contentManager);
-                spriteBatch.Draw(tex[i % 2], new Vector2(x, y), Color.White);
+                spriteBatch.Draw(tex[i % 2], new Rectangle(x,y,Maze.BlockWidth,Maze.BlockHeight), Color.White);
             }
         }
     }

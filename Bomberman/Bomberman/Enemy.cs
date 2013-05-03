@@ -58,8 +58,8 @@ namespace Bomberman
                 p = new Point(random.Next((int)Maze.Width-1), random.Next((int)Maze.Height-1));
             while (Math.Max(Math.Abs(p.X - Engine.Instance.Player.Position.X), Math.Abs(p.Y - Engine.Instance.Player.Position.Y)) < 4 || !Engine.Instance.Maze.isPassable((uint)p.X, (uint)p.Y));
             position = p;
-            x = p.X * MazeBlock.width;
-            y = p.Y * MazeBlock.height;
+            x = p.X * Maze.BlockWidth;
+            y = p.Y * Maze.BlockHeight;
         }
 
         public Enemy(int x, int y)
@@ -67,8 +67,8 @@ namespace Bomberman
             this.x = x;
             this.y = y;
 
-            int cx = x + MazeBlock.width / 2, cy = y + MazeBlock.height/2;
-            position = new Point(cx / MazeBlock.width, cy / MazeBlock.height);
+            int cx = x + Maze.BlockWidth / 2, cy = y + Maze.BlockHeight / 2;
+            position = new Point(cx / Maze.BlockWidth, cy / Maze.BlockHeight);
             state = State.Active;
         }
 
@@ -164,19 +164,19 @@ namespace Bomberman
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
                     switch (faced)
                     {
-                        case Faced.North: y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
+                        case Faced.North: y = (int)((position.Y - (1 - offset)) * Maze.BlockHeight);
                             if (offset <= 0.0f)
                                 position.Y--;
                             break;
-                        case Faced.South: y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
+                        case Faced.South: y = (int)((position.Y + (1 - offset)) * Maze.BlockHeight);
                             if (offset <= 0.0f)
                                 position.Y++;
                             break;
-                        case Faced.West: x = (int)((position.X - (1 - offset)) * MazeBlock.width);
+                        case Faced.West: x = (int)((position.X - (1 - offset)) * Maze.BlockWidth);
                             if (offset <= 0.0f)
                                 position.X--;
                             break;
-                        case Faced.East: x = (int)((position.X + (1 - offset)) * MazeBlock.width);
+                        case Faced.East: x = (int)((position.X + (1 - offset)) * Maze.BlockWidth);
                             if (offset <= 0.0f)
                                 position.X++;
                             break;
@@ -214,7 +214,8 @@ namespace Bomberman
             {
              //   if (tex == null)
                     Load(contentManager);
-                spriteBatch.Draw(tex[0], new Vector2(x, y), Color.White);
+                //spriteBatch.Draw(tex[0], new Vector2(x, y), Color.White);
+                spriteBatch.Draw(tex[0], new Rectangle(x, y, Maze.BlockWidth, Maze.BlockHeight),Color.White);
             }
         }
     }

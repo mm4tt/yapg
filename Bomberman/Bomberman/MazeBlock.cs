@@ -6,11 +6,7 @@ namespace Bomberman
 {
     
     public abstract class MazeBlock : Drawable
-    {
-      
-        public static int height = 20;
-        public static int width = 20;
-        
+    {  
         protected  Texture2D texture;
 
         public virtual void Draw(uint x, uint y, SpriteBatch spriteBatch, ContentManager contentManager)
@@ -23,8 +19,8 @@ namespace Bomberman
 
         protected void SetOneColorTexture(Color chosenColor, GraphicsDevice graphicsDevice)
         {
-            texture = new Texture2D(graphicsDevice,width, height);
-            Color[] colors = new Color[width * height];
+            texture = new Texture2D(graphicsDevice,Maze.BlockWidth, Maze.BlockHeight);
+            Color[] colors = new Color[Maze.BlockWidth * Maze.BlockHeight];
             for (int i = 0; i < colors.Length; ++i)
                 colors[i] = chosenColor;
             texture.SetData(colors);
@@ -32,7 +28,7 @@ namespace Bomberman
 
         protected Rectangle ComputePosition(uint x, uint y)
         {
-            return new Rectangle((int)x * width, (int) y * height, width, height);
+            return new Rectangle((int)x * Maze.BlockWidth, (int)y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight);
         }
     }
 }

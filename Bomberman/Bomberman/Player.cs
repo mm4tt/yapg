@@ -67,8 +67,6 @@ namespace Bomberman
         const int LEFT = 4;
         public  const int MODE_MOVEMENT_DEFAULT = 0;
         public  const int MODE_MOVEMENT_THROW = 1;
-        static int width = 20;
-        static int height = 20;
 
         #endregion
         #region FIELDS
@@ -202,11 +200,11 @@ namespace Bomberman
 
         public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
-           /* Debug.WriteLine(this.GetType().ToString() + " : " + width + " " + height);
-            Debug.WriteLine(this.GetType().ToString() + " : " + (int)width + " " + (int)height);*/
+           /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
+            Debug.WriteLine(this.GetType().ToString() + " : " + (int)Maze.BlockWidth + " " + (int)Maze.BlockHeight);*/
         
-            texture = new Texture2D(spriteBatch.GraphicsDevice, (int)width, (int)height);
-            Color[] colors = new Color[width * height];
+            texture = new Texture2D(spriteBatch.GraphicsDevice, (int)Maze.BlockWidth, (int)Maze.BlockHeight);
+            Color[] colors = new Color[Maze.BlockWidth * Maze.BlockHeight];
             for (int i = 0; i < colors.Length; ++i)
                 colors[i] = Color.Azure;
             texture.SetData(colors);
@@ -310,7 +308,7 @@ namespace Bomberman
         }
         protected Rectangle ComputePosition(int x, int y)
         {
-            return new Rectangle((int)x * (int)width, (int)y * (int)height, (int)width, (int)height);
+            return new Rectangle((int)x * (int)Maze.BlockWidth, (int)y * (int)Maze.BlockHeight, (int)Maze.BlockWidth, (int)Maze.BlockHeight);
         }
 
         #endregion
@@ -330,7 +328,7 @@ namespace Bomberman
             if (count < BombsAvailable)
             {
                 Debug.WriteLine("setBomb");
-                Engine.Instance.AddObject(new Bomb(Position.X * (int)width, Position.Y * (int)height));
+                Engine.Instance.AddObject(new Bomb(Position.X * (int)Maze.BlockWidth, Position.Y * (int)Maze.BlockHeight));
             }
 
            
@@ -350,7 +348,7 @@ namespace Bomberman
                             foreach (var bomb in Engine.Instance.Bombs )
                             {
                                
-                                if ( (int)(bomb.Position.X /MazeBlock.width) == Position.X && (int)( bomb.Position.Y / MazeBlock.height ) == Position.Y + 1)
+                                if ( (int)(bomb.Position.X /Maze.BlockWidth) == Position.X && (int)( bomb.Position.Y / Maze.BlockHeight ) == Position.Y + 1)
                                 {
                                     blocked = true;
                                     break;
@@ -369,7 +367,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X + 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
+                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X + 1 && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y)
                                 {
                                     blocked = true;
                                     break;
@@ -387,7 +385,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y - 1)
+                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y - 1)
                                 {
                                     blocked = true;
                                     break;
@@ -405,7 +403,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / MazeBlock.width) == Position.X - 1 && (int)(bomb.Position.Y / MazeBlock.height) == Position.Y)
+                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X - 1 && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y)
                                 {
                                     blocked = true;
                                     break;
@@ -433,7 +431,7 @@ namespace Bomberman
                     if (Engine.Instance.Maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
                     {
                         direction = LEFT;
-                        range = absX/width;
+                        range = absX/Maze.BlockWidth;
                     }
                         
                 }
@@ -442,7 +440,7 @@ namespace Bomberman
                     if (Engine.Instance.Maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
                     {
                         direction = RIGHT;
-                        range = absX/width;
+                        range = absX/Maze.BlockWidth;
                     }
                 }
             }
@@ -452,7 +450,7 @@ namespace Bomberman
                 {
                     if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                     {
-                        range = absY/height;
+                        range = absY/Maze.BlockHeight;
                         direction = UP;
                     }
                 }
@@ -461,7 +459,7 @@ namespace Bomberman
                     if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
                     {
                         direction = DOWN;
-                        range = absY/height;
+                        range = absY/Maze.BlockHeight;
                     }
                 }
             }
@@ -523,8 +521,8 @@ namespace Bomberman
 
 
 
-            x = position.X * (int)width;
-            y = position.Y * (int)height;
+            x = position.X * (int)Maze.BlockWidth;
+            y = position.Y * (int)Maze.BlockHeight;
 
         }
         #endregion

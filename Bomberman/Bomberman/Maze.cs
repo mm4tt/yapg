@@ -17,8 +17,18 @@ namespace Bomberman
 
     {
         
-        public const uint Height=24;
-        public const uint Width=40; 
+        public const int Height=15;
+        public const int Width = 25;
+        public static int BlockHeight
+        {
+            get { return 480 / Height; }
+        }
+        public static int BlockWidth
+        {
+            get { return 800 / Width; }
+        }
+
+
         private List<Point> explosions = new List<Point>(); // ? tutaj czy nie lepie w konstrukotrze ?
         public void clearExplosions() {
             explosions.Clear();
