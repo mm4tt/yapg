@@ -34,7 +34,7 @@ namespace Bomberman.Screens
         {
             IGameSaver gameSaver = new DataContractSaver();
             gameSaver.SaveGame(Engine.Instance);
-            
+            OnCancel();
         }
 
         /// <summary>

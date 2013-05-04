@@ -112,6 +112,7 @@
     <Compile Include="StateManager\ScreenManager.cs" />
     <Compile Include="Bombs\Ticker.cs" />
     <Compile Include="Wall.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
