@@ -131,64 +131,54 @@ namespace Bomberman
 
         protected float offset = 0.0f;
 
-        protected void moveFluid(GameTime gt){
+        protected void move(GameTime gt){
              offset -= gt.ElapsedGameTime.Milliseconds * speed;
              switch (faced)
              {
-                 case Faced.North: y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
+                 case Faced.North: // y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
                      if (offset <= 0.0f)
                         position.Y--;
                      break;
-                 case Faced.South: y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
+                 case Faced.South: //y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
                      if (offset <= 0.0f)
                          position.Y++;
                      break;
-                 case Faced.West: x = (int)((position.X - (1 - offset)) * MazeBlock.width);
+                 case Faced.West: //x = (int)((position.X - (1 - offset)) * MazeBlock.width);
                      if (offset <= 0.0f)
                          position.X--;
                      break;
-                 case Faced.East: x = (int)((position.X + (1 - offset)) * MazeBlock.width);
+                 case Faced.East: //x = (int)((position.X + (1 - offset)) * MazeBlock.width);
                       if (offset <= 0.0f)
                          position.X++;
                       break;
                  case Faced.Stoped:
                       break;
             }
+
+             if (offset <= 0.0f && Engine.Instance.accelometrOn) // nast¹pi³ jakiœ ruch i ackelometr jesst czynny spróbuj siê przesunaæ o tyle ile trzeba
+             {
+                 moveFromAccelometer();
+             }
         }
 
-        protected void nextMoveAccelometer()
+        protected void moveFromAccelometer()
         {
-            int dx = Engine.Instance.dx;
-            int dy = Engine.Instance.dy;
-            int nx = position.X + dx;
-            int ny = position.Y + dy;
-            if (nx < 0 || ny < 0)
-                faced = Faced.Stoped;
+            int nx = position.X + Engine.Instance.dx;
+            int ny = position.Y + Engine.Instance.dy;
+            if (nx < 0 || ny < 0 || nx >= MazeBlock.height || ny >= MazeBlock.width) // wyje¿d¿amy poza polansze
+                return;
             else
             {
                 uint rnx = (uint)nx;
                 uint rny = (uint)ny;
                 if (!Engine.Instance.Maze.isPassable(rnx, rny))
-                    faced = Faced.Stoped;
-                else
-                {
-                    if (dy > 0)
-                        faced = Faced.South;
-                    else if (dy < 0)
-                        faced = Faced.North;
-                    else if (dx < 0)
-                        faced = Faced.West;
-                    else if (dx > 0)
-                        faced = Faced.East;
-                    else if (dx == 0 && dy == 0)
-                        faced = Faced.Stoped;
-
-                    offset = 1.0f;
-                }
+                    return;
+                position.X = nx;
+                position.Y = ny;
             }
         }
 
-        private void nextMoveArtificialIntelignece()
+        protected void nextMoveArtificialIntelignece()
         {
             if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
             {
@@ -222,14 +212,11 @@ namespace Bomberman
             {
                 if (offset > 0.0f)
                 {
-                    moveFluid(gt);
+                    move(gt);
                 }
                 else
                 {
-                    if (Engine.Instance.accelometrOn)
-                        nextMoveAccelometer();
-                    else
-                        nextMoveArtificialIntelignece();
+                    nextMoveArtificialIntelignece();
                 }
             }
         }
