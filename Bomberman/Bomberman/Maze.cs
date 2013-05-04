@@ -50,7 +50,11 @@ namespace Bomberman
             
         }
 
-
+        /// <summary>
+        /// Generates a random maze
+        /// </summary>
+        /// <param name="threshold">Maximum space beetwen walls</param>
+        /// <param name="percent">Amount of the obstacles(%)</param>
         public void GenerateRandom(int threshold, int percent)
         {
             this.threshold = threshold;
@@ -85,14 +89,14 @@ namespace Bomberman
 
         private void GenerateRandom(int x0, int y0, int x1, int y1)
         {
-            if (x1 - x0 < threshold || y1 - y0 < threshold)
+            if (x1 - x0 <= threshold || y1 - y0 <= threshold)
                 return;
             int dx,dy;
             do
             {
                 dx = rnd.Next(1, x1 - x0);
                 dy = rnd.Next(1, y1 - y0); //maybe not uniform distrubution ?
-            } while (blocks[x0 + dx, y0 - 1] == Empty.Instance || blocks[x0 + dx, y1 + 1] == Empty.Instance || blocks[x0 - 1, y0 + dy] == Empty.Instance || blocks[x1 + 1, y0 + dy] == Empty.Instance);
+            } while (blocks[x0 + dx, y0 - 1] == Empty.Instance && blocks[x0 + dx, y1 + 1] == Empty.Instance && blocks[x0 - 1, y0 + dy] == Empty.Instance && blocks[x1 + 1, y0 + dy] == Empty.Instance);
 
             //generate walls
             for (int x = x0; x <= x1; ++x)
@@ -103,12 +107,18 @@ namespace Bomberman
 
             //create holes in the 3 walls (maybe more holes with some probability based on a wall length)
             bool wasZero = generateHolesX(x0, x0 + dx - 1,y0+dy) == 0;
-            if (wasZero) while (generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0) ;
-            else wasZero = generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0;
-            if (wasZero) while (generateHolesY(y0, y0+dy-1, x0+dx) == 0) ;
-            else wasZero = generateHolesY(y0, y0 + dy - 1, x0 + dx) == 0;
-            if (wasZero) while (generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0) ;
-            else wasZero = generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0;
+            if (wasZero) 
+                while (generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0) ;
+            else 
+                wasZero = generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0;
+            if (wasZero) 
+                while (generateHolesY(y0, y0+dy-1, x0+dx) == 0) ;
+            else 
+                wasZero = generateHolesY(y0, y0 + dy - 1, x0 + dx) == 0;
+            if (wasZero) 
+                while (generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0) ;
+            else 
+                wasZero = generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0;
 
 
             /*
@@ -130,9 +140,11 @@ namespace Bomberman
 
         private int generateHolesX(int x0, int x1, int y)
         {
+            if (x1 - x0 < 0)
+                return 0;
             Console.Error.WriteLine("genX {0} {1} {2}", x0, x1, y);
             int holes = 0;
-            int tries = rnd.Next((x1 - x0) / threshold)+1;
+            int tries = 1; // rnd.Next((x1 - x0) / threshold) + 1;
             for (int i = 0; i < tries; ++i)
             {
                 int dx = rnd.Next(x0, x1+1);
@@ -147,10 +159,11 @@ namespace Bomberman
 
         private int generateHolesY(int y0, int y1, int x)
         {
-
+            if (y1 - y0 < 0)
+                return 0;
             Console.Error.WriteLine("genY {0} {1} {2}", y0, y1, x);
             int holes = 0;
-            int tries = rnd.Next((y1 - y0) / threshold)+1 ;
+            int tries = 1;//rnd.Next((y1 - y0) / threshold)+1 ;
             for (int i = 0; i < tries; ++i)
             {
                 int dy = rnd.Next(y0, y1 + 1);
@@ -190,16 +203,16 @@ namespace Bomberman
                     Debug.WriteLine( "DoubleSpeed" );
                     modifiers[x, y] = DoubleSpeed.Instance;
                 }
-                else if (i < 50)
+                else if (i < 20)
                 {
                     Debug.WriteLine("ExtraBomb");
                     modifiers[x, y] = ExtraBomb.Instance;
-                }else if( i < 70 )
+                }else if( i < 30 )
                 {
                     Debug.WriteLine("Movement");
                     modifiers[x, y] = MovementThrowable.Instance;
                 }
-                else if (i < 90)
+                else if (i < 40)
                 {
                     Debug.WriteLine("Reverse");
                     modifiers[x, y] = ReverseMovement.Instance;

@@ -10,16 +10,17 @@ using Microsoft.Xna.Framework.Content;
 
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
+using Bomberman.Levels;
 namespace Bomberman
 {
     [DataContract()]
     public class Engine
     {
         #region Singleton
-        private static Engine instance = new Engine();
+        private static Engine instance;
         public Engine()
         {
-            Maze.GenerateRandom(4, 50);
+            Level = 1;
         }
         public static Engine Instance
         {
@@ -36,6 +37,30 @@ namespace Bomberman
      
         #endregion
 
+
+        ILevelGenerator levelGenerator = new SimpleLevelGenerator();
+        public void LevelAccomplished()
+        {
+            ++Level;
+            //Score+=1000;
+            GenerateLevel();
+        }
+
+        public void GenerateLevel()
+        {
+            levelGenerator.GenerateLevel(this);
+        }
+
+
+        public delegate void LevelFailedEventHandler();
+        public event LevelFailedEventHandler LevelFailed;
+
+
+        public int Level
+        {
+            get;
+            private set;
+        }
 
         private Maze maze = new Maze();
         [DataMember()]
@@ -68,6 +93,10 @@ namespace Bomberman
             gameObjects.Add(go);
         }
 
+        public void Clear()
+        {
+            gameObjects.Clear();
+        }
 
         [IgnoreDataMember()]
         public IEnumerable<Enemy> @Enemies
@@ -107,6 +136,17 @@ namespace Bomberman
                     gameObjects[k++] = gameObjects[i];
             }
             gameObjects.RemoveRange(k, gameObjects.Count - k);
+
+
+            if (!Player.Alive && LevelFailed!=null )
+                LevelFailed();
+            if (Enemies.Count() == 0 )
+                LevelAccomplished();
+        }
+
+        public bool LevelFailedEmpty
+        {
+            get { return LevelFailed == null;  }
         }
         #region SerializationStuff
         [DataMember()]

@@ -51,25 +51,32 @@ namespace Bomberman.Screens
             
         }
 
+        public void LevelFailed()
+        {
+            //powinno sie dodac jakis HighScoreScreen, ale to w przyszlosci
+            
+            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
+            
+        }
+
         /// <summary>
         /// C   Code for the game initialization. 
         ///     It's temporary solution. Will be moved to a level manager
         /// </summary>
         void InitializeGame()
         {
+            if (Engine.Instance == null)
+            {
                 Engine.Instance = new Engine();
-                Engine.Instance.AddPlayer(new Player());
-                Engine.Instance.AddObject(new Enemy());
-                Engine.Instance.AddObject(new Enemy());
-                Engine.Instance.AddObject(new Enemy());
-                Engine.Instance.AddObject(new Enemy());
-                Engine.Instance.AddObject(new Enemy());
+                Engine.Instance.GenerateLevel();
+            }
         }
         /// <summary>
         /// Load graphics content for the game.
         /// </summary>
         public override void Activate(bool instancePreserved)
         {
+            
             if (!instancePreserved)
             {
                 if (content == null)
@@ -90,10 +97,16 @@ namespace Bomberman.Screens
             }
 
 
+
+
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("Engine"))
             {
                 Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
+                Engine.Instance.fixDependencies();
             }
+
+            if (Engine.Instance.LevelFailedEmpty)
+                Engine.Instance.LevelFailed += new Engine.LevelFailedEventHandler(LevelFailed);
 
         }
 

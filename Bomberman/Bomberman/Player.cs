@@ -267,7 +267,7 @@ namespace Bomberman
 
 
         }
-        private void FindBeginPosition()
+        public void FindBeginPosition()
         {
             //int empties = 0;
             for (uint i = 0; i < Maze.Width; i++)
