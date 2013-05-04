@@ -416,14 +416,9 @@ namespace Bomberman
             }
             //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
-        public void stop() {
-            Direction = NONE_DIRECTION;
-        }
-
-        public override void Update(GameTime gt, int dx, int dy)
+        public void stop()
         {
-            // Jego nic to nie rusza
-            Update(gt);
+            Direction = NONE_DIRECTION;
         }
         public override void Update(GameTime gameTime)
         {

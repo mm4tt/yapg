@@ -24,6 +24,7 @@ namespace Bomberman
         }
         #endregion
 
+        
 
         private Maze maze = new Maze();
         public Maze @Maze
@@ -78,7 +79,7 @@ namespace Bomberman
 
         public void Update(GameTime gameTime)
         {
-            int k=0;
+            int k = 0;
             for (int i = 0; i < gameObjects.Count; ++i)
             {
                 gameObjects[i].Update(gameTime);
@@ -88,16 +89,11 @@ namespace Bomberman
             gameObjects.RemoveRange(k, gameObjects.Count - k);
         }
 
-        public void Update(GameTime gameTime, int dx, int dy)
-        {
-            int k = 0;
-            for (int i = 0; i < gameObjects.Count; ++i)
-            {
-                gameObjects[i].Update(gameTime,dx,dy);
-                if (!gameObjects[i].IsDead)
-                    gameObjects[k++] = gameObjects[i];
-            }
-        }
+        #region AccelometerStuff
+        public int dx;
+        public int dy;
+        public Boolean accelometrOn;
+        #endregion
 
         internal void SetSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {

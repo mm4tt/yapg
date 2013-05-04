@@ -131,72 +131,84 @@ namespace Bomberman
 
         protected float offset = 0.0f;
 
-
-        public override void Update(GameTime gt, int dx,int dy){
-            if (collide(this, Engine.Instance.Player))
-            {
-                //TODO: Game Over
-                Engine.Instance.Player.Alive = false;
+        protected void moveFluid(GameTime gt){
+             offset -= gt.ElapsedGameTime.Milliseconds * speed;
+             switch (faced)
+             {
+                 case Faced.North: y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
+                     if (offset <= 0.0f)
+                        position.Y--;
+                     break;
+                 case Faced.South: y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
+                     if (offset <= 0.0f)
+                         position.Y++;
+                     break;
+                 case Faced.West: x = (int)((position.X - (1 - offset)) * MazeBlock.width);
+                     if (offset <= 0.0f)
+                         position.X--;
+                     break;
+                 case Faced.East: x = (int)((position.X + (1 - offset)) * MazeBlock.width);
+                      if (offset <= 0.0f)
+                         position.X++;
+                      break;
+                 case Faced.Stoped:
+                      break;
             }
-            else if (Engine.Instance.Player.Alive)
+        }
+
+        protected void nextMoveAccelometer()
+        {
+            int dx = Engine.Instance.dx;
+            int dy = Engine.Instance.dy;
+            int nx = position.X + dx;
+            int ny = position.Y + dy;
+            if (nx < 0 || ny < 0)
+                faced = Faced.Stoped;
+            else
             {
-                if (offset > 0.0f)
-                {
-                    offset -= gt.ElapsedGameTime.Milliseconds * speed;
-                    switch (faced)
-                    {
-                        case Faced.North: y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
-                            if (offset <= 0.0f)
-                                position.Y--;
-                            break;
-                        case Faced.South: y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
-                            if (offset <= 0.0f)
-                                position.Y++;
-                            break;
-                        case Faced.West: x = (int)((position.X - (1 - offset)) * MazeBlock.width);
-                            if (offset <= 0.0f)
-                                position.X--;
-                            break;
-                        case Faced.East: x = (int)((position.X + (1 - offset)) * MazeBlock.width);
-                            if (offset <= 0.0f)
-                                position.X++;
-                            break;
-                        case Faced.Stoped:
-                            break;
-                    }
-
-
-                }
+                uint rnx = (uint)nx;
+                uint rny = (uint)ny;
+                if (!Engine.Instance.Maze.isPassable(rnx, rny))
+                    faced = Faced.Stoped;
                 else
                 {
-                    int nx = position.X + dx;
-                    int ny = position.Y + dy;
-                    if (nx < 0 || ny < 0)
+                    if (dy > 0)
+                        faced = Faced.South;
+                    else if (dy < 0)
+                        faced = Faced.North;
+                    else if (dx < 0)
+                        faced = Faced.West;
+                    else if (dx > 0)
+                        faced = Faced.East;
+                    else if (dx == 0 && dy == 0)
                         faced = Faced.Stoped;
-                    else
-                    {
-                        uint rnx = (uint)nx;
-                        uint rny = (uint)ny;
-                        if (!Engine.Instance.Maze.isPassable(rnx, rny))
-                            faced = Faced.Stoped;
-                        else
-                        {
-                            if (dy > 0)
-                                faced = Faced.South;
-                            else if (dy < 0)
-                                faced = Faced.North;
-                            else if (dx < 0)
-                                faced = Faced.West;
-                            else if (dx > 0)
-                                faced = Faced.East;
-                            else if (dx == 0 && dy == 0)
-                                faced = Faced.Stoped;
 
-                            offset = 1.0f;
-                        }
-                    }
+                    offset = 1.0f;
                 }
+            }
+        }
 
+        private void nextMoveArtificialIntelignece()
+        {
+            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
+            {
+                Point p = findPath();
+                if (p.Y > 0)
+                    faced = Faced.South;
+                else if (p.Y < 0)
+                    faced = Faced.North;
+                else if (p.X < 0)
+                    faced = Faced.West;
+                else if (p.X > 0)
+                    faced = Faced.East;
+                if (p.X == 0 && p.Y == 0)
+                    step();
+                else
+                    offset = 1.0f;
+            }
+            else
+            {
+                step();
             }
         }
         public override void Update(GameTime gt)
@@ -210,49 +222,14 @@ namespace Bomberman
             {
                 if (offset > 0.0f)
                 {
-                    offset -= gt.ElapsedGameTime.Milliseconds * speed;
-                    switch (faced)
-                    {
-                        case Faced.North: y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
-                            if (offset <= 0.0f)
-                                position.Y--;
-                            break;
-                        case Faced.South: y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
-                            if (offset <= 0.0f)
-                                position.Y++;
-                            break;
-                        case Faced.West: x = (int)((position.X - (1 - offset)) * MazeBlock.width);
-                            if (offset <= 0.0f)
-                                position.X--;
-                            break;
-                        case Faced.East: x = (int)((position.X + (1 - offset)) * MazeBlock.width);
-                            if (offset <= 0.0f)
-                                position.X++;
-                            break;
-                    }
+                    moveFluid(gt);
                 }
                 else
                 {
-                    if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
-                    {
-                        Point p = findPath();
-                        if (p.Y > 0)
-                            faced = Faced.South;
-                        else if (p.Y < 0)
-                            faced = Faced.North;
-                        else if (p.X < 0)
-                            faced = Faced.West;
-                        else if (p.X > 0)
-                            faced = Faced.East;
-                        if (p.X == 0 && p.Y == 0)
-                            step();
-                        else
-                            offset = 1.0f;
-                    }
+                    if (Engine.Instance.accelometrOn)
+                        nextMoveAccelometer();
                     else
-                    {
-                        step();
-                    }
+                        nextMoveArtificialIntelignece();
                 }
             }
         }

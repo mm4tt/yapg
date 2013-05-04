@@ -152,10 +152,9 @@ namespace Bomberman.Screens
 
             if (IsActive)
             {
-                if (!accelometerOn)
-                    Engine.Instance.Update(gameTime);
-                else
-                    Engine.Instance.Update(gameTime,dx, dy);
+               
+               Engine.Instance.Update(gameTime);
+              
             }
         }
 
@@ -270,30 +269,33 @@ namespace Bomberman.Screens
 
         #region AccelometerRegion
         Accelerometer accelerometer;
-        Boolean accelometerOn = false;
         static int threshold = 30;
-        int dx;
-        int dy;
 
         void StartAccelerometer()
         {
-            if (accelerometer == null)
+            if (IsActive)
             {
-                accelerometer = new Accelerometer { TimeBetweenUpdates = TimeSpan.FromMilliseconds(20) };
-                accelerometer.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<AccelerometerReading>>(AccelerometerCurrentValueChanged);
-                accelerometer.Start();
-            }
+                if (accelerometer == null)
+                {
+                    accelerometer = new Accelerometer { TimeBetweenUpdates = TimeSpan.FromMilliseconds(20) };
+                    accelerometer.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<AccelerometerReading>>(AccelerometerCurrentValueChanged);
+                    accelerometer.Start();
+                }
 
-            accelometerOn = true;
+                Engine.Instance.accelometrOn = true;
+            }
         }
 
         void StopAccelerometer()
         {
-            accelometerOn = false;
-            if (accelerometer != null)
+            if (IsActive)
             {
-                accelerometer.Stop();
-                accelerometer = null;
+                Engine.Instance.accelometrOn = false;
+                if (accelerometer != null)
+                {
+                    accelerometer.Stop();
+                    accelerometer = null;
+                }
             }
         }
         // zamieniam x z y bo gramy w ustawieniu poziomym
@@ -305,13 +307,13 @@ namespace Bomberman.Screens
                 float Vy = e.SensorReading.Acceleration.Y * 200;
                 if (Math.Abs(Vx) > Math.Abs(Vy))
                 {
-                    dy = Math.Sign(Vx);
-                    dx = 0;
+                    Engine.Instance.dy = Math.Sign(Vx);
+                    Engine.Instance.dx = 0;
                 }
                 else
                 {
-                    dx = Math.Sign(Vy);
-                    dy = 0;
+                    Engine.Instance.dx = Math.Sign(Vy);
+                    Engine.Instance.dy = 0;
                 }
                 
                 Debug.WriteLine("Accel : " + Vx);
