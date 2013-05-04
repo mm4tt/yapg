@@ -158,7 +158,10 @@ namespace Bomberman
              if (offset <= 0.0f && Engine.Instance.accelometrOn) // nast¹pi³ jakiœ ruch i ackelometr jesst czynny spróbuj siê przesunaæ o tyle ile trzeba
              {
                  moveFromAccelometer();
+                 
              }
+             x = Position.X*MazeBlock.width;
+             y = Position.Y*MazeBlock.height;
         }
 
         protected void moveFromAccelometer()
@@ -171,7 +174,7 @@ namespace Bomberman
             {
                 uint rnx = (uint)nx;
                 uint rny = (uint)ny;
-                if (!Engine.Instance.Maze.isPassable(rnx, rny))
+                if (!Engine.Instance.Maze.isPassable(rnx, rny)) // nie da siê do niego ruszyæ
                     return;
                 position.X = nx;
                 position.Y = ny;
@@ -226,6 +229,7 @@ namespace Bomberman
             if (state == State.Active)
             {
                 spriteBatch.Draw(tex[0], new Vector2(x, y), Color.White);
+                //spriteBatch.Draw(tex[0], new Rectangle(x*MazeBlock.width,y*MazeBlock.height,MazeBlock.width,MazeBlock.height),Color.White);
             }
         }
     }
