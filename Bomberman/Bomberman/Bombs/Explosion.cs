@@ -28,7 +28,7 @@ namespace Bomberman.Bombs
                 if (collide(en.Position.X * Maze.BlockWidth, en.Position.Y * Maze.BlockHeight, x, y))
                 {
                     en.IsDead = true;
-                    Engine.Instance.ScoreHolder.killedEnemy();
+                    Engine.Instance.ScoreHolder.KilledEnemy();
                 }
             }
         }

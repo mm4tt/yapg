@@ -41,7 +41,7 @@ namespace Bomberman
         ILevelGenerator levelGenerator = new SimpleLevelGenerator();
         public void LevelAccomplished()
         {
-            scoreHolder.nextLevel(Level);
+            scoreHolder.LevelPassed(Level);
             ++Level;
            
             GenerateLevel();

@@ -19,18 +19,18 @@ namespace Bomberman
             set { score = value; }
         }
 
-        public void killedEnemy()
+        public void KilledEnemy()
         {
             score += 5;
             Debug.WriteLine("Killed enemy. Score = " + score);
         }
-        public void destroyedObstacle()
+        public void DestroyedObstacle()
         {
             score += 1;
             Debug.WriteLine("Destoyed obstacle . Score = " + score);
         }
 
-        public void nextLevel(int oldLevel)
+        public void LevelPassed(int passedLevel)
         {
             score += 100;
             Debug.WriteLine("Level passed . Score = " + score);

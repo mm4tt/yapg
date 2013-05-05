@@ -196,7 +196,7 @@ namespace Bomberman
             modifiers[x, y] = null;
             if (blocks[x, y] is Obstacle)
             {
-                Engine.Instance.ScoreHolder.destroyedObstacle();
+                Engine.Instance.ScoreHolder.DestroyedObstacle();
                 blocks[x, y] = Empty.Instance;
                 int i = random.Next(100);
                 if (i < 10)
