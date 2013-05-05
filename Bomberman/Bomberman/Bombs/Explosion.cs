@@ -26,7 +26,10 @@ namespace Bomberman.Bombs
             foreach (var en in Engine.Instance.Enemies)
             {
                 if (collide(en.Position.X * Maze.BlockWidth, en.Position.Y * Maze.BlockHeight, x, y))
+                {
                     en.IsDead = true;
+                    Engine.Instance.ScoreHolder.killedEnemy();
+                }
             }
         }
 

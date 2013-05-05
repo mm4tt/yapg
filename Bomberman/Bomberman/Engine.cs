@@ -41,8 +41,9 @@ namespace Bomberman
         ILevelGenerator levelGenerator = new SimpleLevelGenerator();
         public void LevelAccomplished()
         {
+            scoreHolder.nextLevel(Level);
             ++Level;
-            //Score+=1000;
+           
             GenerateLevel();
         }
 
@@ -54,13 +55,22 @@ namespace Bomberman
 
         public delegate void LevelFailedEventHandler();
         public event LevelFailedEventHandler LevelFailed;
+     
+        private ScoreHolder scoreHolder = new ScoreHolder();
+        [DataMember()]
+        public ScoreHolder @ScoreHolder
+        {
+            get { return scoreHolder; }
+            set { scoreHolder = value; }
+        }
 
-
+        [DataMember()]
         public int Level
         {
             get;
-            private set;
+            set;
         }
+
 
         private Maze maze = new Maze();
         [DataMember()]
