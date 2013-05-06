@@ -19,6 +19,7 @@ namespace Bomberman
         private  Texture2D[] tex;
         public enum State {Active, Exploding, Dead}
 
+        private int range;
 
         public void Load(ContentManager content)
         {
@@ -53,18 +54,15 @@ namespace Bomberman
             get;
             set;
         }
-        Point position = new Point(0,0);
+        Point position;
         [DataMember()]
         public Point Position {
             get {
-                position.X = x;
-                position.Y = y;
                 return position;
             }
             set
             {
-                x = value.X;
-                y = value.Y;
+                position = value;
             }
         }
         public bool isActive(){
@@ -88,24 +86,34 @@ namespace Bomberman
                 return false;
             }
         }
-        public Bomb()
+
+        public static bool exist(int x, int y)
         {
-            this.x = 0;
-            this.y = 0;
+            foreach (Bomb b in Engine.Instance.Bombs)
+            {
+                if (b.position.X == x && b.position.Y == y)
+                    return true;
+            }
+            return false;
         }
 
-        public Bomb(int x, int y)
+        public Bomb()
         {
-            this.x = x;
-            this.y = y;
+            range = 1;
+        }
+
+        public Bomb(int x, int y, int range)
+        {
+            position = new Point(x, y);
+            this.range = range;
             timer = new BombTicker(1.1f);
             state = State.Active;
         }
 
-        public Bomb(int x, int y, float elapsed)
+        public Bomb(int x, int y, int range, float elapsed)
         {
-            this.x = x;
-            this.y = y;
+            position = new Point(x, y);
+            this.range = range;
             i = (int)(elapsed / 1.2f)*2;
             if (elapsed % 1.2f > 1.1f)
             {
@@ -132,7 +140,7 @@ namespace Bomberman
                     {
                         timer = new BombTicker(1);
                         state = State.Exploding;
-                        explosion = new Explosion(x, y);
+                        explosion = new Explosion(position.X, position.Y, range);
                     }
                     else timer = new BombTicker(0.1f + (i + 1) % 2);
                 }
@@ -156,7 +164,7 @@ namespace Bomberman
             {
                 //if (tex == null)
                     Load(contentManager);
-                spriteBatch.Draw(tex[i % 2], new Rectangle(x,y,Maze.BlockWidth,Maze.BlockHeight), Color.White);
+                    spriteBatch.Draw(tex[i % 2], new Rectangle((int)(position.X * Maze.BlockWidth), (int)(position.Y * Maze.BlockHeight), Maze.BlockWidth, Maze.BlockHeight), Color.White);
             }
         }
     }

@@ -15,17 +15,33 @@ namespace Bomberman.Bombs
     {
         //static Texture2D tex;
         private Texture2D tex;
+        int range;
+        List<Point> fire = new List<Point>();
+        static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0) };
 
-        // dla explozji statyczne pola nie byly by takie zle
+        Point position;
+
+        [DataMember()]
+        public Point Position
+        {
+            set
+            {
+                position = value;
+            }
+            get { return position; }
+        }
+
         public void Load(ContentManager content)
         {
             tex = content.Load<Texture2D>("explosion");
         }
         private void Destroy(int x, int y)
         {
+            Engine.Instance.Maze.Destroy((uint)x, (uint)y);
+
             foreach (var en in Engine.Instance.Enemies)
             {
-                if (collide(en.Position.X * Maze.BlockWidth, en.Position.Y * Maze.BlockHeight, x, y))
+                if (en.Position.X == x && en.Position.Y == y)
                 {
                     en.IsDead = true;
                     Engine.Instance.ScoreHolder.KilledEnemy();
@@ -33,44 +49,53 @@ namespace Bomberman.Bombs
             }
         }
 
-        public Explosion(int x, int y)
+        public Explosion(int x, int y, int range)
         {
-            this.x = x;
-            this.y = y;
-            int cx = x + Maze.BlockWidth / 2, cy = y + Maze.BlockHeight / 2;
+            position = new Point(x, y);
+            this.range = range;
+            
 
-            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight));
             Destroy(x, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth) + 1, (uint)(cy / Maze.BlockHeight));
-            Destroy(x + 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth) - 1, (uint)(cy / Maze.BlockHeight));
-            Destroy(x - 1, y);
-            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight) + 1);
-            Destroy(x, y + 1);
-            Engine.Instance.Maze.Destroy((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight) - 1);
-            Destroy(x, y - 1);
+            fire.Add(new Point(x, y));
+
+            for (int i = 0; i < dirs.Length; i++)
+            {
+                for (int j = 1; j <= range; j++)
+                {
+                    int dx = x + j * dirs[i].X;
+                    int dy = y + j*dirs[i].Y;
+                    if( dx >= Maze.Width || dx < 0 || dy >= Maze.Height || dy < 0 )
+                        break;
+                    if (!Engine.Instance.Maze.isSolid((uint)dx, (uint)dy))
+                    {
+                        fire.Add(new Point(dx, dy));
+                    }
+                    if (!Engine.Instance.Maze.isPassable((uint)dx, (uint)dy))
+                    {
+                        Engine.Instance.Maze.Destroy((uint)dx, (uint)dy);
+                        break;
+                    }
+                    Destroy(dx, dy);
+                }
+            }
         }
 
         public override void Update(GameTime gt)
         {
         }
 
-        private void DrawAt(int x, int y, SpriteBatch spriteBatch)
-        {
-            int cx = x + Maze.BlockWidth / 2, cy = y + Maze.BlockHeight / 2;
-            if (Engine.Instance.Maze.isPassable((uint)(cx / Maze.BlockWidth), (uint)(cy / Maze.BlockHeight)))
-                spriteBatch.Draw(tex, new Rectangle(x, y, Maze.BlockWidth, Maze.BlockHeight), Color.White);
-        }
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             //if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
             Load(contentManager);
-            DrawAt(x, y - Maze.BlockHeight, spriteBatch);
-            DrawAt(x - Maze.BlockWidth, y, spriteBatch);
-            DrawAt(x, y, spriteBatch);
-            DrawAt(x + Maze.BlockWidth, y, spriteBatch);
-            DrawAt(x, y + Maze.BlockHeight, spriteBatch);
+
+            spriteBatch.Draw(tex, new Rectangle(position.X * Maze.BlockWidth, position.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+
+            foreach (Point p in fire)
+            {
+                spriteBatch.Draw(tex, new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+            }
         }
     }
 }

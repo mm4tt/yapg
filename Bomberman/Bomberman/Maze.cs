@@ -231,7 +231,7 @@ namespace Bomberman
 
         public bool isSolid(uint x, uint y)
         {
-            return (blocks[x, y] is Empty) || (blocks[x, y] is Obstacle);
+            return !((blocks[x, y] is Empty) || (blocks[x, y] is Obstacle));
         }
 
 

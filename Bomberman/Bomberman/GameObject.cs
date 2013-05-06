@@ -41,7 +41,7 @@ namespace Bomberman
         public bool IsDead { get; set; }
 
 
-      
+
         protected int x;
         protected int y;
         [DataMember()]

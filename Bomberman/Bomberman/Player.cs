@@ -60,7 +60,7 @@ namespace Bomberman
          const int NONE_DIRECTION = 0;
          const int INTERVAL_ACTION = 500;
          const int INITIAL_BOMBS_AVAILABLE = 1;
-         const int INITIAL_EXPLOSION_RANGE = 1;
+         const int INITIAL_EXPLOSION_RANGE = 2;
          const int UP = 1;
          const int RIGHT = 2;
          const int DOWN = 3;
@@ -327,8 +327,8 @@ namespace Bomberman
             
             if (count < BombsAvailable)
             {
-                Debug.WriteLine("setBomb");
-                Engine.Instance.AddObject(new Bomb(Position.X * (int)Maze.BlockWidth, Position.Y * (int)Maze.BlockHeight));
+                Debug.WriteLine("setBomb "+Position.X+" "+Position.Y+" "+explosionRange);
+                Engine.Instance.AddObject(new Bomb(Position.X, Position.Y, explosionRange));
             }
 
            
@@ -348,7 +348,7 @@ namespace Bomberman
                             foreach (var bomb in Engine.Instance.Bombs )
                             {
                                
-                                if ( (int)(bomb.Position.X /Maze.BlockWidth) == Position.X && (int)( bomb.Position.Y / Maze.BlockHeight ) == Position.Y + 1)
+                                if ( (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y + 1))
                                 {
                                     blocked = true;
                                     break;
@@ -367,7 +367,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X + 1 && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y)
+                                if (bomb.Position.X == Position.X + 1 && bomb.Position.Y == Position.Y)
                                 {
                                     blocked = true;
                                     break;
@@ -385,7 +385,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y - 1)
+                                if (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y - 1)
                                 {
                                     blocked = true;
                                     break;
@@ -403,7 +403,7 @@ namespace Bomberman
                             bool blocked = false;
                             foreach (var bomb in Engine.Instance.Bombs)
                             {
-                                if ((int)(bomb.Position.X / Maze.BlockWidth) == Position.X - 1 && (int)(bomb.Position.Y / Maze.BlockHeight) == Position.Y)
+                                if (bomb.Position.X == Position.X - 1 && bomb.Position.Y == Position.Y)
                                 {
                                     blocked = true;
                                     break;
