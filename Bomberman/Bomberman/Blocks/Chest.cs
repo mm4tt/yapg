@@ -27,7 +27,8 @@ namespace Bomberman
             SetOneColorTexture(Color.Green, graphicDevice);
         }
     }
-    class BombRangeChest : Chest { 
+    class BombRangeChest : Chest
+    {
         #region Singleton
         private static BombRangeChest instance = new BombRangeChest();
         private BombRangeChest() { }
@@ -43,7 +44,7 @@ namespace Bomberman
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
             SetOneColorTexture(Color.Aqua, graphicDevice);
-        }        
+        }
     }
     class CrazyBombChest : Chest
     {
