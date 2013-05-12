@@ -67,7 +67,7 @@ namespace Bomberman
          const int NONE_DIRECTION = 0;
          const int INTERVAL_ACTION = 500;
          const int INITIAL_BOMBS_AVAILABLE = 1;
-         const int INITIAL_EXPLOSION_RANGE = 2;
+         const int INITIAL_EXPLOSION_RANGE = 1;
          const int UP = 1;
          const int RIGHT = 2;
          const int DOWN = 3;

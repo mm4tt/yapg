@@ -186,7 +186,7 @@ namespace Bomberman
 
                     blocks[x, y].Draw((uint)p.X, (uint)p.Y,spriteBatch,contentManager);
                     if (modifiers[x, y] != null)
-                        Chest.Instance.Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
+                        modifiers[x, y].getBlock().Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
                 }
                 Console.WriteLine();
             }
@@ -202,27 +202,46 @@ namespace Bomberman
                 Engine.Instance.ScoreHolder.DestroyedObstacle();
                 blocks[x, y] = Empty.Instance;
                 int i = random.Next(100);
-                if (i < 10)
+
+
+                if (i < 5)
                 {
-                    Debug.WriteLine( "DoubleSpeed" );
+                   // Debug.WriteLine("DoubleSpeed");
                     modifiers[x, y] = DoubleSpeed.Instance;
+                }
+                else if (i < 15)
+                {
+                    //Debug.WriteLine("ExtraBomb");
+                    modifiers[x, y] = ExtraBomb.Instance;
                 }
                 else if (i < 20)
                 {
-                    Debug.WriteLine("ExtraBomb");
-                    modifiers[x, y] = ExtraBomb.Instance;
-                }else if( i < 30 )
-                {
-                    Debug.WriteLine("Movement");
+                   // Debug.WriteLine("Movement");
                     modifiers[x, y] = MovementThrowable.Instance;
                 }
-                else if (i < 40)
+                else if (i < 25)
                 {
-                    Debug.WriteLine("Reverse");
+                   // Debug.WriteLine("Reverse");
                     modifiers[x, y] = ReverseMovement.Instance;
                 }
+                else if (i < 30)
+                {
+                    //Debug.WriteLine("Reverse");
+                    modifiers[x, y] = CrazyBombModifier.Instance;
+                }
+                else if (i < 35) {
+                    modifiers[x, y] = DispersionEnemyModifier.Instance;
+                }
+                else if (i < 45)
+                {
+                    modifiers[x, y] = BombRangeModifier.Instance;
+                }
+                else if (i < 55)
+                {
+                    modifiers[x, y] = SpeedModifier.Instance;
+                }
                 
-
+                
             }
             explosions.Add(new Point((int)x, (int)y));
         }
