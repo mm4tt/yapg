@@ -207,11 +207,13 @@ namespace Bomberman
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
+
             if (state == State.Active)
             {
              //   if (tex == null)
+                Point p = StdGameScaler.Instance.cast(position);
                     Load(contentManager);
-                spriteBatch.Draw(tex[0], new Rectangle(position.X * Maze.BlockWidth, position.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+                spriteBatch.Draw(tex[0], new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
             }
         }
     }

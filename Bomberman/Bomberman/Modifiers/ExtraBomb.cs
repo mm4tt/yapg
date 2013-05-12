@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bomberman
 {
-    class ExtraBomb : EmptyModifier
+    class ExtraBomb : Modifier
     {
         #region Singleton
         private static ExtraBomb instance = new ExtraBomb();

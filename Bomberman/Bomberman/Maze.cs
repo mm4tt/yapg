@@ -16,16 +16,17 @@ namespace Bomberman
     public class Maze 
 
     {
-        
+        public const int ScreenWidth = 800;
+        public const int ScreenHeight = 480;
         public const int Height=15;
         public const int Width = 25;
         public static int BlockHeight
         {
-            get { return 480 / Height; }
+            get { return StdGameScaler.Instance.blockHeight( ); }
         }
         public static int BlockWidth
         {
-            get { return 800 / Width; }
+            get { return ScreenWidth / Width; }
         }
 
 
@@ -181,9 +182,11 @@ namespace Bomberman
             {
                 for (uint x = 0; x < Width; ++x)
                 {
-                    blocks[x, y].Draw(x, y,spriteBatch,contentManager);
+                    Point p = StdGameScaler.Instance.cast(x, y);
+
+                    blocks[x, y].Draw((uint)p.X, (uint)p.Y,spriteBatch,contentManager);
                     if (modifiers[x, y] != null)
-                        Chest.Instance.Draw(x, y,spriteBatch,contentManager);
+                        Chest.Instance.Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
                 }
                 Console.WriteLine();
             }

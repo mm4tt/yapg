@@ -35,11 +35,18 @@ namespace Bomberman
         public void onBegin(Player p) {
             Debug.WriteLine("begin effect");
             mod.onBegin(p);
+            
         }
         public void onEnd(Player p) {
             mod.onEnd(p);
         }
-
+        public void Draw(int x, int y, SpriteBatch spriteBatch, ContentManager contentManager ) {
+            if (mod.getRespirationTime() > 0) {
+                MazeBlock block = mod.getBlock();
+                block.Draw((uint)x, (uint)y, spriteBatch, contentManager);
+            }
+           
+        }
         public Effect(Modifier m, int _time)
         {
             mod = m;
@@ -85,6 +92,9 @@ namespace Bomberman
         
         #endregion
         #region ATTRIBUTES
+        public List<Effect> Effects {
+            get { return effects;  }
+        }
         [DataMember()]
         public int BombsAvailable {
             get { return bombsAvailable; }
@@ -222,10 +232,11 @@ namespace Bomberman
       
         void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
+            Point p = StdGameScaler.Instance.cast(x, y);
             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                  LoadGraphic(spriteBatch, contentManager);
-            spriteBatch.Draw(texture, ComputePosition((int)x, (int)y), Color.Black);
+            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
         }
 
 

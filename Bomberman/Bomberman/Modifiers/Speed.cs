@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bomberman
 {
-    class DoubleSpeed : EmptyModifier
+    class DoubleSpeed : Modifier
     {
         #region Singleton
         private static DoubleSpeed instance = new DoubleSpeed();

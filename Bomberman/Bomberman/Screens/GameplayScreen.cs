@@ -98,7 +98,7 @@ namespace Bomberman.Screens
 
 
 
-
+            
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("Engine"))
             {
                 Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
@@ -229,9 +229,9 @@ namespace Bomberman.Screens
             // spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
             //  enemyPosition, Color.DarkRed);
 
-
+            
             Engine.Instance.Draw(spriteBatch,content);
-           
+            
             
                 spriteBatch.End();
             

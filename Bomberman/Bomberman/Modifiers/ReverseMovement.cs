@@ -7,7 +7,7 @@ namespace Bomberman.Modifiers
 {
      
        
-    class ReverseMovement : EmptyModifier
+    class ReverseMovement : Modifier
     {
         #region Singleton
         private static ReverseMovement instance = new ReverseMovement();

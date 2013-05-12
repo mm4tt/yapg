@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Bomberman.Modifiers
 {
-    class MovementThrowable : EmptyModifier
+    class MovementThrowable :Modifier
     {
          #region Singleton
         private static MovementThrowable instance = new MovementThrowable();

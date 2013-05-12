@@ -52,6 +52,7 @@ namespace Bomberman
             levelGenerator.GenerateLevel(this);
         }
 
+        
 
         public delegate void LevelFailedEventHandler();
         public event LevelFailedEventHandler LevelFailed;
@@ -90,7 +91,13 @@ namespace Bomberman
         {
             AddObject(player = p);
         }
-
+        private Panel panel;
+        [IgnoreDataMember()]
+        public Panel @Panel
+        {
+            get { return panel; }
+            set { panel = value; }
+        }
 
         private List<GameObject> gameObjects = new List<GameObject>();
 
@@ -134,6 +141,7 @@ namespace Bomberman
             Maze.Draw(spriteBatch,contentManager);
             foreach (var o in gameObjects)
                 o.Draw(spriteBatch, contentManager);
+            Panel.Draw(0, 0, spriteBatch, contentManager);
         }
 
         public void Update(GameTime gameTime)
