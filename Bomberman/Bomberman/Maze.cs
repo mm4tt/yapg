@@ -13,16 +13,15 @@ using Bomberman.GameSaving;
 namespace Bomberman
 {
     [DataContractAttribute()]
-    public class Maze 
-
+    public class Maze
     {
         public const int ScreenWidth = 800;
         public const int ScreenHeight = 480;
-        public const int Height=15;
+        public const int Height = 15;
         public const int Width = 25;
         public static int BlockHeight
         {
-            get { return StdGameScaler.Instance.blockHeight( ); }
+            get { return StdGameScaler.Instance.blockHeight(); }
         }
         public static int BlockWidth
         {
@@ -31,11 +30,13 @@ namespace Bomberman
 
 
         private List<Point> explosions = new List<Point>(); // ? tutaj czy nie lepie w konstrukotrze ?
-        public void clearExplosions() {
+        public void clearExplosions()
+        {
             explosions.Clear();
         }
         [DataMember()]
-        public List<Point> Explosions {
+        public List<Point> Explosions
+        {
             get { return explosions; }
             set { explosions = value; }
         }
@@ -47,8 +48,8 @@ namespace Bomberman
 
             wBlock = new ArrayWrapper<MazeBlock>(blocks);
             wModifier = new ArrayWrapper<Modifier>(modifiers);
-           
-            
+
+
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace Bomberman
         {
             if (x1 - x0 <= threshold || y1 - y0 <= threshold)
                 return;
-            int dx,dy;
+            int dx, dy;
             do
             {
                 dx = rnd.Next(1, x1 - x0);
@@ -107,18 +108,18 @@ namespace Bomberman
 
 
             //create holes in the 3 walls (maybe more holes with some probability based on a wall length)
-            bool wasZero = generateHolesX(x0, x0 + dx - 1,y0+dy) == 0;
-            if (wasZero) 
+            bool wasZero = generateHolesX(x0, x0 + dx - 1, y0 + dy) == 0;
+            if (wasZero)
                 while (generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0) ;
-            else 
+            else
                 wasZero = generateHolesX(x0 + dx + 1, x1, y0 + dy) == 0;
-            if (wasZero) 
-                while (generateHolesY(y0, y0+dy-1, x0+dx) == 0) ;
-            else 
+            if (wasZero)
+                while (generateHolesY(y0, y0 + dy - 1, x0 + dx) == 0) ;
+            else
                 wasZero = generateHolesY(y0, y0 + dy - 1, x0 + dx) == 0;
-            if (wasZero) 
+            if (wasZero)
                 while (generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0) ;
-            else 
+            else
                 wasZero = generateHolesY(y0 + dy + 1, y1, x0 + dx) == 0;
 
 
@@ -134,9 +135,9 @@ namespace Bomberman
 
 
             GenerateRandom(x0, y0, x0 + dx - 1, y0 + dy - 1);
-            GenerateRandom(x0+dx+1, y0, x1, y0 + dy - 1);
-            GenerateRandom(x0, y0+dy+1, x0 + dx - 1, y1);
-            GenerateRandom(x0 + dx + 1, y0 + dy + 1, x1,y1);
+            GenerateRandom(x0 + dx + 1, y0, x1, y0 + dy - 1);
+            GenerateRandom(x0, y0 + dy + 1, x0 + dx - 1, y1);
+            GenerateRandom(x0 + dx + 1, y0 + dy + 1, x1, y1);
         }
 
         private int generateHolesX(int x0, int x1, int y)
@@ -148,7 +149,7 @@ namespace Bomberman
             int tries = 1; // rnd.Next((x1 - x0) / threshold) + 1;
             for (int i = 0; i < tries; ++i)
             {
-                int dx = rnd.Next(x0, x1+1);
+                int dx = rnd.Next(x0, x1 + 1);
                 if (blocks[dx, y + 1] == Empty.Instance && blocks[dx, y - 1] == Empty.Instance)
                 {
                     ++holes;
@@ -168,7 +169,7 @@ namespace Bomberman
             for (int i = 0; i < tries; ++i)
             {
                 int dy = rnd.Next(y0, y1 + 1);
-                if (blocks[x+1,dy] == Empty.Instance && blocks[x-1, dy] == Empty.Instance)
+                if (blocks[x + 1, dy] == Empty.Instance && blocks[x - 1, dy] == Empty.Instance)
                 {
                     ++holes;
                     blocks[x, dy] = Empty.Instance;
@@ -184,9 +185,9 @@ namespace Bomberman
                 {
                     Point p = StdGameScaler.Instance.cast(x, y);
 
-                    blocks[x, y].Draw((uint)p.X, (uint)p.Y,spriteBatch,contentManager);
+                    blocks[x, y].Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
                     if (modifiers[x, y] != null)
-                        Chest.Instance.Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
+                        modifiers[x, y].getBlock().Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
                 }
                 Console.WriteLine();
             }
@@ -202,26 +203,46 @@ namespace Bomberman
                 Engine.Instance.ScoreHolder.DestroyedObstacle();
                 blocks[x, y] = Empty.Instance;
                 int i = random.Next(100);
-                if (i < 10)
+
+
+                if (i < 5)
                 {
-                    Debug.WriteLine( "DoubleSpeed" );
+                    // Debug.WriteLine("DoubleSpeed");
                     modifiers[x, y] = DoubleSpeed.Instance;
+                }
+                else if (i < 15)
+                {
+                    //Debug.WriteLine("ExtraBomb");
+                    modifiers[x, y] = ExtraBomb.Instance;
                 }
                 else if (i < 20)
                 {
-                    Debug.WriteLine("ExtraBomb");
-                    modifiers[x, y] = ExtraBomb.Instance;
-                }else if( i < 30 )
-                {
-                    Debug.WriteLine("Movement");
+                    // Debug.WriteLine("Movement");
                     modifiers[x, y] = MovementThrowable.Instance;
                 }
-                else if (i < 40)
+                else if (i < 25)
                 {
-                    Debug.WriteLine("Reverse");
+                    // Debug.WriteLine("Reverse");
                     modifiers[x, y] = ReverseMovement.Instance;
                 }
-                
+                else if (i < 30)
+                {
+                    //Debug.WriteLine("Reverse");
+                    modifiers[x, y] = CrazyBombModifier.Instance;
+                }
+                else if (i < 35)
+                {
+                    modifiers[x, y] = DispersionEnemyModifier.Instance;
+                }
+                else if (i < 45)
+                {
+                    modifiers[x, y] = BombRangeModifier.Instance;
+                }
+                else if (i < 55)
+                {
+                    modifiers[x, y] = SpeedModifier.Instance;
+                }
+
 
             }
             explosions.Add(new Point((int)x, (int)y));
@@ -254,17 +275,18 @@ namespace Bomberman
                 return wModifier;
             }
         }
-        public void destroyModifier( uint x, uint y) {
-            modifiers[ x,y ] = null;
+        public void destroyModifier(uint x, uint y)
+        {
+            modifiers[x, y] = null;
         }
         private ArrayWrapper<MazeBlock> wBlock;
-        private ArrayWrapper<Modifier>  wModifier;
+        private ArrayWrapper<Modifier> wModifier;
 
         private MazeBlock[,] blocks = new MazeBlock[Width, Height];
         private Modifier[,] modifiers = new Modifier[Width, Height];
         #region DataContractSerializationStuff
-        
-        
+
+
         [DataMember()]
         public string[] LinearMazeBlock
         {
@@ -328,7 +350,7 @@ namespace Bomberman
                     for (int y = 0; y < Height; ++y)
                     {
                         Debug.WriteLine(tmp[x * Height + y]);
-                      
+
                         modifiers[x, y] = ser.Deserialize(tmp[x * Height + y]);
                     }
                 }
@@ -360,7 +382,7 @@ namespace Bomberman
 
     }
 
-        
 
-    
+
+
 }
