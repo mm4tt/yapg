@@ -37,6 +37,7 @@ namespace Bomberman
      
         #endregion
 
+        
 
         ILevelGenerator levelGenerator = new SimpleLevelGenerator();
         public void LevelAccomplished()
@@ -138,7 +139,7 @@ namespace Bomberman
 
         public void Update(GameTime gameTime)
         {
-            int k=0;
+            int k = 0;
             for (int i = 0; i < gameObjects.Count; ++i)
             {
                 gameObjects[i].Update(gameTime);
@@ -185,7 +186,16 @@ namespace Bomberman
         {
            
             fixPlayer();
-        }
+        }   
         #endregion
+
+        #region AccelometerStuff
+        public int dx;
+        public int dy;
+        public Boolean accelometrOn;
+        #endregion
+
+        
+        
     }
 }

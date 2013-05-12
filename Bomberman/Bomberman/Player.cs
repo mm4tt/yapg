@@ -469,7 +469,8 @@ namespace Bomberman
             Debug.WriteLine(direction.ToString() + " " + range.ToString());
             //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
-        public void stop() {
+        public void stop()
+        {
             Direction = NONE_DIRECTION;
         }
         public override void Update(GameTime gameTime)

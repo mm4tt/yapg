@@ -16,9 +16,11 @@ namespace Bomberman
         Texture2D[] tex;
         static Random random = new Random(DateTime.Now.Millisecond);
         const float speed = 0.003f ; // prêdkoœæ w polach/ms
+
         public enum State { Active, Dead };
-        public enum Faced { South=0, North, West, East };
-        static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0)};
+        public enum Faced { South=0, North, West, East, Stopped };
+        static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0), new Point(0,0)};
+
 
         [DataMember()]
         public State state
@@ -148,6 +150,79 @@ namespace Bomberman
 
         protected float offset = 0.0f;
 
+        protected void move(GameTime gt){
+             offset -= gt.ElapsedGameTime.Milliseconds * speed;
+             switch (faced)
+             {
+                 case Faced.North: // y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
+                     if (offset <= 0.0f)
+                        position.Y--;
+                     break;
+                 case Faced.South: //y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
+                     if (offset <= 0.0f)
+                         position.Y++;
+                     break;
+                 case Faced.West: //x = (int)((position.X - (1 - offset)) * MazeBlock.width);
+                     if (offset <= 0.0f)
+                         position.X--;
+                     break;
+                 case Faced.East: //x = (int)((position.X + (1 - offset)) * MazeBlock.width);
+                      if (offset <= 0.0f)
+                         position.X++;
+                      break;
+                 case Faced.Stopped:
+                      break;
+            }
+
+             if (offset <= 0.0f && Engine.Instance.accelometrOn) // nast¹pi³ jakiœ ruch i ackelometr jesst czynny spróbuj siê przesunaæ o tyle ile trzeba
+             {
+                 moveFromAccelometer();
+                 
+             }
+             x = Position.X*Maze.BlockWidth;
+             y = Position.Y*Maze.BlockHeight;
+        }
+
+        protected void moveFromAccelometer()
+        {
+            int nx = position.X + Engine.Instance.dx;
+            int ny = position.Y + Engine.Instance.dy;
+            if (nx < 0 || ny < 0 || nx >= Maze.BlockHeight || ny >= Maze.BlockWidth) // wyje¿d¿amy poza polansze
+                return;
+            else
+            {
+                uint rnx = (uint)nx;
+                uint rny = (uint)ny;
+                if (!Engine.Instance.Maze.isPassable(rnx, rny)) // nie da siê do niego ruszyæ
+                    return;
+                position.X = nx;
+                position.Y = ny;
+            }
+        }
+
+        protected void nextMoveArtificialIntelignece()
+        {
+            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
+            {
+                Point p = findPath();
+                if (p.Y > 0)
+                    faced = Faced.South;
+                else if (p.Y < 0)
+                    faced = Faced.North;
+                else if (p.X < 0)
+                    faced = Faced.West;
+                else if (p.X > 0)
+                    faced = Faced.East;
+                if (p.X == 0 && p.Y == 0)
+                    step();
+                else
+                    offset = 1.0f;
+            }
+            else
+            {
+                step();
+            }
+        }
         public override void Update(GameTime gt)
         {
             if (this.position.X == Engine.Instance.Player.Position.X && this.position.Y == Engine.Instance.Player.Position.Y)
@@ -158,6 +233,7 @@ namespace Bomberman
             {
                 if (offset > 0.0f)
                 {
+/*<<<<<<< HEAD
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
                     switch (faced)
                     {
@@ -178,29 +254,13 @@ namespace Bomberman
                                 position.X++;
                             break;
                     }
+=======*/
+                    move(gt);
+//>>>>>>> i003_z006b
                 }
                 else
                 {
-                    if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
-                    {
-                        Point p = findPath();
-                        if (p.Y > 0)
-                            faced = Faced.South;
-                        else if (p.Y < 0)
-                            faced = Faced.North;
-                        else if (p.X < 0)
-                            faced = Faced.West;
-                        else if (p.X > 0)
-                            faced = Faced.East;
-                        if (p.X == 0 && p.Y == 0)
-                            step();
-                        else
-                            offset = 1.0f;
-                    }
-                    else
-                    {
-                        step();
-                    }
+                    nextMoveArtificialIntelignece();
                 }
             }
         }
