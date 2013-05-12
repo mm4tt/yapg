@@ -73,9 +73,6 @@
     <Compile Include="Bombs\BombTicker.cs" />
     <Compile Include="Bombs\Explosion.cs" />
     <Compile Include="Blocks\Chest.cs" />
-    <Compile Include="Modifiers\BombRangeModifier.cs" />
-    <Compile Include="Modifiers\CrazyBombModifier.cs" />
-    <Compile Include="Modifiers\DispersionEnemyModifier.cs" />
     <Compile Include="Panel.cs" />
     <Compile Include="Scaler.cs" />
     <Compile Include="GameSaving\DataContractSaver.cs" />
