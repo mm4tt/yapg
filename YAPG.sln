@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bomberman", "Bomberman\Bomberman\Bomberman.csproj", "{DB2A39F0-C4F7-4750-83BD-6542CBD5B521}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BombermanContent", "Bomberman\BombermanContent\BombermanContent.contentproj", "{58ED3B4E-CDC5-4C26-975B-6F2A3AB41E43}"
-EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject1", "ModelingProject1\ModelingProject1.modelproj", "{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +41,6 @@ Global
 		{58ED3B4E-CDC5-4C26-975B-6F2A3AB41E43}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
 		{58ED3B4E-CDC5-4C26-975B-6F2A3AB41E43}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
 		{58ED3B4E-CDC5-4C26-975B-6F2A3AB41E43}.Release|x86.ActiveCfg = Release|Windows Phone
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|Windows Phone.ActiveCfg = Release|Any CPU
-		{4D1F24F9-ACC6-4A06-ADAC-212A8BEBBD0D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

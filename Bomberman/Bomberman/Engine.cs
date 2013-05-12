@@ -92,22 +92,6 @@ namespace Bomberman
             AddObject(player = p);
         }
 
-        private int level = 1;
-        private int score = 0;
-
-        [DataMember()]
-        public int Level
-        {
-            get { return level; }
-            set{ level = value;}
-        }
-        [DataMember()]
-        public int Score
-        {
-            get{ return score;}
-            set{ score = value;}
-        }
-
         private List<GameObject> gameObjects = new List<GameObject>();
 
         /// <summary>
