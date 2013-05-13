@@ -18,24 +18,19 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
-<<<<<<< HEAD
-=======
+
         public override MazeBlock getBlock()
         {
             return CrazyBombChest.Instance;
         }
->>>>>>> i003_z002b
+
         override public  void onUpdate(Player player)
         {
             player.setBomb();
         }
         override public int getRespirationTime()
         {
-<<<<<<< HEAD
-            return 1000000;
-=======
             return 30000;
->>>>>>> i003_z002b
         }
     }
 }
