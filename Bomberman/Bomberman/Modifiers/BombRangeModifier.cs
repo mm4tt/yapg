@@ -18,11 +18,14 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
+<<<<<<< HEAD
         public override MazeBlock getBlock()
         {
             return BombRangeChest.Instance;
         }
 
+=======
+>>>>>>> parent of 798b66f... Kolory modyfikatorow
         public override void onBegin(Player player)
         {
             player.ExplosionRange += 1;
