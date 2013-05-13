@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Bomberman.Modifiers
 {
-     
-       
-    class ReverseMovement : EmptyModifier
+
+
+    class ReverseMovement : Modifier
     {
         #region Singleton
         private static ReverseMovement instance = new ReverseMovement();
@@ -19,25 +19,34 @@ namespace Bomberman.Modifiers
                 return instance;
             }
         }
-     #endregion
+        #endregion
+        public override MazeBlock getBlock()
+        {
+            return ReverseMovementChest.Instance;
+        }
         public override void onUpdate(Player player)
         {
-            if (player.Touched) {
-                if (player.Direction == 1) {
+            if (player.Touched)
+            {
+                if (player.Direction == 1)
+                {
                     player.Direction = 3;
-                }else
-                if (player.Direction == 3)
-                {
-                    player.Direction = 1;
-                }else
-                if (player.Direction == 2)
-                {
-                    player.Direction = 4;
-                }else
-                if (player.Direction == 4)
-                {
-                    player.Direction = 2;
                 }
+                else
+                    if (player.Direction == 3)
+                    {
+                        player.Direction = 1;
+                    }
+                    else
+                        if (player.Direction == 2)
+                        {
+                            player.Direction = 4;
+                        }
+                        else
+                            if (player.Direction == 4)
+                            {
+                                player.Direction = 2;
+                            }
             }
         }
         public override int getRespirationTime()

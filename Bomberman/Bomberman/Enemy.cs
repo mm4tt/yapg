@@ -269,9 +269,10 @@ namespace Bomberman
         {
             if (state == State.Active)
             {
-             //   if (tex == null)
-                    Load(contentManager);
-                spriteBatch.Draw(tex[0], new Rectangle(position.X * Maze.BlockWidth, position.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+                Point p = StdGameScaler.Instance.cast(position);
+                     Load(contentManager);
+              
+              spriteBatch.Draw(tex[0], new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
             }
         }
     }

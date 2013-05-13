@@ -39,7 +39,13 @@ namespace Bomberman
         public void onEnd(Player p) {
             mod.onEnd(p);
         }
-
+        public void Draw(int x, int y, SpriteBatch spriteBatch, ContentManager contentManager ) {
+            if (mod.getRespirationTime() > 0) {
+                MazeBlock block = mod.getBlock();
+                block.Draw((uint)x, (uint)y, spriteBatch, contentManager);
+            }
+           
+        }
         public Effect(Modifier m, int _time)
         {
             mod = m;
@@ -60,7 +66,7 @@ namespace Bomberman
          const int NONE_DIRECTION = 0;
          const int INTERVAL_ACTION = 500;
          const int INITIAL_BOMBS_AVAILABLE = 1;
-         const int INITIAL_EXPLOSION_RANGE = 2;
+         const int INITIAL_EXPLOSION_RANGE = 1;
          const int UP = 1;
          const int RIGHT = 2;
          const int DOWN = 3;
@@ -85,6 +91,9 @@ namespace Bomberman
         
         #endregion
         #region ATTRIBUTES
+        public List<Effect> Effects {
+            get { return effects;  }
+        }
         [DataMember()]
         public int BombsAvailable {
             get { return bombsAvailable; }
@@ -222,10 +231,12 @@ namespace Bomberman
       
         void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
-            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
-                 LoadGraphic(spriteBatch, contentManager);
-            spriteBatch.Draw(texture, ComputePosition((int)x, (int)y), Color.Black);
+                       Point p = StdGameScaler.Instance.cast(x, y);
+             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
+             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+                  LoadGraphic(spriteBatch, contentManager);
+
+            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
         }
 
 

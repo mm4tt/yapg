@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bomberman
 {
-    class ExtraBomb : EmptyModifier
+    class ExtraBomb : Modifier
     {
         #region Singleton
         private static ExtraBomb instance = new ExtraBomb();
@@ -25,7 +25,10 @@ namespace Bomberman
 
             player.BombsAvailable += 1;
         }
-
+               public override MazeBlock getBlock()
+        {
+            return  ExtraBombChest.Instance;
+        }
         public override int getRespirationTime()
         {
             return 0;

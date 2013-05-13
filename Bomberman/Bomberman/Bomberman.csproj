@@ -84,9 +84,11 @@
     <Compile Include="GameSaving\XmlGameSaver.cs" />
     <Compile Include="Levels\ILevelGenerator.cs" />
     <Compile Include="Levels\SimpleLevelGenerator.cs" />
+    <Compile Include="Modifiers\BombRangeModifier.cs" />
+    <Compile Include="Modifiers\CrazyBombModifier.cs" />
+    <Compile Include="Modifiers\DispersionEnemyModifier.cs" />
     <Compile Include="Modifiers\ReverseMovement.cs" />
     <Compile Include="Modifiers\MovementThrowable.cs" />
-    <Compile Include="Modifiers\EmptyModifier.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Blocks\Empty.cs" />
     <Compile Include="Enemy.cs" />
@@ -97,8 +99,10 @@
     <Compile Include="Blocks\MazeBlock.cs" />
     <Compile Include="Modifiers\Modifier.cs" />
     <Compile Include="Blocks\Obstacle.cs" />
+    <Compile Include="Panel.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scaler.cs" />
     <Compile Include="ScoreHolder.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />

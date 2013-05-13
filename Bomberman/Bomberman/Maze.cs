@@ -16,16 +16,17 @@ namespace Bomberman
     public class Maze 
 
     {
-        
+        public const int ScreenWidth = 800;
+        public const int ScreenHeight = 480;
         public const int Height=15;
         public const int Width = 25;
         public static int BlockHeight
         {
-            get { return 480 / Height; }
+            get { return StdGameScaler.Instance.blockHeight(); }
         }
         public static int BlockWidth
         {
-            get { return 800 / Width; }
+            get { return ScreenWidth / Width; }
         }
 
 
@@ -181,9 +182,12 @@ namespace Bomberman
             {
                 for (uint x = 0; x < Width; ++x)
                 {
-                    blocks[x, y].Draw(x, y,spriteBatch,contentManager);
-                    if (modifiers[x, y] != null)
-                        Chest.Instance.Draw(x, y,spriteBatch,contentManager);
+
+                   Point p = StdGameScaler.Instance.cast(x, y);
+
+                    blocks[x, y].Draw((uint)p.X, (uint)p.Y,spriteBatch,contentManager);
+                     if (modifiers[x, y] != null)
+                         modifiers[x, y].getBlock().Draw((uint)p.X, (uint)p.Y, spriteBatch, contentManager);
                 }
                 Console.WriteLine();
             }
@@ -199,25 +203,47 @@ namespace Bomberman
                 Engine.Instance.ScoreHolder.DestroyedObstacle();
                 blocks[x, y] = Empty.Instance;
                 int i = random.Next(100);
-                if (i < 10)
-                {
-                    Debug.WriteLine( "DoubleSpeed" );
-                    modifiers[x, y] = DoubleSpeed.Instance;
+                if (i < 5)
+                 {
+                   // Debug.WriteLine("DoubleSpeed");
+                     modifiers[x, y] = DoubleSpeed.Instance;
+                 }
+
+                else if (i < 15)
+                 {
+
+                    //Debug.WriteLine("ExtraBomb");
+                     modifiers[x, y] = ExtraBomb.Instance;
+
                 }
                 else if (i < 20)
+                 {
+
+                   // Debug.WriteLine("Movement");
+                     modifiers[x, y] = MovementThrowable.Instance;
+                 }
+                else if (i < 25)
+                 {
+                   // Debug.WriteLine("Reverse");
+                     modifiers[x, y] = ReverseMovement.Instance;
+                 }
+                else if (i < 30)
                 {
-                    Debug.WriteLine("ExtraBomb");
-                    modifiers[x, y] = ExtraBomb.Instance;
-                }else if( i < 30 )
-                {
-                    Debug.WriteLine("Movement");
-                    modifiers[x, y] = MovementThrowable.Instance;
+                    //Debug.WriteLine("Reverse");
+                    modifiers[x, y] = CrazyBombModifier.Instance;
                 }
-                else if (i < 40)
+                else if (i < 35) {
+                    modifiers[x, y] = DispersionEnemyModifier.Instance;
+               }
+                else if (i < 45)
                 {
-                    Debug.WriteLine("Reverse");
-                    modifiers[x, y] = ReverseMovement.Instance;
+                    modifiers[x, y] = BombRangeModifier.Instance;
                 }
+                else if (i < 55)
+                {
+                    modifiers[x, y] = SpeedModifier.Instance;
+                }
+                
                 
 
             }
