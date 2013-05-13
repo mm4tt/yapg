@@ -20,6 +20,10 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
+        public override MazeBlock getBlock()
+        {
+            return MovementThrowableChest.Instance;
+        }
         public override void onBegin(Player player)
         {
             speed = player.Speed;

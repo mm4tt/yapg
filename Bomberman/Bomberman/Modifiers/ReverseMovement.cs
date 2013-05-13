@@ -20,6 +20,10 @@ namespace Bomberman.Modifiers
             }
         }
      #endregion
+        public override MazeBlock getBlock()
+        {
+            return ReverseMovementChest.Instance;
+        }
         public override void onUpdate(Player player)
         {
             if (player.Touched) {

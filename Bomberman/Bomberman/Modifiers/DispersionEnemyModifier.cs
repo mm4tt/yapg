@@ -18,7 +18,10 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
-
+        public override MazeBlock getBlock()
+        {
+            return DispersionEnemyChest.Instance;
+        }
         public override void onBegin(Player player)
         {
             Point p = player.Position;

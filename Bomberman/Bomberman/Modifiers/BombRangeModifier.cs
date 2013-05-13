@@ -18,6 +18,10 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
+        public override MazeBlock getBlock()
+        {
+            return BombRangeChest.Instance;
+        }
         public override void onBegin(Player player)
         {
             player.ExplosionRange += 1;

@@ -62,7 +62,7 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Beige, graphicDevice);
+            SetOneColorTexture(Color.Pink, graphicDevice);
         }
     }
     class ExtraBombChest : Chest
@@ -82,6 +82,101 @@ namespace Bomberman
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
             SetOneColorTexture(Color.DarkGray, graphicDevice);
+        }
+    }
+    class DispersionEnemyChest : Chest
+    {
+        #region Singleton
+        private static DispersionEnemyChest instance = new DispersionEnemyChest();
+        private DispersionEnemyChest() { }
+        public static DispersionEnemyChest Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
+        {
+            SetOneColorTexture(Color.LavenderBlush, graphicDevice);
+        }
+    }
+    class MovementThrowableChest : Chest
+    {
+        #region Singleton
+        private static MovementThrowableChest instance = new MovementThrowableChest();
+        private MovementThrowableChest() { }
+        public static MovementThrowableChest Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
+        {
+            SetOneColorTexture(Color.BlanchedAlmond, graphicDevice);
+        }
+    }
+    class ReverseMovementChest : Chest
+    {
+        #region Singleton
+        private static ReverseMovementChest instance = new ReverseMovementChest();
+        private ReverseMovementChest() { }
+        public static ReverseMovementChest Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
+        {
+            SetOneColorTexture(Color.PaleGreen, graphicDevice);
+        }
+    }
+    class SpeedChest : Chest
+    {
+        #region Singleton
+        private static SpeedChest instance = new SpeedChest();
+        private SpeedChest() { }
+        public static SpeedChest Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
+        {
+            SetOneColorTexture(Color.Thistle, graphicDevice);
+        }
+    }
+    class DoubleSpeedChest : Chest
+    {
+        #region Singleton
+        private static DoubleSpeedChest instance = new DoubleSpeedChest();
+        private DoubleSpeedChest() { }
+        public static DoubleSpeedChest Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        #endregion
+        protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
+        {
+            SetOneColorTexture(Color.Peru, graphicDevice);
         }
     }
 }
