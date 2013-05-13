@@ -313,14 +313,16 @@ namespace Bomberman.Screens
                 float Vy = e.SensorReading.Acceleration.Y * 200;
                 if (Math.Abs(Vx) > Math.Abs(Vy))
                 {
-                    Engine.Instance.dy = Math.Sign(Vx);
+                    Engine.Instance.dy = -Math.Sign(Vx);
                     Engine.Instance.dx = 0;
                 }
                 else
                 {
-                    Engine.Instance.dx = Math.Sign(Vy);
+                    Engine.Instance.dx = -Math.Sign(Vy);
                     Engine.Instance.dy = 0;
                 }
+
+                
                 
                 Debug.WriteLine("Accel : " + Vx);
                 Debug.WriteLine("Accel : " + Vy);
