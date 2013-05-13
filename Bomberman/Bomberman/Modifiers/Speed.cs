@@ -18,10 +18,7 @@ namespace Bomberman
             }
         }
         #endregion
-        public override MazeBlock getBlock()
-        {
-            return DoubleSpeedChest.Instance;
-        }
+
         public override void onBegin(Player player)
         {
             player.Speed = 2 * player.Speed;
@@ -40,10 +37,7 @@ namespace Bomberman
             }
         }
         #endregion
-        public override MazeBlock getBlock()
-        {
-            return SpeedChest.Instance;
-        }
+
         public override void onBegin(Player player)
         {
             player.Speed = player.Speed + (float)0.5;

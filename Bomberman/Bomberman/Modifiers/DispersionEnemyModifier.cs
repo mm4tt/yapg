@@ -19,11 +19,14 @@ namespace Bomberman.Modifiers
         }
         #endregion
 
+<<<<<<< HEAD
         public override MazeBlock getBlock()
         {
             return DispersionEnemyChest.Instance;
         }
 
+=======
+>>>>>>> parent of 798b66f... Kolory modyfikatorow
         public override void onBegin(Player player)
         {
             Point p = player.Position;

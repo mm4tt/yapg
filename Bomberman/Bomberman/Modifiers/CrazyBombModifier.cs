@@ -18,19 +18,22 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
+<<<<<<< HEAD
 
         public override MazeBlock getBlock()
         {
             return CrazyBombChest.Instance;
         }
 
+=======
+>>>>>>> parent of 798b66f... Kolory modyfikatorow
         override public  void onUpdate(Player player)
         {
             player.setBomb();
         }
         override public int getRespirationTime()
         {
-            return 30000;
+            return 1000000;
         }
     }
 }
