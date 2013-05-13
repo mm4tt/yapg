@@ -193,14 +193,9 @@ namespace Bomberman.Screens
             }
             else
             {
+                bool hold = false;
                 foreach (var gesture in input.Gestures)
                 {
-
-                    Debug.WriteLine(gesture.GestureType.ToString());
-                    if (gesture.GestureType != GestureType.Hold)
-                    {
-                        StopAccelerometer();
-                    }
 
                     if (gesture.GestureType == GestureType.Flick)
                     {
@@ -220,13 +215,19 @@ namespace Bomberman.Screens
                     else if (gesture.GestureType == GestureType.Hold)
                     {
                         Debug.WriteLine("Byl hold bijacz");
-                        StartAccelerometer();
+                        //StartAccelerometer();
+                        hold = true;
                     }
                     else if (gesture.GestureType == GestureType.None)
                     {
                         Debug.WriteLine("No gesture");
                     }
                 }
+
+                if (hold)
+                    StartAccelerometer();
+                else
+                    StopAccelerometer();
             }
         }
 
