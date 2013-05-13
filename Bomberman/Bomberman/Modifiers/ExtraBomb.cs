@@ -23,6 +23,7 @@ namespace Bomberman
             return ExtraBombChest.Instance;
         }
 
+
         public override void onBegin(Player player)
         {
             player.BombsAvailable += 1;
