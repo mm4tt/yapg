@@ -19,8 +19,10 @@ namespace Bomberman
         }
         #endregion
 
+
    
         public override void onBegin(Player player) {
+
             player.BombsAvailable += 1;
         }
 
