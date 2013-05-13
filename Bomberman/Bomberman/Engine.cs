@@ -43,7 +43,7 @@ namespace Bomberman
         {
             scoreHolder.LevelPassed(Level);
             ++Level;
-           
+            Sound.Instance.Play("Send");
             GenerateLevel();
         }
 
@@ -166,6 +166,7 @@ namespace Bomberman
         {
             get { return LevelFailed == null;  }
         }
+
         #region SerializationStuff
         [DataMember()]
         public List<GameObject> GameObjectList

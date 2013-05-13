@@ -21,11 +21,27 @@ namespace Bomberman.Levels
 
             for (int n = NumberOfEnemies(engine.Level); n > 0; --n)
                 engine.AddObject(new Enemy());
+
+            for (int n = NumberOfGhosts(engine.Level); n > 0; --n)
+                engine.AddObject(new Ghost());
+
+            for (int n = NumberOfBombers(engine.Level); n > 0; --n)
+                engine.AddObject(new Bomber());
         }
 
-        private int NumberOfEnemies( int level )
+        private int NumberOfEnemies(int level)
         {
             return (int)((Math.Sqrt(1 + 8 * level) - 1) / 2);
+        }
+
+        private int NumberOfBombers(int level)
+        {
+            return (int)((Math.Sqrt(1 + 8 * level) - 1) / 2);
+        }
+
+        private int NumberOfGhosts( int level )
+        {
+            return (int)((Math.Sqrt(1 + 8 * level) - 1) / 4 + 1);
         }
             
 

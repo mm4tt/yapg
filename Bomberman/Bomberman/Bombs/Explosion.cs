@@ -16,6 +16,7 @@ namespace Bomberman.Bombs
         //static Texture2D tex;
         private Texture2D tex;
         int range;
+        Bomb bomb;
         List<Point> fire = new List<Point>();
         static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0) };
 
@@ -37,23 +38,30 @@ namespace Bomberman.Bombs
         }
         private void Destroy(int x, int y)
         {
+            //Debug.WriteLine(Engine.Instance.Maze.Destroy((uint)x, (uint)y));
+            //if (Engine.Instance.Maze.Destroy((uint)x, (uint)y))
+            //{
+            //    Engine.Instance.ScoreHolder.DestroyedObstacle();
+            //}
             Engine.Instance.Maze.Destroy((uint)x, (uint)y);
-
             foreach (var en in Engine.Instance.Enemies)
             {
                 if (en.Position.X == x && en.Position.Y == y)
                 {
                     en.IsDead = true;
-                    Engine.Instance.ScoreHolder.KilledEnemy();
+                    if (bomb.playered)
+                        Engine.Instance.ScoreHolder.KilledEnemy();
                 }
             }
         }
 
-        public Explosion(int x, int y, int range)
+        public Explosion(Bomb b)
         {
-            position = new Point(x, y);
-            this.range = range;
-            
+            x = b.Position.X;
+            y = b.Position.Y;
+            position = new Point(b.Position.X, b.Position.Y);
+            this.range = b.range;
+            bomb = b;
 
             Destroy(x, y);
             fire.Add(new Point(x, y));

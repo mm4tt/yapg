@@ -22,7 +22,7 @@ namespace Bomberman
             line1 += " Scores: " + Engine.Instance.ScoreHolder.Score.ToString();
             int activebombs = 0;
             foreach (var bomb in Engine.Instance.Bombs) {
-                if (bomb.isActive()) {
+                if (bomb.isActive() && bomb.playered) {
                     activebombs++;
                 } 
             }

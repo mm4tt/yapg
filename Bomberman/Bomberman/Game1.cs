@@ -34,6 +34,7 @@ namespace Bomberman
             TargetElapsedTime = TimeSpan.FromTicks(333333);
             graphics.IsFullScreen = true;
             //InitializePortraitGraphics();
+            Sound.Instance = new Sound(Content);
 
             // Create the screen factory and add it to the Services
             screenFactory = new ScreenFactory();
@@ -66,6 +67,7 @@ namespace Bomberman
                 // If the screen manager fails to deserialize, add the initial screens
                 AddInitialScreens();
             }
+            MediaPlayer.Resume();
         }
 
         void GameDeactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)
@@ -73,7 +75,7 @@ namespace Bomberman
 
             // Serialize the screen manager when the game deactivated
             screenManager.Deactivate();
-
+            MediaPlayer.Pause();
             // Create a new SpriteBatch, which can be used to draw textures.
             //spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
@@ -98,8 +100,11 @@ namespace Bomberman
             graphics.PreferredBackBufferWidth = 480;
             graphics.PreferredBackBufferHeight = 800;
         }
-   
 
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            MediaPlayer.Stop();
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.

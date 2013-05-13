@@ -5,6 +5,8 @@ using System.Text;
 using Bomberman.GameSaving;
 using Bomberman.StateManager;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
+using Microsoft.Xna.Framework.Media;
 
 namespace Bomberman.Screens
 {
@@ -57,6 +59,17 @@ namespace Bomberman.Screens
         {
             BooleanButton button = sender as BooleanButton;
 
+            bool equals = !button.Text.Equals("Sound Effects: Off");
+
+            Sound.Instance.Sfx = equals;
+            if (equals)
+            {
+                MediaPlayer.Resume();
+            }
+            else
+            {
+                MediaPlayer.Pause();
+            }
             // In a real game, you'd want to store away the value of 
             // the button to turn off sounds here. :)
         }

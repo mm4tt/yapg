@@ -195,15 +195,14 @@ namespace Bomberman
 
         static Random random = new Random(DateTime.Now.Millisecond);
 
-        public void Destroy(uint x, uint y)
+        public bool Destroy(uint x, uint y)
         {
             modifiers[x, y] = null;
             if (blocks[x, y] is Obstacle)
             {
-                Engine.Instance.ScoreHolder.DestroyedObstacle();
                 blocks[x, y] = Empty.Instance;
                 int i = random.Next(100);
-
+                Engine.Instance.ScoreHolder.DestroyedObstacle();
 
                 if (i < 5)
                 {
@@ -242,10 +241,12 @@ namespace Bomberman
                 {
                     modifiers[x, y] = SpeedModifier.Instance;
                 }
-
+                //explosions.Add(new Point((int)x, (int)y));
+                //return true;
 
             }
             explosions.Add(new Point((int)x, (int)y));
+            return false;
         }
 
         public bool isPassable(uint x, uint y)

@@ -54,7 +54,7 @@ namespace Bomberman.Screens
         public void LevelFailed()
         {
             //powinno sie dodac jakis HighScoreScreen, ale to w przyszlosci
-            
+            Sound.Instance.Play("Sdeath");
             LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
             
         }
