@@ -193,7 +193,7 @@ namespace Bomberman.Screens
             }
             else
             {
-                bool hold = false;
+                bool hold = true;
                 foreach (var gesture in input.Gestures)
                 {
 
