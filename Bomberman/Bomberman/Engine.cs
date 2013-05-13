@@ -37,6 +37,7 @@ namespace Bomberman
      
         #endregion
 
+        
 
         ILevelGenerator levelGenerator = new SimpleLevelGenerator();
         public void LevelAccomplished()
@@ -52,7 +53,6 @@ namespace Bomberman
             levelGenerator.GenerateLevel(this);
         }
 
-        
 
         public delegate void LevelFailedEventHandler();
         public event LevelFailedEventHandler LevelFailed;
@@ -90,13 +90,6 @@ namespace Bomberman
         public void AddPlayer(Player p)
         {
             AddObject(player = p);
-        }
-        private Panel panel;
-        [IgnoreDataMember()]
-        public Panel @Panel
-        {
-            get { return panel; }
-            set { panel = value; }
         }
 
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -141,12 +134,11 @@ namespace Bomberman
             Maze.Draw(spriteBatch,contentManager);
             foreach (var o in gameObjects)
                 o.Draw(spriteBatch, contentManager);
-            Panel.Draw(0, 0, spriteBatch, contentManager);
         }
 
         public void Update(GameTime gameTime)
         {
-            int k=0;
+            int k = 0;
             for (int i = 0; i < gameObjects.Count; ++i)
             {
                 gameObjects[i].Update(gameTime);
@@ -193,7 +185,16 @@ namespace Bomberman
         {
            
             fixPlayer();
-        }
+        }   
         #endregion
+
+        #region AccelometerStuff
+        public int dx;
+        public int dy;
+        public Boolean accelometrOn;
+        #endregion
+
+        
+        
     }
 }

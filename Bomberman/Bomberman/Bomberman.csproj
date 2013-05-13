@@ -52,6 +52,7 @@
     <XnaCompressContent>false</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Devices.Sensors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
@@ -73,11 +74,6 @@
     <Compile Include="Bombs\BombTicker.cs" />
     <Compile Include="Bombs\Explosion.cs" />
     <Compile Include="Blocks\Chest.cs" />
-    <Compile Include="Modifiers\BombRangeModifier.cs" />
-    <Compile Include="Modifiers\CrazyBombModifier.cs" />
-    <Compile Include="Modifiers\DispersionEnemyModifier.cs" />
-    <Compile Include="Panel.cs" />
-    <Compile Include="Scaler.cs" />
     <Compile Include="GameSaving\DataContractSaver.cs" />
     <Compile Include="GameSaving\EffectDO.cs" />
     <Compile Include="GameSaving\IGameSaver.cs" />
@@ -90,6 +86,7 @@
     <Compile Include="Levels\SimpleLevelGenerator.cs" />
     <Compile Include="Modifiers\ReverseMovement.cs" />
     <Compile Include="Modifiers\MovementThrowable.cs" />
+    <Compile Include="Modifiers\EmptyModifier.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Blocks\Empty.cs" />
     <Compile Include="Enemy.cs" />
@@ -122,7 +119,6 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
-      <SubType>Designer</SubType>
     </None>
     <None Include="Properties\WMAppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>

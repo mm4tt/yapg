@@ -16,7 +16,6 @@ namespace Bomberman.Levels
             engine.Clear();
             engine.AddPlayer(p);
             engine.Maze = GenerateMaze();
-            engine.Panel = new Panel();
             p.FindBeginPosition();
 
             for (int n = NumberOfEnemies(engine.Level); n > 0; --n)

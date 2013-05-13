@@ -14,48 +14,32 @@ using System.Runtime.Serialization;
 using Bomberman.GameSaving;
 namespace Bomberman
 {
-
-    public class Effect
-    {
+   
+    public class Effect {
         const int TIME_STEP = 1000;
         Modifier mod;
         int time;
-        public bool Active
-        {
-            get { return (time > 0); }
+        public bool Active {
+            get { return ( time > 0 );}
         }
-        public Effect(Modifier m)
-        {
+        public Effect(Modifier m) {
             mod = m;
             time = m.getRespirationTime();
         }
-        public void onUpdate(Player p)
-        {
+        public void onUpdate(Player p) {
             time -= TIME_STEP;
-            if (time > 0)
-            {
+            if (time > 0) {
                 mod.onUpdate(p);
             }
         }
-        public void onBegin(Player p)
-        {
+        public void onBegin(Player p) {
             Debug.WriteLine("begin effect");
             mod.onBegin(p);
-
         }
-        public void onEnd(Player p)
-        {
+        public void onEnd(Player p) {
             mod.onEnd(p);
         }
-        public void Draw(int x, int y, SpriteBatch spriteBatch, ContentManager contentManager)
-        {
-            if (mod.getRespirationTime() > 0)
-            {
-                MazeBlock block = mod.getBlock();
-                block.Draw((uint)x, (uint)y, spriteBatch, contentManager);
-            }
 
-        }
         public Effect(Modifier m, int _time)
         {
             mod = m;
@@ -73,23 +57,23 @@ namespace Bomberman
     {
         #region CONSTS
 
-        const int NONE_DIRECTION = 0;
-        const int INTERVAL_ACTION = 500;
-        const int INITIAL_BOMBS_AVAILABLE = 1;
-        const int INITIAL_EXPLOSION_RANGE = 1;
-        const int UP = 1;
-        const int RIGHT = 2;
-        const int DOWN = 3;
+         const int NONE_DIRECTION = 0;
+         const int INTERVAL_ACTION = 500;
+         const int INITIAL_BOMBS_AVAILABLE = 1;
+         const int INITIAL_EXPLOSION_RANGE = 2;
+         const int UP = 1;
+         const int RIGHT = 2;
+         const int DOWN = 3;
         const int LEFT = 4;
-        public const int MODE_MOVEMENT_DEFAULT = 0;
-        public const int MODE_MOVEMENT_THROW = 1;
+        public  const int MODE_MOVEMENT_DEFAULT = 0;
+        public  const int MODE_MOVEMENT_THROW = 1;
 
         #endregion
         #region FIELDS
-        private List<Effect> effects = new List<Effect>();
+        private List<Effect> effects= new List<Effect> ();
         private Texture2D texture;
         private Point position;
-
+       
         float speed = 0;
         int interval = 0;
         private int direction;
@@ -98,16 +82,11 @@ namespace Bomberman
         private bool alive = true;
         int movementMode = MODE_MOVEMENT_DEFAULT;
         bool touched = false;
-
+        
         #endregion
         #region ATTRIBUTES
-        public List<Effect> Effects
-        {
-            get { return effects; }
-        }
         [DataMember()]
-        public int BombsAvailable
-        {
+        public int BombsAvailable {
             get { return bombsAvailable; }
             set { bombsAvailable = value; }
         }
@@ -121,23 +100,19 @@ namespace Bomberman
         public bool Alive
         {
             get { return alive; }
-            set
-            {
-                if (!value)
-                {
+            set {
+                if (!value) {
                     stop();
                 }
                 alive = value;
             }
         }
-        [DataMember()]
-        public int ExplosionRange
-        {
-            get { return explosionRange; }
-            set
-            {
+       [DataMember()]
+        public int ExplosionRange {
+            get { return explosionRange;  }
+            set {
                 //TODO Bomb.setRange()?
-                explosionRange = value;
+                explosionRange = value; 
             }
         }
         [DataMember()]
@@ -147,9 +122,8 @@ namespace Bomberman
             set { direction = value; }
         }
         [DataMember()]
-        public int MovementMode
-        {
-            get { return movementMode; }
+        public int MovementMode {
+            get { return movementMode;  }
             set { this.movementMode = value; }
         }
         [DataMember()]
@@ -193,8 +167,7 @@ namespace Bomberman
                 }
                 return tmpList;
             }
-            set
-            {
+            set{
                 IModiferSerializer modSerializer = new ReflectionModifierSerializer();
                 effects = new List<Effect>();
                 foreach (EffectDO data in value)
@@ -219,17 +192,17 @@ namespace Bomberman
         public Player()
         {
             effects = new List<Effect>();
-
+          
             FindBeginPosition();
             Speed = 1;
             direction = NONE_DIRECTION;
         }
 
-        public void LoadGraphic(SpriteBatch spriteBatch, ContentManager conentManager)
+        public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
-            /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
-             Debug.WriteLine(this.GetType().ToString() + " : " + (int)Maze.BlockWidth + " " + (int)Maze.BlockHeight);*/
-
+           /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
+            Debug.WriteLine(this.GetType().ToString() + " : " + (int)Maze.BlockWidth + " " + (int)Maze.BlockHeight);*/
+        
             texture = new Texture2D(spriteBatch.GraphicsDevice, (int)Maze.BlockWidth, (int)Maze.BlockHeight);
             Color[] colors = new Color[Maze.BlockWidth * Maze.BlockHeight];
             for (int i = 0; i < colors.Length; ++i)
@@ -244,16 +217,15 @@ namespace Bomberman
         {
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
-            Draw((uint)Position.X, (uint)Position.Y, spriteBatch, contentManager);
+            Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
         }
-
-        void Draw(uint x, uint y, SpriteBatch spriteBatch, ContentManager contentManager)
+      
+        void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            Point p = StdGameScaler.Instance.cast(x, y);
             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
-                LoadGraphic(spriteBatch, contentManager);
-            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
+                 LoadGraphic(spriteBatch, contentManager);
+            spriteBatch.Draw(texture, ComputePosition((int)x, (int)y), Color.Black);
         }
 
 
@@ -341,27 +313,25 @@ namespace Bomberman
 
         #endregion
         #region LOGIC
-        public void addModifier(Modifier m)
-        {
+        public void addModifier(Modifier m) {
             Debug.WriteLine("add modifier");
             m.apply(this);
-            Effect effect = new Effect(m);
-            this.effects.Add(effect);
+            Effect effect = new Effect( m );
+            this.effects.Add( effect );
             effect.onBegin(this);
         }
-
-        public void setBomb()
-        {
+        
+        public void setBomb() {
             int count = 0;
             count = Engine.Instance.Bombs.Count(b => b.isActive());
-
+            
             if (count < BombsAvailable)
             {
-                Debug.WriteLine("setBomb " + Position.X + " " + Position.Y + " " + explosionRange);
+                Debug.WriteLine("setBomb "+Position.X+" "+Position.Y+" "+explosionRange);
                 Engine.Instance.AddObject(new Bomb(Position.X, Position.Y, explosionRange));
             }
 
-
+           
         }
 
 
@@ -375,16 +345,16 @@ namespace Bomberman
                         if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                         {
                             bool blocked = false;
-                            foreach (var bomb in Engine.Instance.Bombs)
+                            foreach (var bomb in Engine.Instance.Bombs )
                             {
-
-                                if ((bomb.Position.X == Position.X && bomb.Position.Y == Position.Y + 1))
+                               
+                                if ( (bomb.Position.X == Position.X && bomb.Position.Y == Position.Y + 1))
                                 {
                                     blocked = true;
                                     break;
                                 }
                             }
-                            if (!blocked)
+                            if(!blocked)
                                 UpdatePosition(Position.X, Position.Y + 1);
                         }
 
@@ -461,16 +431,16 @@ namespace Bomberman
                     if (Engine.Instance.Maze.Block[(uint)Position.X - 1, (uint)(Position.Y)] is Empty)
                     {
                         direction = LEFT;
-                        range = absX / Maze.BlockWidth;
+                        range = absX/Maze.BlockWidth;
                     }
-
+                        
                 }
                 if (delta.X > 0)
                 {
                     if (Engine.Instance.Maze.Block[(uint)Position.X + 1, (uint)(Position.Y)] is Empty)
                     {
                         direction = RIGHT;
-                        range = absX / Maze.BlockWidth;
+                        range = absX/Maze.BlockWidth;
                     }
                 }
             }
@@ -480,7 +450,7 @@ namespace Bomberman
                 {
                     if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y + 1)] is Empty)
                     {
-                        range = absY / Maze.BlockHeight;
+                        range = absY/Maze.BlockHeight;
                         direction = UP;
                     }
                 }
@@ -489,12 +459,11 @@ namespace Bomberman
                     if (Engine.Instance.Maze.Block[(uint)Position.X, (uint)(Position.Y - 1)] is Empty)
                     {
                         direction = DOWN;
-                        range = absY / Maze.BlockHeight;
+                        range = absY/Maze.BlockHeight;
                     }
                 }
             }
-            if (MovementMode == MODE_MOVEMENT_THROW)
-            {
+            if (MovementMode == MODE_MOVEMENT_THROW) {
                 Speed = range;
             }
             Debug.WriteLine(direction.ToString() + " " + range.ToString());
@@ -511,7 +480,7 @@ namespace Bomberman
             if (interval > INTERVAL_ACTION / Speed && Alive)
             {
                 interval = 0;
-                for (int i = 0; i < effects.Count(); i++)
+                for (int i = 0; i < effects.Count(); i++ )
                 {
                     if (effects[i].Active)
                     {
@@ -523,18 +492,16 @@ namespace Bomberman
                         effects.RemoveAt(i);
                     }
                 }
-                if (MovementMode == MODE_MOVEMENT_THROW)
-                {
+                if (MovementMode == MODE_MOVEMENT_THROW) {
                     Speed /= 4;
                 }
                 foreach (var explosion in Engine.Instance.Maze.Explosions)
                 {
-                    if (explosion.X == Position.X && explosion.Y == Position.Y)
-                    {
+                    if (explosion.X == Position.X && explosion.Y == Position.Y) {
                         Alive = false;
                     }
                 }
-                if (Alive)
+                if(Alive)
                     goInDirection(Direction);
                 foreach (var explosion in Engine.Instance.Maze.Explosions)
                 {
@@ -548,7 +515,7 @@ namespace Bomberman
                 {
                     Modifier m = Engine.Instance.Maze.Modifier[(uint)Position.X, (uint)Position.Y];
                     Engine.Instance.Maze.destroyModifier((uint)Position.X, (uint)Position.Y);
-                    addModifier(m);
+                    addModifier( m );
                 }
                 Touched = false;
             }

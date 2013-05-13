@@ -89,13 +89,12 @@ namespace Bomberman.Bombs
         {
             //if (tex == null || tex.GraphicsDevice != spriteBatch.GraphicsDevice)
             Load(contentManager);
-            Point point = StdGameScaler.Instance.cast(position);
-            spriteBatch.Draw(tex, new Rectangle(point.X * Maze.BlockWidth, point.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+
+            spriteBatch.Draw(tex, new Rectangle(position.X * Maze.BlockWidth, position.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
 
             foreach (Point p in fire)
             {
-                point = StdGameScaler.Instance.cast(p);
-                spriteBatch.Draw(tex, new Rectangle(point.X * Maze.BlockWidth, point.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+                spriteBatch.Draw(tex, new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
             }
         }
     }

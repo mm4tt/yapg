@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Bomberman.Modifiers
 {
-    class MovementThrowable :Modifier
+    class MovementThrowable : EmptyModifier
     {
          #region Singleton
         private static MovementThrowable instance = new MovementThrowable();
@@ -20,10 +20,6 @@ namespace Bomberman.Modifiers
             }
         }
         #endregion
-        public override MazeBlock getBlock()
-        {
-            return MovementThrowableChest.Instance;
-        }
         public override void onBegin(Player player)
         {
             speed = player.Speed;
