@@ -28,6 +28,11 @@ namespace Bomberman
             score += 1;
             Debug.WriteLine("Destoyed obstacle . Score = " + score);
         }
+        public void EnemyDestroyedObstacle()
+        {
+            score -= 1;
+            Debug.WriteLine("Joke! Enemy destoyed obstacle . Score = " + score);
+        }
 
         public void LevelPassed(int passedLevel)
         {

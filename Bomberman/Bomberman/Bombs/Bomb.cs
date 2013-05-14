@@ -19,7 +19,7 @@ namespace Bomberman
         private  Texture2D[] tex;
         public enum State {Active, Exploding, Dead}
 
-        private int range;
+        public int range;
 
         public void Load(ContentManager content)
         {
@@ -32,6 +32,12 @@ namespace Bomberman
 
         [DataMember()]
         public int i
+        {
+            get;
+            set;
+        }
+        [DataMember()]
+        public bool playered
         {
             get;
             set;
@@ -100,6 +106,7 @@ namespace Bomberman
         public Bomb()
         {
             range = 1;
+            playered = false;
         }
 
         public Bomb(int x, int y, int range)
@@ -108,6 +115,16 @@ namespace Bomberman
             this.range = range;
             timer = new BombTicker(1.1f);
             state = State.Active;
+            playered = false;
+        }
+
+        public Bomb(int x, int y, int range, bool player)
+        {
+            position = new Point(x, y);
+            this.range = range;
+            timer = new BombTicker(1.1f);
+            state = State.Active;
+            playered = player;
         }
 
         public Bomb(int x, int y, int range, float elapsed)
@@ -122,6 +139,7 @@ namespace Bomberman
             }else
                 timer = new BombTicker(elapsed % 1.2f);
 
+            playered = false;
             state = State.Active;
         }
 
@@ -139,10 +157,15 @@ namespace Bomberman
                     if (i++ > 4)
                     {
                         timer = new BombTicker(1);
+                        Sound.Instance.Play("Sbomb");
                         state = State.Exploding;
-                        explosion = new Explosion(position.X, position.Y, range);
+                        explosion = new Explosion(this);
                     }
-                    else timer = new BombTicker(0.1f + (i + 1) % 2);
+                    else
+                    {
+                        timer = new BombTicker(0.1f + (i + 1) % 2);
+                        Sound.Instance.Play("Stick");
+                    }
                 }
                 else
                 {

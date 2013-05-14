@@ -74,6 +74,8 @@
     <Compile Include="Bombs\BombTicker.cs" />
     <Compile Include="Bombs\Explosion.cs" />
     <Compile Include="Blocks\Chest.cs" />
+    <Compile Include="Enemies\Bomber.cs" />
+    <Compile Include="Enemies\Ghost.cs" />
     <Compile Include="GameSaving\DataContractSaver.cs" />
     <Compile Include="GameSaving\EffectDO.cs" />
     <Compile Include="GameSaving\IGameSaver.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="Modifiers\MovementThrowable.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Blocks\Empty.cs" />
-    <Compile Include="Enemy.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Modifiers\ExtraBomb.cs" />
     <Compile Include="GameObject.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
+    <Compile Include="Sound.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />
     <Compile Include="StateManager\InputAction.cs" />

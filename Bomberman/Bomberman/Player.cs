@@ -201,7 +201,6 @@ namespace Bomberman
         public Player()
         {
             effects = new List<Effect>();
-          
             FindBeginPosition();
             Speed = 1;
             direction = NONE_DIRECTION;
@@ -330,16 +329,18 @@ namespace Bomberman
             Effect effect = new Effect( m );
             this.effects.Add( effect );
             effect.onBegin(this);
+            Sound.Instance.Play("Spup");
         }
         
         public void setBomb() {
             int count = 0;
-            count = Engine.Instance.Bombs.Count(b => b.isActive());
-            
+
+            count = Engine.Instance.Bombs.Count(b => (b.isActive() && b.playered));
+
             if (count < BombsAvailable)
             {
-                Debug.WriteLine("setBomb "+Position.X+" "+Position.Y+" "+explosionRange);
-                Engine.Instance.AddObject(new Bomb(Position.X, Position.Y, explosionRange));
+                Debug.WriteLine("setBomb " + Position.X + " " + Position.Y + " " + explosionRange);
+                Engine.Instance.AddObject(new Bomb(Position.X, Position.Y, explosionRange, true));
             }
 
            
