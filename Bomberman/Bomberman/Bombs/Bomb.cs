@@ -20,7 +20,7 @@ namespace Bomberman
         public enum State {Active, Exploding, Dead}
 
         [DataMember()]
-        public int range =1
+        public int range
         {
             get;
             set;
