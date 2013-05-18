@@ -81,11 +81,12 @@ namespace Bomberman.Screens
             
             if (!instancePreserved)
             {
+                Debug.WriteLine("!InstancePreserved");
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
 
-                InitializeGame();
+                
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
@@ -98,13 +99,13 @@ namespace Bomberman.Screens
                 ScreenManager.Game.ResetElapsedTime();
             }
 
-
+            InitializeGame();
 
 
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("Engine"))
             {
-                Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
-                Engine.Instance.fixDependencies();
+                //Engine.Instance = (Engine)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"];
+                //Engine.Instance.fixDependencies();
             }
 
             if (Engine.Instance.LevelFailedEmpty)
@@ -115,7 +116,7 @@ namespace Bomberman.Screens
 
         public override void Deactivate()
         {
-            Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"] = Engine.Instance;
+            //Microsoft.Phone.Shell.PhoneApplicationService.Current.State["Engine"] = Engine.Instance;
             base.Deactivate();
         }
 
@@ -193,7 +194,7 @@ namespace Bomberman.Screens
             }
             else
             {
-                bool hold = true;
+                bool hold = false;
                 foreach (var gesture in input.Gestures)
                 {
 
@@ -279,6 +280,7 @@ namespace Bomberman.Screens
 
         void StartAccelerometer()
         {
+            Debug.WriteLine("START A");
             if (IsActive)
             {
                 if (accelerometer == null)
@@ -294,6 +296,7 @@ namespace Bomberman.Screens
 
         void StopAccelerometer()
         {
+            Debug.WriteLine("STOP A");
             if (IsActive)
             {
                 Engine.Instance.accelometrOn = false;
@@ -324,8 +327,8 @@ namespace Bomberman.Screens
 
                 
                 
-                Debug.WriteLine("Accel : " + Vx);
-                Debug.WriteLine("Accel : " + Vy);
+                //Debug.WriteLine("Accel : " + Vx);
+               // Debug.WriteLine("Accel : " + Vy);
             }
         }
         #endregion
