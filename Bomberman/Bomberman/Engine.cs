@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using Bomberman.Levels;
+using System.Diagnostics;
 namespace Bomberman
 {
     [DataContract()]
@@ -75,6 +76,7 @@ namespace Bomberman
 
         private Maze maze = new Maze();
         [DataMember()]
+        //[IgnoreDataMember()]
         public Maze @Maze
         {
             get { return maze; }
@@ -82,6 +84,7 @@ namespace Bomberman
         }
         private Player player;
         [DataMember()]
+       // [IgnoreDataMember()]
         public Player @Player {
             get { return player; }
             set { player = value; }
@@ -140,6 +143,9 @@ namespace Bomberman
             Maze.Draw(spriteBatch,contentManager);
             foreach (var o in gameObjects)
                 o.Draw(spriteBatch, contentManager);
+            Debug.Assert(Panel != null,"Panel is null");
+            Debug.Assert(spriteBatch != null, "spriteBatch is null");
+            
             Panel.Draw(0, 0, spriteBatch, contentManager);
         }
 
@@ -160,7 +166,7 @@ namespace Bomberman
             if (Enemies.Count() == 0 )
                 LevelAccomplished();
         }
-
+        [IgnoreDataMember()]
         public bool LevelFailedEmpty
         {
             get { return LevelFailed == null;  }
@@ -193,13 +199,23 @@ namespace Bomberman
         {
            
             fixPlayer();
-        }   
+        }
+
+        public void fixStuff()
+        {
+            fixDependencies();
+            if (panel == null)
+                panel = new Panel();
+        }
         #endregion
 
         #region AccelometerStuff
+        [IgnoreDataMember()]
         public int dx;
+        [IgnoreDataMember()]
         public int dy;
-        public Boolean accelometrOn;
+        [IgnoreDataMember()]
+        public Boolean accelometrOn = false;
         #endregion
 
         

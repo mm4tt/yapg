@@ -59,7 +59,7 @@ namespace Bomberman.GameSaving
                 }
             }
             if (newEngine != null)
-                newEngine.fixDependencies();
+                newEngine.fixStuff();
             return newEngine;
         }
 

@@ -91,18 +91,20 @@ namespace Bomberman
         
         #endregion
         #region ATTRIBUTES
+      
+        [IgnoreDataMember()]
         public List<Effect> Effects {
             get { return effects;  }
         }
         [DataMember()]
         public int BombsAvailable {
-            get { return bombsAvailable; }
+            get { Debug.WriteLine("Bombs avaiable"); return bombsAvailable; }
             set { bombsAvailable = value; }
         }
         [DataMember()]
         public bool Touched
         {
-            get { return touched; }
+            get { Debug.WriteLine("Touched"); return touched; }
             set { touched = value; }
         }
         [DataMember()]
@@ -118,7 +120,7 @@ namespace Bomberman
         }
        [DataMember()]
         public int ExplosionRange {
-            get { return explosionRange;  }
+            get { Debug.WriteLine("Exploding Range"); return explosionRange; }
             set {
                 //TODO Bomb.setRange()?
                 explosionRange = value; 
@@ -127,12 +129,12 @@ namespace Bomberman
         [DataMember()]
         public int Direction
         {
-            get { return direction; }
+            get { Debug.WriteLine("Direction"); return direction; }
             set { direction = value; }
         }
         [DataMember()]
         public int MovementMode {
-            get { return movementMode;  }
+            get { Debug.WriteLine("MovementMode"); return movementMode; }
             set { this.movementMode = value; }
         }
         [DataMember()]

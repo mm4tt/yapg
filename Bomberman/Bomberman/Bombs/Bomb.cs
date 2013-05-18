@@ -19,7 +19,12 @@ namespace Bomberman
         private  Texture2D[] tex;
         public enum State {Active, Exploding, Dead}
 
-        public int range;
+        [DataMember()]
+        public int range =1
+        {
+            get;
+            set;
+        }
 
         public void Load(ContentManager content)
         {

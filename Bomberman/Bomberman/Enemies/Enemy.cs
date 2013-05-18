@@ -10,6 +10,8 @@ using System.Runtime.Serialization;
 
 namespace Bomberman
 {
+    [KnownType(typeof(Ghost))]
+    [KnownType(typeof(Bomber))]
     [DataContract()]
     public class Enemy : GameObject
     {
@@ -301,5 +303,14 @@ namespace Bomberman
               spriteBatch.Draw(tex[0], new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
             }
         }
+
+        #region SERIALIZATIONSTUFF
+        [DataMember()]
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+        #endregion
     }
 }

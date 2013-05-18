@@ -5,10 +5,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Runtime.Serialization;
 
 namespace Bomberman
 {
-    class Ghost : Enemy
+    [DataContract()]
+    public class Ghost : Enemy
     {
         public Ghost() : base()
         {

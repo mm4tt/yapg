@@ -5,13 +5,21 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.Runtime.Serialization;
 
 namespace Bomberman
 {
-    class Bomber : Enemy
+    [DataContract()]
+    public class Bomber : Enemy
     {
         Bomb bomb;
 
+        [DataMember()]
+        public Bomb @Bomb
+        {
+            get { return bomb; }
+            set { bomb = value; }
+        }
         public Bomber() : base()
         {
             speed = 0.0015f;

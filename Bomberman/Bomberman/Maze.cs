@@ -30,7 +30,7 @@ namespace Bomberman
         }
 
 
-        private List<Point> explosions = new List<Point>(); // ? tutaj czy nie lepie w konstrukotrze ?
+        private List<Point> explosions = new List<Point>(); // ? tutaj czy nie lepiej w konstrukotrze ?
         public void clearExplosions() {
             explosions.Clear();
         }
