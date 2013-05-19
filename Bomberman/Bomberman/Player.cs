@@ -244,7 +244,7 @@ namespace Bomberman
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            Debug.WriteLine("p: {0},{1}\nprevious: {2},{3}\n\n", position.X, position.Y, PreviousPosition.X, PreviousPosition.Y);
+            //Debug.WriteLine("p: {0},{1}\nprevious: {2},{3}\n\n", position.X, position.Y, PreviousPosition.X, PreviousPosition.Y);
             var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
             var p1 = StdGameScaler.Instance.Transform(position);
 
