@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework;
 using Microsoft.Devices.Sensors;
 using System.Diagnostics;
+using Bomberman.HighScores;
 
 namespace Bomberman.Screens
 {
@@ -57,7 +58,17 @@ namespace Bomberman.Screens
         {
             //powinno sie dodac jakis HighScoreScreen, ale to w przyszlosci
             Sound.Instance.Play("Sdeath");
-            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
+
+            HighScoreController highScore = new HighScoreController();
+            int index = highScore.AddHighScore(Engine.Instance.ScoreHolder.Score);
+            if (index != -1)
+            {
+                highScore.SaveHighScore();// narazie tylko zapisuje, jak
+                //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
+                LoadingScreen.Load(ScreenManager, false, null,new BackgroundScreen(), new HighScoreSceen(highScore.Scores));
+            }
+            else
+                LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
             
         }
 
@@ -109,7 +120,10 @@ namespace Bomberman.Screens
             }
 
             if (Engine.Instance.LevelFailedEmpty)
+            {
                 Engine.Instance.LevelFailed += new Engine.LevelFailedEventHandler(LevelFailed);
+                //Engine.Instance.LevelFailed += new Engine.LevelFail
+            }
 
         }
 
