@@ -18,13 +18,15 @@ namespace Bomberman.Screens
         protected string title = "HighScores";
         protected HighScorePresenter presenter;
         protected List<TextBlock> textBlocks = new List<TextBlock>();
-        public HighScoreSceen(List<HighScore> scores)
+        protected int index;
+        public HighScoreSceen(List<HighScore> scores, int index)
         {
             this.scores = scores;
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             //presenter = new OnlyScoreHighScorePresenter(scores);
+            this.index = index; 
             presenter = new ScoreAndDateHighScorePresenter(scores);
             foreach(String s in presenter.presentHighScores())
                 textBlocks.Add(new TextBlock(s));
@@ -88,6 +90,8 @@ namespace Bomberman.Screens
                 TextBlock tb = textBlocks[i];
                 tb.Position = new Vector2(center - tb.Size.X/2,y);
                 y+= tb.Size.Y * 1.5f;
+                if (i == index)
+                    tb.TextColor = Color.Yellow;
             }
             base.Activate(instancePreserved);
         }

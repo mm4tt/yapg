@@ -65,7 +65,7 @@ namespace Bomberman.Screens
             {
                 highScore.SaveHighScore();// narazie tylko zapisuje, jak
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
-                LoadingScreen.Load(ScreenManager, false, null,new BackgroundScreen(), new HighScoreSceen(highScore.Scores));
+                LoadingScreen.Load(ScreenManager, false, null,new BackgroundScreen(), new HighScoreSceen(highScore.Scores,index));
             }
             else
                 LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
