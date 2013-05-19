@@ -24,7 +24,8 @@ namespace Bomberman.Screens
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            presenter = new OnlyScoreHighScorePresenter(scores);
+            //presenter = new OnlyScoreHighScorePresenter(scores);
+            presenter = new ScoreAndDateHighScorePresenter(scores);
             foreach(String s in presenter.presentHighScores())
                 textBlocks.Add(new TextBlock(s));
             EnabledGestures = GestureType.Tap;

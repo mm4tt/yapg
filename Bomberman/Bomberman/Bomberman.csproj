@@ -90,6 +90,7 @@
     <Compile Include="HighScores\HighScorePresenter.cs" />
     <Compile Include="HighScores\HighScoreSaver.cs" />
     <Compile Include="HighScores\OnlyScoreHighScorePresenter.cs" />
+    <Compile Include="HighScores\ScoreAndDateHighScorePresenter.cs" />
     <Compile Include="HighScores\TextBlock.cs" />
     <Compile Include="Levels\ILevelGenerator.cs" />
     <Compile Include="Levels\SimpleLevelGenerator.cs" />
