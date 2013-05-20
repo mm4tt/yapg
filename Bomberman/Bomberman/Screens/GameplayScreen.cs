@@ -294,7 +294,6 @@ namespace Bomberman.Screens
 
         void StartAccelerometer()
         {
-            Debug.WriteLine("START A");
             if (IsActive)
             {
                 if (accelerometer == null)
@@ -310,7 +309,6 @@ namespace Bomberman.Screens
 
         void StopAccelerometer()
         {
-            Debug.WriteLine("STOP A");
             if (IsActive)
             {
                 Engine.Instance.accelometrOn = false;

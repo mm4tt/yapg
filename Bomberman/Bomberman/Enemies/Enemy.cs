@@ -51,7 +51,19 @@ namespace Bomberman
         }
 
 
-        
+        private Point? previousPosition = null;
+        [DataMember()]
+        private Point PreviousPosition
+        {
+            get
+            {
+                if (previousPosition == null)
+                    return position;
+                else
+                    return (Point)previousPosition;
+            }
+            set { previousPosition = value; }
+        }
         
 
 
@@ -178,37 +190,7 @@ namespace Bomberman
 
         protected float offset = 0.0f;
 
-        protected void move(GameTime gt){
-             offset -= gt.ElapsedGameTime.Milliseconds * speed;
-             switch (faced)
-             {
-                 case Faced.North: // y = (int)((position.Y - (1 - offset)) * MazeBlock.height);
-                     if (offset <= 0.0f)
-                        position.Y--;
-                     break;
-                 case Faced.South: //y = (int)((position.Y + (1 - offset)) * MazeBlock.height);
-                     if (offset <= 0.0f)
-                         position.Y++;
-                     break;
-                 case Faced.West: //x = (int)((position.X - (1 - offset)) * MazeBlock.width);
-                     if (offset <= 0.0f)
-                         position.X--;
-                     break;
-                 case Faced.East: //x = (int)((position.X + (1 - offset)) * MazeBlock.width);
-                      if (offset <= 0.0f)
-                         position.X++;
-                      break;
-               
-            }
-
-             if (offset <= 0.0f && Engine.Instance.accelometrOn) // nast¹pi³ jakiœ ruch i ackelometr jesst czynny spróbuj siê przesunaæ o tyle ile trzeba
-             {
-                 moveFromAccelometer();
-                 
-             }
-             x = Position.X*Maze.BlockWidth;
-             y = Position.Y*Maze.BlockHeight;
-        }
+ 
 
         protected void moveFromAccelometer()
         {
@@ -261,32 +243,32 @@ namespace Bomberman
                 if (offset > 0.0f)
                 {
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
-                    switch (faced)
+                    if (offset <= 0.0f)
                     {
-                        case Faced.North: //y = (int)((position.Y - (1 - offset)) * Maze.BlockHeight);
-                            if (offset <= 0.0f)
+                        PreviousPosition = Position;
+                        switch (faced)
+                        {
+                            case Faced.North: //y = (int)((position.Y - (1 - offset)) * Maze.BlockHeight);
                                 position.Y--;
-                            break;
-                        case Faced.South: //y = (int)((position.Y + (1 - offset)) * Maze.BlockHeight);
-                            if (offset <= 0.0f)
+                                break;
+                            case Faced.South: //y = (int)((position.Y + (1 - offset)) * Maze.BlockHeight);
                                 position.Y++;
-                            break;
-                        case Faced.West: //x = (int)((position.X - (1 - offset)) * Maze.BlockWidth);
-                            if (offset <= 0.0f)
+                                break;
+                            case Faced.West: //x = (int)((position.X - (1 - offset)) * Maze.BlockWidth);
                                 position.X--;
-                            break;
-                        case Faced.East: //x = (int)((position.X + (1 - offset)) * Maze.BlockWidth);
-                            if (offset <= 0.0f)
+                                break;
+                            case Faced.East: //x = (int)((position.X + (1 - offset)) * Maze.BlockWidth);
                                 position.X++;
-                            break;
+                                break;
+                        }
                     }
                     
                     if (offset <= 0.0f && Engine.Instance.accelometrOn) // nast¹pi³ jakiœ ruch i ackelometr jesst czynny spróbuj siê przesunaæ o tyle ile trzeba
-                        {
-                            moveFromAccelometer();
-                       }
+                    {
+                        moveFromAccelometer();
+                    }
                 }
-                else
+                if (offset <= 0.0f)
                 {
                     castAI();
                 }
@@ -297,10 +279,15 @@ namespace Bomberman
         {
             if (state == State.Active)
             {
-                Point p = StdGameScaler.Instance.cast(position);
-                     Load(contentManager);
+                //Point p = StdGameScaler.Instance.cast(position);
+                Load(contentManager);
+
+                var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
+                var p1 = StdGameScaler.Instance.Transform(position);
+
+                var p = p0 + (p1 - p0) * (1-offset);
               
-              spriteBatch.Draw(tex[0], new Rectangle(p.X * Maze.BlockWidth, p.Y * Maze.BlockHeight, Maze.BlockWidth, Maze.BlockHeight), Color.White);
+              spriteBatch.Draw(tex[0], StdGameScaler.Instance.GetRectangle(p), Color.White);
             }
         }
 

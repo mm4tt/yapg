@@ -153,12 +153,26 @@ namespace Bomberman
                 }
             }
         }
+
+        private Point? previousPosition = null;
+        [DataMember()]
+        private Point PreviousPosition
+        {
+            get
+            {
+                if (previousPosition == null)
+                    return position;
+                else
+                    return (Point)previousPosition;
+            }
+            set { previousPosition = value; }
+        }
+
         [DataMember()]
         public Point Position
         {
             set
             {
-
                 position = value;
             }
             get { return position; }
@@ -223,22 +237,30 @@ namespace Bomberman
 
         #endregion
         #region DRAW
-        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
+        /*public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
             Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
-        }
-      
-        void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
-        {
-                       Point p = StdGameScaler.Instance.cast(x, y);
-             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
-             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
-                  LoadGraphic(spriteBatch, contentManager);
+        }*/
 
-            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
+        public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
+        {
+            //Debug.WriteLine("p: {0},{1}\nprevious: {2},{3}\n\n", position.X, position.Y, PreviousPosition.X, PreviousPosition.Y);
+            var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
+            var p1 = StdGameScaler.Instance.Transform(position);
+
+            var p = p0 + (p1 - p0) * interval / INTERVAL_ACTION / Speed;
+
+            //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
+            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
+                LoadGraphic(spriteBatch, contentManager);
+
+            //spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
+            spriteBatch.Draw(texture, StdGameScaler.Instance.GetRectangle(p), Color.Black);
+
         }
+
 
 
         #endregion
@@ -490,9 +512,11 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
+            Debug.WriteLine(gameTime.ElapsedGameTime.Milliseconds);
 
             if (interval > INTERVAL_ACTION / Speed && Alive)
             {
+                PreviousPosition = position;
                 interval = 0;
                 for (int i = 0; i < effects.Count(); i++ )
                 {
