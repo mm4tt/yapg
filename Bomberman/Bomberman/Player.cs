@@ -212,12 +212,7 @@ namespace Bomberman
         {
            /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
             Debug.WriteLine(this.GetType().ToString() + " : " + (int)Maze.BlockWidth + " " + (int)Maze.BlockHeight);*/
-        
-            texture = new Texture2D(spriteBatch.GraphicsDevice, (int)Maze.BlockWidth, (int)Maze.BlockHeight);
-            Color[] colors = new Color[Maze.BlockWidth * Maze.BlockHeight];
-            for (int i = 0; i < colors.Length; ++i)
-                colors[i] = Color.Azure;
-            texture.SetData(colors);
+            texture = conentManager.Load<Texture2D>("Chests\\bombWithEyes2");
         }
 
 
@@ -225,7 +220,6 @@ namespace Bomberman
         #region DRAW
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
             Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
         }
@@ -233,8 +227,6 @@ namespace Bomberman
         void Draw(uint x,uint y, SpriteBatch spriteBatch, ContentManager contentManager)
         {
                        Point p = StdGameScaler.Instance.cast(x, y);
-             //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
-             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                   LoadGraphic(spriteBatch, contentManager);
 
             spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);

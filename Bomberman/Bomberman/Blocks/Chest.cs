@@ -24,7 +24,8 @@ namespace Bomberman
 
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Green, graphicDevice);
+            //SetOneColorTexture(Color.Green, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\Chest");
         }
     }
     class BombRangeChest : Chest
@@ -43,7 +44,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Aqua, graphicDevice);
+            //SetOneColorTexture(Color.Aqua, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestInverted");
         }
     }
     class CrazyBombChest : Chest
@@ -62,7 +64,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Pink, graphicDevice);
+            //SetOneColorTexture(Color.Pink, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\Chest");
         }
     }
     class ExtraBombChest : Chest
@@ -81,7 +84,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.DarkGray, graphicDevice);
+            //SetOneColorTexture(Color.DarkGray, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestGreen");
         }
     }
     class DispersionEnemyChest : Chest
@@ -100,7 +104,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.LavenderBlush, graphicDevice);
+            //SetOneColorTexture(Color.LavenderBlush, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestRed");
         }
     }
     class MovementThrowableChest : Chest
@@ -119,7 +124,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.BlanchedAlmond, graphicDevice);
+            //SetOneColorTexture(Color.BlanchedAlmond, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestFunky");
         }
     }
     class ReverseMovementChest : Chest
@@ -138,7 +144,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.PaleGreen, graphicDevice);
+            //SetOneColorTexture(Color.PaleGreen, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestLaplace");
         }
     }
     class SpeedChest : Chest
@@ -157,7 +164,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Thistle, graphicDevice);
+            //SetOneColorTexture(Color.Thistle, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestPurple");
         }
     }
     class DoubleSpeedChest : Chest
@@ -176,7 +184,8 @@ namespace Bomberman
         #endregion
         protected override void LoadGraphic(GraphicsDevice graphicDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Peru, graphicDevice);
+            //SetOneColorTexture(Color.Peru, graphicDevice);
+            texture = contentManager.Load<Texture2D>("Chests\\ChestGrey");
         }
     }
 }
