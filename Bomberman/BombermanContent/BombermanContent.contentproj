@@ -139,13 +139,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="water-nuclear-cgi-nuclear.jpg">
-      <Name>water-nuclear-cgi-nuclear</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Bombs-480x800.jpg">
       <Name>Bombs-480x800</Name>
       <Importer>TextureImporter</Importer>
@@ -218,13 +211,6 @@
   <ItemGroup>
     <Compile Include="Chests\ChestGreen.png">
       <Name>ChestGreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Bomb-Cool-icon.png">
-      <Name>Bomb-Cool-icon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
