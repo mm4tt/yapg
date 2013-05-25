@@ -24,7 +24,8 @@ namespace Bomberman
 
         protected override void LoadGraphic(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            SetOneColorTexture(Microsoft.Xna.Framework.Color.White,graphicsDevice);
+            //SetOneColorTexture(Microsoft.Xna.Framework.Color.White,graphicsDevice);
+            texture = contentManager.Load<Texture2D>("MazeBlock\\Empty");
         }
     }
 }

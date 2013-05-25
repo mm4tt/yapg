@@ -25,7 +25,8 @@ namespace Bomberman
 
         protected override void LoadGraphic(GraphicsDevice graphicsDevice,ContentManager contentManager)
         {
-            SetOneColorTexture(Color.Brown, graphicsDevice);
+            //SetOneColorTexture(Color.Brown, graphicsDevice);
+            texture = contentManager.Load<Texture2D>("MazeBlock\\Obstacle-icone");
         }
     }
 

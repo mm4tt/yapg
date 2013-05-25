@@ -226,39 +226,23 @@ namespace Bomberman
         {
            /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
             Debug.WriteLine(this.GetType().ToString() + " : " + (int)Maze.BlockWidth + " " + (int)Maze.BlockHeight);*/
-        
-            texture = new Texture2D(spriteBatch.GraphicsDevice, (int)Maze.BlockWidth, (int)Maze.BlockHeight);
-            Color[] colors = new Color[Maze.BlockWidth * Maze.BlockHeight];
-            for (int i = 0; i < colors.Length; ++i)
-                colors[i] = Color.Azure;
-            texture.SetData(colors);
+            texture = conentManager.Load<Texture2D>("Chests\\bombWithEyes2");
         }
 
 
         #endregion
         #region DRAW
-        /*public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
-        {
-            if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
-                LoadGraphic(spriteBatch, contentManager);
-            Draw((uint)Position.X, (uint)Position.Y, spriteBatch,contentManager);
-        }*/
-
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
-            //Debug.WriteLine("p: {0},{1}\nprevious: {2},{3}\n\n", position.X, position.Y, PreviousPosition.X, PreviousPosition.Y);
             var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
             var p1 = StdGameScaler.Instance.Transform(position);
 
             var p = p0 + (p1 - p0) * interval / INTERVAL_ACTION / Speed;
 
-            //Debug.WriteLine("Draw " + x.ToString() + " "+ y.ToString() );
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
 
-            //spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.Black);
-            spriteBatch.Draw(texture, StdGameScaler.Instance.GetRectangle(p), Color.Black);
-
+            spriteBatch.Draw(texture, StdGameScaler.Instance.GetRectangle(p), Color.White);
         }
 
 
