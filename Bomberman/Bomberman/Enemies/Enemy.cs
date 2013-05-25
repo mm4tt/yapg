@@ -65,6 +65,20 @@ namespace Bomberman
             set { previousPosition = value; }
         }
 
+        private Point? nextPosition = null;
+        [DataMember()]
+        private Point NextPosition
+        {
+            get
+            {
+                if (nextPosition == null)
+                    return position;
+                else
+                    return (Point)nextPosition;
+            }
+            set { nextPosition = value; }
+        }
+
 
         #region Factory
 
@@ -240,29 +254,6 @@ namespace Bomberman
             }
         }
 
-        protected void nextMoveArtificialIntelignece()
-        {
-            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
-            {
-                Point p = findPath();
-                if (p.Y > 0)
-                    faced = Faced.South;
-                else if (p.Y < 0)
-                    faced = Faced.North;
-                else if (p.X < 0)
-                    faced = Faced.West;
-                else if (p.X > 0)
-                    faced = Faced.East;
-                if (p.X == 0 && p.Y == 0)
-                    step();
-                else
-                    offset = 1.0f;
-            }
-            else
-            {
-                step();
-            }
-        }
         public override void Update(GameTime gt)
         {
             if (this.position.X == Engine.Instance.Player.Position.X && this.position.Y == Engine.Instance.Player.Position.Y)
@@ -274,9 +265,12 @@ namespace Bomberman
                 if (offset > 0.0f)
                 {
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
+                    anim_offset = offset;
                     if (offset <= 0.0f)
                     {
                         PreviousPosition = Position;
+                        anim_offset = 1.0f;
+
                         switch (faced)
                         {
                             case Faced.North: //y = (int)((position.Y - (1 - offset)) * Maze.BlockHeight);
@@ -301,10 +295,20 @@ namespace Bomberman
                 }
                 if (offset <= 0.0f)
                 {
+                    if (anim_offset > 0)
+                    {
+                        anim_offset -= gt.ElapsedGameTime.Milliseconds * speed;
+                        if (anim_offset <= 0.0f)
+                        {
+                            PreviousPosition = Position;
+                        }
+                    }
                     castAI();
                 }
             }
         }
+
+        private float anim_offset = 0.0f;
 
         public override void Draw(SpriteBatch spriteBatch, ContentManager contentManager)
         {
@@ -316,7 +320,11 @@ namespace Bomberman
                 var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
                 var p1 = StdGameScaler.Instance.Transform(position);
 
-                var p = p0 + (p1 - p0) * (1-offset);
+                Vector2 p;
+                if (anim_offset >= 0)
+                    p = p0 + (p1 - p0) * (1 - anim_offset);
+                else
+                    p = p1;
               
               spriteBatch.Draw(tex[0], StdGameScaler.Instance.GetRectangle(p), Color.White);
             }
