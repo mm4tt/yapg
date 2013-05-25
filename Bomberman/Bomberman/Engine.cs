@@ -142,7 +142,13 @@ namespace Bomberman
         {
             Maze.Draw(spriteBatch,contentManager);
             foreach (var o in gameObjects)
-                o.Draw(spriteBatch, contentManager);
+                if(o is Bomb)
+                    o.Draw(spriteBatch, contentManager);
+
+            foreach (var o in gameObjects)
+                if ( !(o is Bomb) )
+                    o.Draw(spriteBatch, contentManager);
+
             Debug.Assert(Panel != null,"Panel is null");
             Debug.Assert(spriteBatch != null, "spriteBatch is null");
             
