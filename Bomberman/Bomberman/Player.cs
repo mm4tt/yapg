@@ -229,7 +229,7 @@ namespace Bomberman
                        Point p = StdGameScaler.Instance.cast(x, y);
                   LoadGraphic(spriteBatch, contentManager);
 
-            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y), Color.White);
+            spriteBatch.Draw(texture, ComputePosition((int)p.X, (int)p.Y),Color.White);
         }
 
 
