@@ -32,6 +32,11 @@ namespace Bomberman.Bombs
             get { return position; }
         }
 
+        [DataMember()]
+        public List<Point> Fire{
+            get { return fire; }
+            set { fire = value; }
+        }
         public void Load(ContentManager content)
         {
             tex = content.Load<Texture2D>("explosion");
