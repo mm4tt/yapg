@@ -20,13 +20,13 @@ namespace Bomberman.Levels
             p.FindBeginPosition();
 
             for (int n = NumberOfEnemies(engine.Level); n > 0; --n)
-                engine.AddObject(new Enemy());
+                engine.AddObject(Enemy.newEnemy(Enemy.Type.Red_Ghost));
 
             for (int n = NumberOfGhosts(engine.Level); n > 0; --n)
-                engine.AddObject(new Ghost());
+                engine.AddObject(Enemy.newEnemy(Enemy.Type.Blue_Ghost));
 
             for (int n = NumberOfBombers(engine.Level); n > 0; --n)
-                engine.AddObject(new Bomber());
+                engine.AddObject(Enemy.newEnemy(Enemy.Type.Bomber));
         }
 
         private int NumberOfEnemies(int level)

@@ -64,7 +64,38 @@ namespace Bomberman
             }
             set { previousPosition = value; }
         }
-        
+
+
+        #region Factory
+
+        public enum Type { Red_Ghost = 0, Blue_Ghost, Bomber, END };
+
+        public static Enemy newEnemy( Type type ) 
+        {
+            switch ( type )
+            {
+                case Type.Red_Ghost:
+                    Enemy enemy = new Enemy();
+                    return enemy;
+                case Type.Blue_Ghost:
+                    Enemy ghost = new Ghost();
+                    return ghost;
+                case Type.Bomber:
+                    Enemy bomber = new Bomber();
+                    return bomber;
+                default:
+                    return null;
+            }
+        }
+
+        public static Enemy randomEnemy()
+        {
+            Type type = (Type)random.Next( (int)Type.END );
+
+            return newEnemy(type);
+        }
+
+        #endregion
 
 
         public Enemy()
