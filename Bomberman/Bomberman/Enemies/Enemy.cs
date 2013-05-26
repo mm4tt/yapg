@@ -21,7 +21,7 @@ namespace Bomberman
         protected float speed; // prêdkoœæ w polach/ms
         public enum State { Active, Dead };
         public enum Faced { South=0, North, West, East };
-        protected static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0)};
+        public static Point[] dirs = new Point[] { new Point(0, 1), new Point(0, -1), new Point(-1, 0), new Point(1, 0)};
 
 
         [DataMember()]
