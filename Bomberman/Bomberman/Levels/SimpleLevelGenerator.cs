@@ -18,6 +18,7 @@ namespace Bomberman.Levels
             engine.AddPlayer(p);
             engine.Maze = GenerateMaze();
             engine.Panel = new Panel();
+            p.clear();
             p.FindBeginPosition();
 
             for (int n = NumberOfEnemies(engine.Level); n > 0; --n)
@@ -97,8 +98,9 @@ namespace Bomberman.Levels
             int[,] tab = new int[Maze.Width,Maze.Height];
             
             Maze maze = new Maze();
-            maze.GenerateRandom(1, 40);
-            for (int i = 0; i < Maze.Width; i++) {
+            maze.GenerateMonastery(1, 40);
+
+           /* for (int i = 0; i < Maze.Width; i++) {
                 for (int j = 0; j < Maze.Height; j++) {
                     if (maze.Block[(uint)i, (uint)j] is Wall)
                     {
@@ -134,7 +136,7 @@ namespace Bomberman.Levels
                     line += tab[i, j].ToString() + " ";
                 }
                 Debug.WriteLine(line);
-            }
+            }*/
             return maze;
         }
 

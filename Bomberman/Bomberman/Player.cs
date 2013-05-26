@@ -221,7 +221,13 @@ namespace Bomberman
             Speed = 1;
             direction = NONE_DIRECTION;
         }
-
+        public void clear() {
+            Speed = 1;
+            BombsAvailable = INITIAL_BOMBS_AVAILABLE;
+            ExplosionRange = INITIAL_EXPLOSION_RANGE;
+            Effects.Clear();
+            
+        }
         public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
            /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
@@ -237,7 +243,7 @@ namespace Bomberman
             var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
             var p1 = StdGameScaler.Instance.Transform(position);
 
-            var p = p0 + (p1 - p0) * interval / INTERVAL_ACTION / Speed;
+            var p = p0 + (p1 - p0) * interval *Speed / INTERVAL_ACTION;
 
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);

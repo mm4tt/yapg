@@ -20,7 +20,7 @@ namespace Bomberman
         #endregion
         public override int getRespirationTime()
         {
-            return 10000;
+            return 100000;
         }
         public override MazeBlock getBlock()
         {
