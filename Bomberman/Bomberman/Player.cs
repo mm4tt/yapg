@@ -237,7 +237,7 @@ namespace Bomberman
             var p0 = StdGameScaler.Instance.Transform(PreviousPosition);
             var p1 = StdGameScaler.Instance.Transform(position);
 
-            var p = p0 + (p1 - p0) * interval / INTERVAL_ACTION / Speed;
+            var p = p0 + (p1 - p0) * interval*Speed / INTERVAL_ACTION;
 
             if (texture == null || texture.GraphicsDevice != spriteBatch.GraphicsDevice)
                 LoadGraphic(spriteBatch, contentManager);
@@ -496,7 +496,6 @@ namespace Bomberman
         public override void Update(GameTime gameTime)
         {
             interval += gameTime.ElapsedGameTime.Milliseconds;
-            Debug.WriteLine(gameTime.ElapsedGameTime.Milliseconds);
 
             if (interval > INTERVAL_ACTION / Speed && Alive)
             {
