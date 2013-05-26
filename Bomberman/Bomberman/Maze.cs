@@ -233,14 +233,14 @@ namespace Bomberman
                     //Debug.WriteLine("Reverse");
                     modifiers[x, y] = CrazyBombModifier.Instance;
                 }
-                else if (i < 35) {
+                else if (i < 40) {
                     modifiers[x, y] = DispersionEnemyModifier.Instance;
                }
-                else if (i < 45)
+                else if (i < 50)
                 {
                     modifiers[x, y] = BombRangeModifier.Instance;
                 }
-                else if (i < 55)
+                else if (i < 60)
                 {
                     modifiers[x, y] = SpeedModifier.Instance;
                 }
@@ -249,7 +249,9 @@ namespace Bomberman
             explosions.Add(new Point((int)x, (int)y));
             return false;
         }
-
+        public void dig( int x, int y ){
+            blocks[(uint)x, (uint)y] = Empty.Instance;
+        }
         public bool isPassable(uint x, uint y)
         {
             return (blocks[x, y] is Empty);

@@ -80,7 +80,7 @@ namespace Bomberman
         private Texture2D texture;
         private Point position;
        
-        float speed = 0;
+        float speed = 1;
         int interval = 0;
         private int direction;
         int bombsAvailable = INITIAL_BOMBS_AVAILABLE;

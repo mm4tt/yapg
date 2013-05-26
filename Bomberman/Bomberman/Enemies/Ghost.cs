@@ -31,7 +31,14 @@ namespace Bomberman
 
         protected override bool canPass(int x, int y)
         {
-            return Engine.Instance.Maze.Block[(uint)x, (uint)y] != Wall.Instance;
+            bool is_bomb = false;
+            foreach (var bomb in Engine.Instance.Bombs) { 
+                if( bomb.Position.X == x && bomb.Position.Y == y ){
+                    is_bomb = true;
+                    break;
+                }
+            }
+            return Engine.Instance.Maze.Block[(uint)x, (uint)y] != Wall.Instance && !is_bomb;
         }
 
         protected override void castAI()
