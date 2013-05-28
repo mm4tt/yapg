@@ -260,6 +260,29 @@ namespace Bomberman
             return !((blocks[x, y] is Empty) || (blocks[x, y] is Obstacle));
         }
 
+        public int freeSpace(uint x, uint y)
+        {
+            Point p = new Point( (int)x, (int)y);
+            bool[,] been = new bool[Width, Height];
+            Queue<Point> q = new Queue<Point>();
+            q.Enqueue(p);
+            int size = 0;
+            while (q.Count > 0)
+            {
+                p = q.Dequeue();
+                foreach (Point dir in Enemy.dirs)
+                {
+                    Point new_p = GameObject.add(p, dir);
+                    if ( !been[new_p.X, new_p.Y] && isPassable( (uint) new_p.X, (uint) new_p.Y ))
+                    {
+                        been[new_p.X, new_p.Y] = true;
+                        q.Enqueue(new_p);
+                        size++;
+                    }
+                }
+            }
+            return size;
+        }
 
         public ArrayWrapper<MazeBlock> Block
         {

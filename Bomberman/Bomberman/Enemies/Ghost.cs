@@ -14,13 +14,13 @@ namespace Bomberman
     {
         public Ghost() : base()
         {
-            speed = 0.002f;
+            speed = 0.0015f;
         }
 
         public Ghost(int x, int y)
             : base(x, y)
         {
-            speed = 0.002f;
+            speed = 0.0015f;
         }
 
         public override void Load(ContentManager content)
@@ -36,7 +36,7 @@ namespace Bomberman
 
         protected override void castAI()
         {
-            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 5)
+            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 4)
             {
                 Point p = findPath();
                 if (p.Y > 0)

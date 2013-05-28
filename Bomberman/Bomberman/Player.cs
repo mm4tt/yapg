@@ -98,13 +98,15 @@ namespace Bomberman
         }
         [DataMember()]
         public int BombsAvailable {
-            get { Debug.WriteLine("Bombs avaiable"); return bombsAvailable; }
+            get { //Debug.WriteLine("Bombs avaiable"); 
+                return bombsAvailable; }
             set { bombsAvailable = value; }
         }
         [DataMember()]
         public bool Touched
         {
-            get { Debug.WriteLine("Touched"); return touched; }
+            get { //Debug.WriteLine("Touched"); 
+                return touched; }
             set { touched = value; }
         }
         [DataMember()]
@@ -120,7 +122,8 @@ namespace Bomberman
         }
        [DataMember()]
         public int ExplosionRange {
-            get { Debug.WriteLine("Exploding Range"); return explosionRange; }
+            get { //Debug.WriteLine("Exploding Range"); 
+                return explosionRange; }
             set {
                 //TODO Bomb.setRange()?
                 explosionRange = value; 
@@ -129,12 +132,14 @@ namespace Bomberman
         [DataMember()]
         public int Direction
         {
-            get { Debug.WriteLine("Direction"); return direction; }
+            get { //Debug.WriteLine("Direction"); 
+                return direction; }
             set { direction = value; }
         }
         [DataMember()]
         public int MovementMode {
-            get { Debug.WriteLine("MovementMode"); return movementMode; }
+            get { //Debug.WriteLine("MovementMode"); 
+                return movementMode; }
             set { this.movementMode = value; }
         }
         [DataMember()]
@@ -439,7 +444,7 @@ namespace Bomberman
         }
         public void move(Vector2 delta)
         {
-            Debug.WriteLine("In da move");
+            //Debug.WriteLine("In da move");
             float absX = delta.X < 0 ? -delta.X : delta.X;
             float absY = delta.Y < 0 ? -delta.Y : delta.Y;
             float range = 1;
@@ -486,7 +491,7 @@ namespace Bomberman
             if (MovementMode == MODE_MOVEMENT_THROW) {
                 Speed = range;
             }
-            Debug.WriteLine(direction.ToString() + " " + range.ToString());
+            //Debug.WriteLine(direction.ToString() + " " + range.ToString());
             //interval =( INTERVAL_ACTION / Speed ) + 1;
         }
         public void stop()
