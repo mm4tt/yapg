@@ -118,10 +118,12 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\HighScoreSceen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\LogoScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
+    <Compile Include="Screens\TmpScreen.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />

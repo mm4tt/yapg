@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Bomberman.StateManager;
+using Bomberman.Screens;
 namespace Bomberman.Levels
 {
     class SimpleLevelGenerator : ILevelGenerator
     {
-
+        
         public void GenerateLevel(Engine engine)
         {
             Player p = engine.Player;
@@ -29,6 +31,8 @@ namespace Bomberman.Levels
 
             for (int n = NumberOfBombers(engine.Level); n > 0; --n)
                 engine.AddObject(new Bomber());
+            
+            
         }
 
         private int NumberOfEnemies(int level)

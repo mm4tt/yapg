@@ -7,11 +7,12 @@ using System.Text;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-
+using Bomberman.StateManager;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using Bomberman.Levels;
 using System.Diagnostics;
+using Bomberman.Screens;
 namespace Bomberman
 {
     [DataContract()]
@@ -38,15 +39,21 @@ namespace Bomberman
      
         #endregion
 
-        
 
+        bool nextLevel = true;
+        public bool NextLevel {
+            get { return nextLevel; }
+            set { nextLevel = value;  }
+        }
         ILevelGenerator levelGenerator = new SimpleLevelGenerator();
         public void LevelAccomplished()
         {
             scoreHolder.LevelPassed(Level);
             ++Level;
             Sound.Instance.Play("Send");
+
             GenerateLevel();
+            
         }
 
         public void GenerateLevel()
@@ -115,6 +122,7 @@ namespace Bomberman
         public void Clear()
         {
             gameObjects.Clear();
+            nextLevel = true;
         }
 
         [IgnoreDataMember()]
@@ -167,10 +175,13 @@ namespace Bomberman
             gameObjects.RemoveRange(k, gameObjects.Count - k);
 
 
-            if (!Player.Alive && LevelFailed!=null )
+            if (!Player.Alive && LevelFailed != null) {
                 LevelFailed();
+            }
+               
             if (Enemies.Count() == 0 )
                 LevelAccomplished();
+            
         }
         [IgnoreDataMember()]
         public bool LevelFailedEmpty

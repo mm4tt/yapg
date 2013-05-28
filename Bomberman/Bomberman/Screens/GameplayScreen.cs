@@ -27,7 +27,6 @@ namespace Bomberman.Screens
         Random random = new Random();
         float pauseAlpha;
         InputAction pauseAction;
-        
 
         #endregion
 
@@ -53,24 +52,34 @@ namespace Bomberman.Screens
  
             
         }
-
-        public void LevelFailed()
+        private void levelFailed(object sender, EventArgs e)
         {
-            //powinno sie dodac jakis HighScoreScreen, ale to w przyszlosci
-            Sound.Instance.Play("Sdeath");
-
+            
             HighScoreController highScore = new HighScoreController();
             int index = highScore.AddHighScore(Engine.Instance.ScoreHolder.Score);
             if (index != -1)
             {
                 highScore.SaveHighScore();// narazie tylko zapisuje, jak
                 //LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
-                LoadingScreen.Load(ScreenManager, false, null,new BackgroundScreen(), new HighScoreSceen(highScore.Scores,index));
+                LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new HighScoreSceen(highScore.Scores, index));
             }
             else
                 LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
+        }
+        public void LevelFailed()
+        {
+            //powinno sie dodac jakis HighScoreScreen, ale to w przyszlosci
+            Sound.Instance.Play("Sdeath");
+            Debug.WriteLine("Faaaaailed");
+            
+            TmpScreen tmpscr = new TmpScreen("Game over!");
+            tmpscr.AddAction( levelFailed );
+            //ScreenManager.AddScreen(new TmpScreen("Game over!"), ControllingPlayer);
+            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), tmpscr);
             
         }
+
+        
 
         /// <summary>
         /// C   Code for the game initialization. 
@@ -125,8 +134,12 @@ namespace Bomberman.Screens
                 //Engine.Instance.LevelFailed += new Engine.LevelFail
             }
 
+            
         }
-
+        public void acceptLevel(object sender, EventArgs e)
+        {
+            Engine.Instance.NextLevel = false;
+        }
 
         public override void Deactivate()
         {
@@ -158,6 +171,7 @@ namespace Bomberman.Screens
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+            
             base.Update(gameTime, otherScreenHasFocus, false);
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
@@ -168,7 +182,11 @@ namespace Bomberman.Screens
 
             if (IsActive)
             {
-               
+               if(Engine.Instance.NextLevel){
+                   TmpScreen tmpscr = new TmpScreen("Level " + Engine.Instance.Level.ToString() + "!");
+                   tmpscr.AddAction( acceptLevel );
+                   ScreenManager.AddScreen( tmpscr , ControllingPlayer);
+               }
                Engine.Instance.Update(gameTime);
               
             }

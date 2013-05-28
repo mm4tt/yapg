@@ -32,9 +32,11 @@ namespace Bomberman.Screens
 
         void saveButton_Tapped(object sender, EventArgs e)
         {
+            
             IGameSaver gameSaver = new DataContractSaver();
             gameSaver.SaveGame(Engine.Instance);
-            OnCancel();
+            ScreenManager.AddScreen(new TmpScreen("Game saved!"), ControllingPlayer);
+            //OnCancel();
         }
 
         /// <summary>

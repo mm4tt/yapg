@@ -27,6 +27,13 @@ namespace Bomberman.Screens
         {
             get { return menuButtons; }
         }
+        private int titlePositionY = 80;
+        public int TitlePositionY
+        {
+            get{ return titlePositionY; }
+            set{ titlePositionY = value;}
+        }
+
 
         /// <summary>
         /// Creates the PhoneMenuScreen with a particular title.
@@ -50,7 +57,7 @@ namespace Bomberman.Screens
         {
             // When the screen is activated, we have a valid ScreenManager so we can arrange
             // our buttons on the screen
-            float y = 140f;
+            float y = (float)TitlePositionY + 40f;
             float center = ScreenManager.GraphicsDevice.Viewport.Bounds.Center.X;
             for (int i = 0; i < MenuButtons.Count; i++)
             {
@@ -124,7 +131,7 @@ namespace Bomberman.Screens
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
+            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, TitlePositionY);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;

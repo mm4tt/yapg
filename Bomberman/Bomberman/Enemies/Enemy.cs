@@ -232,16 +232,20 @@ namespace Bomberman
                 step();
             }
         }
+        int killing_times = 0;
         public override void Update(GameTime gt)
         {
             if (this.position.X == Engine.Instance.Player.Position.X && this.position.Y == Engine.Instance.Player.Position.Y)
             {
-                Engine.Instance.Player.Alive = false;
+              
+                    Engine.Instance.Player.Alive = false;
+               
             }
             else if (Engine.Instance.Player.Alive)
             {
                 if (offset > 0.0f)
                 {
+                  
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
                     if (offset <= 0.0f)
                     {
