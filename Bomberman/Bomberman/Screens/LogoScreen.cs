@@ -28,7 +28,7 @@ namespace Bomberman.Screens
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-                backgroundTexture = content.Load<Texture2D>("background");
+                backgroundTexture = content.Load<Texture2D>("logo2");
                 //backgroundTexture = content.Load<Texture2D>("Bombs-480x800");
 
             }
