@@ -83,12 +83,19 @@ namespace Bomberman.Bombs
                     {
                         fire.Add(new Point(dx, dy));
                     }
+                    else {
+                        break;
+                    }
+
                     if (!Engine.Instance.Maze.isPassable((uint)dx, (uint)dy))
                     {
                         Engine.Instance.Maze.Destroy((uint)dx, (uint)dy);
-                        break;
+                        //break;
                     }
-                    Destroy(dx, dy);
+                    else
+                    {
+                        Destroy(dx, dy);
+                    }
                 }
             }
         }

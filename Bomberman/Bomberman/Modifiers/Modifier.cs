@@ -6,13 +6,11 @@ using System.Text;
 
 namespace Bomberman
 {
-    public class Modifier
+    public abstract class Modifier
     {
         // protected Player player;
-        public virtual MazeBlock getBlock()
-        {
-            return Chest.Instance;
-        }
+        public abstract MazeBlock getBlock();
+
         public virtual void apply(Player player)
         {
             //   this.player = player;

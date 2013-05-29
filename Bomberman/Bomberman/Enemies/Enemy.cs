@@ -254,16 +254,45 @@ namespace Bomberman
             }
         }
 
+
+        protected void nextMoveArtificialIntelignece()
+        {
+            if (Math.Max(Math.Abs(this.position.X - Engine.Instance.Player.Position.X), Math.Abs(this.position.Y - Engine.Instance.Player.Position.Y)) < 9)
+            {
+                Point p = findPath();
+                if (p.Y > 0)
+                    faced = Faced.South;
+                else if (p.Y < 0)
+                    faced = Faced.North;
+                else if (p.X < 0)
+                    faced = Faced.West;
+                else if (p.X > 0)
+                    faced = Faced.East;
+                if (p.X == 0 && p.Y == 0)
+                    step();
+                else
+                    offset = 1.0f;
+            }
+            else
+            {
+                step();
+            }
+        }
+        int killing_times = 0;
+
         public override void Update(GameTime gt)
         {
             if (this.position.X == Engine.Instance.Player.Position.X && this.position.Y == Engine.Instance.Player.Position.Y)
             {
-                Engine.Instance.Player.Alive = false;
+              
+                    Engine.Instance.Player.Alive = false;
+               
             }
             else if (Engine.Instance.Player.Alive)
             {
                 if (offset > 0.0f)
                 {
+                  
                     offset -= gt.ElapsedGameTime.Milliseconds * speed;
                     anim_offset = offset;
                     if (offset <= 0.0f)

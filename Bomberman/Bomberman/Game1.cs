@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Diagnostics;
 using Bomberman.StateManager;
 using Bomberman.Screens;
-
+using System.Threading;
 namespace Bomberman
 {
     /// <summary>
@@ -56,6 +56,7 @@ namespace Bomberman
 
         void GameLaunching(object sender, Microsoft.Phone.Shell.LaunchingEventArgs e)
         {
+            
             AddInitialScreens();
         }
 
@@ -87,11 +88,14 @@ namespace Bomberman
         private void AddInitialScreens()
         {
             // Activate the first screens.
+
+           
             screenManager.AddScreen(new BackgroundScreen(), null);
 
             // We have different menus for Windows Phone to take advantage of the touch interface
 
             screenManager.AddScreen(new MainMenuScreen(), null);
+            screenManager.AddScreen(new LogoScreen(), null);
         }
 
 

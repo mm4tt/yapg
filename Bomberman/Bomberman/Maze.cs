@@ -62,6 +62,37 @@ namespace Bomberman
             GenerateRandom(1, 1, (int)Width - 2, (int)Height - 2);
             FillObstacles(percent);
         }
+        public void GenerateMonastery(int threshold, int percent) {
+            this.threshold = threshold;
+            for (int i = 0; i < Width; i++) {
+                blocks[i, 0] = Wall.Instance;
+            }
+            for (int i = 0; i < Width; i++)
+            {
+                blocks[i, Height - 1 ] = Wall.Instance;
+            }
+            for (int i = 0; i < Height; i++)
+            {
+                blocks[0, i] = Wall.Instance;
+            }
+            for (int i = 0; i < Height; i++)
+            {
+                blocks[Width-1, i] = Wall.Instance;
+            }
+            for (int i = 0; i < Width; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    for (int j = 0; j < Height; j++)
+                    {
+                        if (j % 2 == 0) {
+                            blocks[i, j] = Wall.Instance;
+                        }
+                    }
+                }
+            }
+            FillObstacles(percent);
+        }
 
         private void FillObstacles(int percent)
         {
@@ -233,14 +264,14 @@ namespace Bomberman
                     //Debug.WriteLine("Reverse");
                     modifiers[x, y] = CrazyBombModifier.Instance;
                 }
-                else if (i < 35) {
+                else if (i < 40) {
                     modifiers[x, y] = DispersionEnemyModifier.Instance;
                }
-                else if (i < 45)
+                else if (i < 50)
                 {
                     modifiers[x, y] = BombRangeModifier.Instance;
                 }
-                else if (i < 55)
+                else if (i < 60)
                 {
                     modifiers[x, y] = SpeedModifier.Instance;
                 }
@@ -249,7 +280,9 @@ namespace Bomberman
             explosions.Add(new Point((int)x, (int)y));
             return false;
         }
-
+        public void dig( int x, int y ){
+            blocks[(uint)x, (uint)y] = Empty.Instance;
+        }
         public bool isPassable(uint x, uint y)
         {
             return (blocks[x, y] is Empty);

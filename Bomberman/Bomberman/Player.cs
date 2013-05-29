@@ -80,7 +80,7 @@ namespace Bomberman
         private Texture2D texture;
         private Point position;
        
-        float speed = 0;
+        float speed = 1;
         int interval = 0;
         private int direction;
         int bombsAvailable = INITIAL_BOMBS_AVAILABLE;
@@ -226,7 +226,13 @@ namespace Bomberman
             Speed = 1;
             direction = NONE_DIRECTION;
         }
-
+        public void clear() {
+            Speed = 1;
+            BombsAvailable = INITIAL_BOMBS_AVAILABLE;
+            ExplosionRange = INITIAL_EXPLOSION_RANGE;
+            Effects.Clear();
+            
+        }
         public void LoadGraphic(SpriteBatch spriteBatch , ContentManager conentManager)
         {
            /* Debug.WriteLine(this.GetType().ToString() + " : " + Maze.BlockWidth + " " + Maze.BlockHeight);
