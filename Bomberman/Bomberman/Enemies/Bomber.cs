@@ -25,10 +25,23 @@ namespace Bomberman
         Queue<int> track = new Queue<int>();
 
         [DataMember()]
-        public Queue<int> @Track
+        public int[] @Track
         {
-            get { return track; }
-            set { track = value; }
+            get { return track.ToArray(); }
+            set
+            {
+                if (track == null)
+                {
+                    track = new Queue<int>(value);
+                }
+                else
+                {
+                    track.Clear();
+                    int l = value.Length;
+                    for (int i = 0; i < l; ++i)
+                        track.Enqueue(value[i]);
+                }
+            }
         }
 
         public Bomber() : base()

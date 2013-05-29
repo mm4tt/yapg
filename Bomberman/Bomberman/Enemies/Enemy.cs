@@ -67,7 +67,7 @@ namespace Bomberman
 
         private Point? nextPosition = null;
         [DataMember()]
-        private Point NextPosition
+        public Point NextPosition
         {
             get
             {
