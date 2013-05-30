@@ -130,7 +130,7 @@ namespace Bomberman.Screens
             if (loadingIsSlow)
             {
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-                SpriteFont font = ScreenManager.Font;
+                SpriteFont font = ScreenManager.LblFont;
 
                 const string message = "Loading...";
 

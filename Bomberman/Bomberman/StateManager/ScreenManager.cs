@@ -31,7 +31,14 @@ namespace Bomberman.StateManager
         InputState input = new InputState();
 
         SpriteBatch spriteBatch;
+
         SpriteFont font;
+        SpriteFont btnfont;
+        SpriteFont lblfont;
+
+        Texture2D yesTexture;
+        Texture2D noTexture;
+
         Texture2D blankTexture;
 
         bool isInitialized;
@@ -62,6 +69,25 @@ namespace Bomberman.StateManager
             get { return font; }
         }
 
+        public SpriteFont BtnFont
+        {
+            get { return btnfont; }
+        }
+
+        public SpriteFont LblFont
+        {
+            get { return lblfont; }
+        }
+
+        public Texture2D YesTex
+        {
+            get { return yesTexture; }
+        }
+
+        public Texture2D NoTex
+        {
+            get { return noTexture; }
+        }
 
         /// <summary>
         /// If true, the manager prints out a list of all the screens
@@ -122,7 +148,12 @@ namespace Bomberman.StateManager
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = content.Load<SpriteFont>("menufont");
+            btnfont = content.Load<SpriteFont>("font1");
+            lblfont = content.Load<SpriteFont>("lblfont");
             blankTexture = content.Load<Texture2D>("blank");
+
+            yesTexture = content.Load<Texture2D>("yes");
+            noTexture = content.Load<Texture2D>("no");
 
             // Tell each of the screens to load their content.
             foreach (GameScreen screen in screens)

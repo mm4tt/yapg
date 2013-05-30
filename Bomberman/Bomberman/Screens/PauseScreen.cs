@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Bomberman.GameSaving;
 using Bomberman.StateManager;
+using Bomberman.Menu;
 
 namespace Bomberman.Screens
 {
@@ -17,15 +18,15 @@ namespace Bomberman.Screens
         {
             // Create the "Resume" and "Exit" buttons for the screen
 
-            Button resumeButton = new Button("Resume");
+            Button resumeButton = new BombermanButton("Resume");
             resumeButton.Tapped += resumeButton_Tapped;
             MenuButtons.Add(resumeButton);
 
-            Button saveButton = new Button("Save");
+            Button saveButton = new BombermanButton("Save");
             saveButton.Tapped += saveButton_Tapped;
             MenuButtons.Add(saveButton);
 
-            Button exitButton = new Button("Exit");
+            Button exitButton = new BombermanButton("Exit");
             exitButton.Tapped += exitButton_Tapped;
             MenuButtons.Add(exitButton);
         }

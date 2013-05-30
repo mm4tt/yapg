@@ -23,6 +23,7 @@ namespace Bomberman
         public Engine()
         {
             Level = 1;
+            BrandNew = false;
         }
         public static Engine Instance
         {
@@ -75,6 +76,27 @@ namespace Bomberman
 
         [DataMember()]
         public int Level
+        {
+            get;
+            set;
+        }
+
+        public enum So
+        {
+            Casual,
+            Easy,
+            Normal
+        }
+
+        [DataMember()]
+        public So Difficulty
+        {
+            get;
+            set;
+        }
+
+        [DataMember()]
+        public bool BrandNew
         {
             get;
             set;

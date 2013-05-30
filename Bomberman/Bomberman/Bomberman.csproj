@@ -21,12 +21,12 @@
     <XapFilename>$(AssemblyName).xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <XnaWindowsPhoneManifestTemplate>Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
-    <TileImage>Background.png</TileImage>
+    <TileImage>icon.png</TileImage>
     <TileTitle>Bomberman</TileTitle>
     <SupportedCultures>
     </SupportedCultures>
     <ApplicationIcon>Game.ico</ApplicationIcon>
-    <Thumbnail>PhoneGameThumb.png</Thumbnail>
+    <Thumbnail>icon.png</Thumbnail>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Windows Phone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,6 +94,8 @@
     <Compile Include="HighScores\TextBlock.cs" />
     <Compile Include="Levels\ILevelGenerator.cs" />
     <Compile Include="Levels\SimpleLevelGenerator.cs" />
+    <Compile Include="Menu\BMBoolButton.cs" />
+    <Compile Include="Menu\BombermanButton.cs" />
     <Compile Include="Modifiers\BombRangeModifier.cs" />
     <Compile Include="Modifiers\CrazyBombModifier.cs" />
     <Compile Include="Modifiers\DispersionEnemyModifier.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Screens\LogoScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Screens\NewGameScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
     <Compile Include="Screens\TmpScreen.cs" />
@@ -145,7 +148,10 @@
     <Compile Include="Game1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bomb1.png" />
+    <Content Include="explosion.png" />
     <Content Include="Game.ico" />
+    <Content Include="icon.png" />
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>

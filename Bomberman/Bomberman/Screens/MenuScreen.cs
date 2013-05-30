@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Bomberman.Menu;
 
 namespace Bomberman.Screens
 {
@@ -76,7 +77,13 @@ namespace Bomberman.Screens
             foreach (Button b in menuButtons)
             {
                 b.Alpha = TransitionAlpha;
+
+                if (b is BombermanButton)
+                {
+                    ((BombermanButton)b).Update(gameTime);
+                }
             }
+
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -117,7 +124,7 @@ namespace Bomberman.Screens
         {
             GraphicsDevice graphics = ScreenManager.GraphicsDevice;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            SpriteFont font = ScreenManager.Font;
+            SpriteFont font = ScreenManager.LblFont;
 
             spriteBatch.Begin();
 

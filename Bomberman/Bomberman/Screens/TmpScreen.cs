@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Bomberman.Menu;
 namespace Bomberman.Screens
 {
     class TmpScreen : MenuScreen
@@ -16,10 +17,10 @@ namespace Bomberman.Screens
             ok.Tapped += handler;
         }
         public TmpScreen( string message ) :base( message ){
-            ok = new Button("Ok");
+            ok = new BombermanButton("Ok");
             ok.Tapped += OkButton_Tapped;
             MenuButtons.Add(ok);
-            TitlePositionY = 180;
+            TitlePositionY = 170;
         }
    
         void OkButton_Tapped(object sender, EventArgs e) {

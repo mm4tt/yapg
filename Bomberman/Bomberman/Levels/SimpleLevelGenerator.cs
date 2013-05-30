@@ -23,32 +23,65 @@ namespace Bomberman.Levels
             p.clear();
             p.FindBeginPosition();
 
-            for (int n = NumberOfEnemies(engine.Level); n > 0; --n)
+            for (int n = NumberOfEnemies(engine); n > 0; --n)
                 engine.AddObject(Enemy.newEnemy(Enemy.Type.Red_Ghost));
 
-            for (int n = NumberOfGhosts(engine.Level); n > 0; --n)
+            for (int n = NumberOfGhosts(engine); n > 0; --n)
                 engine.AddObject(Enemy.newEnemy(Enemy.Type.Blue_Ghost));
 
-            for (int n = NumberOfBombers(engine.Level); n > 0; --n)
+            for (int n = NumberOfBombers(engine); n > 0; --n)
                 engine.AddObject(new Bomber());
         }
 
-        private int NumberOfEnemies(int level)
+        private int NumberOfEnemies(Engine e)
         {
-            return (int)((Math.Sqrt(1 + 8 * level) - 1) / 2);
-        }
+            switch (e.Difficulty)
+            {
+                case Engine.So.Casual:
+                    return (int)((Math.Sqrt(1 + 8 * e.Level) - 1) / 2);
 
-        private int NumberOfBombers(int level)
-        {
-            return (int)((Math.Sqrt(1 + 8 * level) - 1) / 2);
-        }
+                case Engine.So.Easy:
+                    return (int)(Math.Sqrt(1 + 8 * e.Level) - 1);
 
-        private int NumberOfGhosts( int level )
-        {
-            if (level < 4) {
-                return 0;
+                default:
+                    return (int)(Math.Sqrt(1 + 8 * e.Level) - 1);
             }
-            return (int)((Math.Sqrt(1 + 8 *( level-3 )) - 1) / 4 + 1);
+        }
+
+        private int NumberOfBombers(Engine e)
+        {
+            switch (e.Difficulty)
+            {
+                case Engine.So.Casual:
+                    return (int)((Math.Sqrt(1 + 8 * e.Level) - 1) / 2);
+                    
+                case Engine.So.Easy:
+                    return (int)((Math.Sqrt(1 + 8 * e.Level) - 1) / 2);
+                    
+                default:
+                    return (int)(Math.Sqrt(1 + 8 * e.Level) - 1);
+                    
+            }
+        }
+
+        private int NumberOfGhosts(Engine e)
+        {
+            switch (e.Difficulty)
+            {
+                case Engine.So.Casual:
+                    if (e.Level < 4)
+                    {
+                        return 0;
+                    }
+                    return (int)((Math.Sqrt(1 + 8 * (e.Level - 3)) - 1) / 4 + 1);
+                    
+                case Engine.So.Easy:
+                    return (int)((Math.Sqrt(1 + 8 * e.Level ) - 1) / 4 + 2);
+                    
+                default:
+                    return (int)((Math.Sqrt(1 + 8 * e.Level ) - 1) / 8 + 6);
+                    
+            }
         }
             
 

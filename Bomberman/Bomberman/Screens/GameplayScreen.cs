@@ -92,6 +92,11 @@ namespace Bomberman.Screens
                 Engine.Instance = new Engine();
                 Engine.Instance.GenerateLevel();
             }
+            else if (Engine.Instance.BrandNew)
+            {
+                Engine.Instance.BrandNew = false;
+                Engine.Instance.GenerateLevel();
+            }
         }
         /// <summary>
         /// Load graphics content for the game.
