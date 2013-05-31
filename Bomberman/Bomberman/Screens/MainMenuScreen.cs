@@ -27,7 +27,7 @@ namespace Bomberman.Screens
 
             // Create two buttons to toggle sound effects and music. This sample just shows one way
             // of making and using these buttons; it doesn't actually have sound effects or music
-            Button sfxButton = new BMBoolButton("Sound Effects", true);
+            Button sfxButton = new BMBoolButton("Sound Effects", Sound.Instance.Sfx);
             sfxButton.Tapped += sfxButton_Tapped;
             MenuButtons.Add(sfxButton);
 

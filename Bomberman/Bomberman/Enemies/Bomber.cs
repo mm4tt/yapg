@@ -27,20 +27,21 @@ namespace Bomberman
         [DataMember()]
         public int[] @Track
         {
-            get { return track.ToArray(); }
+            get {
+                Debug.WriteLine("Track size " + track.Count()); 
+                return track.ToArray(); }
             set
             {
                 if (track == null)
                 {
-                    track = new Queue<int>(value);
+                    track = new Queue<int>();
                 }
-                else
-                {
+              
                     track.Clear();
                     int l = value.Length;
                     for (int i = 0; i < l; ++i)
                         track.Enqueue(value[i]);
-                }
+                
             }
         }
 

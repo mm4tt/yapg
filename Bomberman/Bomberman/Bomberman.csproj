@@ -70,9 +70,9 @@
     <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bombs\Bomb.cs" />
-    <Compile Include="Bombs\BombTicker.cs" />
-    <Compile Include="Bombs\Explosion.cs" />
+    <Compile Include="Blocks\Bombs\Bomb.cs" />
+    <Compile Include="Blocks\Bombs\BombTicker.cs" />
+    <Compile Include="Blocks\Bombs\Explosion.cs" />
     <Compile Include="Blocks\Chest.cs" />
     <Compile Include="Enemies\Bomber.cs" />
     <Compile Include="Enemies\Ghost.cs" />
@@ -135,7 +135,7 @@
     <Compile Include="StateManager\IScreenFactory.cs" />
     <Compile Include="StateManager\ScreenFactory.cs" />
     <Compile Include="StateManager\ScreenManager.cs" />
-    <Compile Include="Bombs\Ticker.cs" />
+    <Compile Include="Blocks\Bombs\Ticker.cs" />
     <Compile Include="Blocks\Wall.cs" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\AppManifest.xml">

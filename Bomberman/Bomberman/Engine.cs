@@ -59,6 +59,9 @@ namespace Bomberman
 
         public void GenerateLevel()
         {
+            // po zapisywaniu levelGenerator moze byc null
+            if (levelGenerator == null)
+                levelGenerator = new SimpleLevelGenerator();
             levelGenerator.GenerateLevel(this);
         }
 
@@ -196,6 +199,7 @@ namespace Bomberman
             }
             gameObjects.RemoveRange(k, gameObjects.Count - k);
 
+           // Debug.Assert(levelGenerator != null, "ILevelGenerator is not null");
 
             if (!Player.Alive && LevelFailed != null) {
                 LevelFailed();
