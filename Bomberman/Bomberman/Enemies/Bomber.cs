@@ -15,12 +15,12 @@ namespace Bomberman
     {
         Bomb bomb;
 
-        [DataMember()]
-        public Bomb @Bomb
-        {
-            get { return bomb; }
-            set { bomb = value; }
-        }
+        //[DataMember()]
+        //public Bomb @Bomb
+        //{
+        //    get { return bomb; }
+        //    set { bomb = value; }
+        //}
 
         Queue<int> track = new Queue<int>();
 
@@ -201,7 +201,7 @@ namespace Bomberman
 
             Point p = add(position, dirs[(int)faced]);
             List<int> ray = modRay();
-            Debug.WriteLine(ray.Count);
+            Debug.WriteLine("#t: "+track.Count+" #r: "+ray.Count);
 
             if (track.Count > 0)
             {
@@ -222,19 +222,22 @@ namespace Bomberman
                         return;
                 }
 
-                
 
+                Debug.WriteLine("bomb: " + (bomb == null ? "null" : bomb.state.ToString()) +" pos: "+position.X+" "+position.Y+" "+faced.ToString());
                 for (int it = (int)faced + (((int)faced + 1) % 2) + 1; it < (int)faced + (((int)faced + 1) % 2) + 5; it++)
                 {
+                    Debug.WriteLine("Loop dir: " + dirs[it % 4].X + " " + dirs[it % 4].Y);
                     p = add(position, dirs[it % 4]);
                     if (canPass(p.X, p.Y))
                     {
+                        Debug.WriteLine("New dir: " + ((Faced)(it % 4)).ToString());
                         faced = (Faced)(it % 4);
                         offset = 1.0f;
                         break;
                     }
                     else if (Engine.Instance.Maze.Block[(uint)p.X, (uint)p.Y] == Obstacle.Instance && (bomb == null || bomb.state == Bomb.State.Dead))
                     {
+                        Debug.WriteLine("Placing bomb... " + ((Faced)(it % 4)).ToString());
                         if (placeBomb())
                             return;
                     }
