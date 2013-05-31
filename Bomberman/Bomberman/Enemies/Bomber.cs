@@ -28,7 +28,6 @@ namespace Bomberman
         public int[] @Track
         {
             get {
-                Debug.WriteLine("Track size " + track.Count()); 
                 return track.ToArray(); }
             set
             {
