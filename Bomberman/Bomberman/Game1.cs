@@ -68,7 +68,8 @@ namespace Bomberman
                 // If the screen manager fails to deserialize, add the initial screens
                 AddInitialScreens();
             }
-            MediaPlayer.Resume();
+            if (Sound.Instance.Music)
+                MediaPlayer.Resume();
         }
 
         void GameDeactivated(object sender, Microsoft.Phone.Shell.DeactivatedEventArgs e)
@@ -76,7 +77,8 @@ namespace Bomberman
 
             // Serialize the screen manager when the game deactivated
             screenManager.Deactivate();
-            MediaPlayer.Pause();
+            if(Sound.Instance.Music)
+                MediaPlayer.Pause();
             // Create a new SpriteBatch, which can be used to draw textures.
             //spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here

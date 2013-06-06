@@ -126,7 +126,10 @@
     <Compile Include="Screens\NewGameScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Modifiers\Speed.cs" />
+    <Compile Include="Screens\SettingsScreen.cs" />
+    <Compile Include="Screens\TextScreen.cs" />
     <Compile Include="Screens\TmpScreen.cs" />
+    <Compile Include="Screens\WarningScreen.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="StateManager\Button.cs" />
     <Compile Include="StateManager\GameScreen.cs" />

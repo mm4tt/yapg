@@ -18,7 +18,6 @@ namespace Bomberman
         private static Sound instance;
         public Sound(ContentManager Content)
         {
-            MediaPlayer.Stop();
 
             //sampleMediaLibrary = new MediaLibrary();
             //rand = new Random();
@@ -32,9 +31,15 @@ namespace Bomberman
             //instance.IsLooped = true;
             //bgEffect.Play(0.1f, 0.0f, 0.0f);
 
-            Song s = Content.Load<Song>("bg");
-            MediaPlayer.Play(s);
-            MediaPlayer.IsRepeating = true;
+            s = Content.Load<Song>("bg");
+
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                MediaPlayer.Stop();
+                MediaPlayer.Play(s);
+                MediaPlayer.IsRepeating = true;
+                music = true;
+            }
 
             Sfx = true;
             foreach (SoundBankItem sbi in bank)
@@ -78,6 +83,25 @@ namespace Bomberman
             get;
             set;
         }
+        bool music;
+        public bool Music
+        {
+            get { return music;  }
+            set
+            {
+                music = value;
+                if (value)
+                {
+                    MediaPlayer.Resume();
+                }
+                else
+                {
+                    MediaPlayer.Pause();
+                }
+            }
+        }
+
+        public Song s;
 
         SoundBankItem[] bank = { new SoundBankItem("Sbomb"),
                                new SoundBankItem("Spup"),
@@ -85,8 +109,13 @@ namespace Bomberman
                                new SoundBankItem("Sdeath"), 
                                new SoundBankItem("Send") };
 
-        MediaLibrary sampleMediaLibrary;
-        Random rand;
+        public void PlayMusic()
+        {
+            MediaPlayer.Stop();
+            MediaPlayer.Play(s);
+            MediaPlayer.IsRepeating = true;
+            music = true;
+        }
 
         public SoundEffect this[String s] 
         {

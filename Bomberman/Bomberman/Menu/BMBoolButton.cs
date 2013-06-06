@@ -42,7 +42,7 @@ namespace Bomberman.Menu
                 img = screen.ScreenManager.NoTex;
             
             SpriteBatch spriteBatch = screen.ScreenManager.SpriteBatch;
-            spriteBatch.Draw(img, iconPlace, Color.White);
+            spriteBatch.Draw(img, iconPlace, Color.White * Alpha);
         }
     }
 }
